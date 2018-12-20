@@ -7,9 +7,11 @@ namespace mijnZorgRooster.Models
 {
     public class Certificaat
     {
-        private int certificaatID { get; set; }
+        private int CertificaatID { get; set; }
         private int MedewerkerID { get; set; }
         private DateTime Datum { get; set; }
         private DateTime geldigTot { get; set; }
+
+        public Medewerker Medewerker { get; set; }
     }
 }
