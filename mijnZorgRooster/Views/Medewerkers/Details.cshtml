@@ -1,0 +1,78 @@
+﻿@model mijnZorgRooster.Models.Medewerker
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Medewerker</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Voornaam)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Voornaam)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Achternaam)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Achternaam)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tussenvoegsels)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tussenvoegsels)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefoonnummer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Telefoonnummer)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MobielNummer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MobielNummer)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Emailadres)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Emailadres)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Adres)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adres)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Postcode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Postcode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Woonplaats)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Woonplaats)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Geboortedatum)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Geboortedatum)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.medewerkerID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
