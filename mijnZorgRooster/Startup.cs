@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using mijnZorgRooster.Services;
 
 namespace mijnZorgRooster
 {
@@ -29,7 +30,7 @@ namespace mijnZorgRooster
         {
             services.AddDbContext<ZorginstellingContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddScoped<ICalculationsService, CalculationsService>();
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
