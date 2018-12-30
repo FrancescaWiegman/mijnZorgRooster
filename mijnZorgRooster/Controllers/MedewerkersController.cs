@@ -34,7 +34,7 @@ namespace mijnZorgRooster.Controllers
             }
 
             var medewerker = await _context.Medewerkers
-                .FirstOrDefaultAsync(m => m.medewerkerID == id);
+                .FirstOrDefaultAsync(m => m.MedewerkerID == id);
             if (medewerker == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace mijnZorgRooster.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("medewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
         {
-            if (id != medewerker.medewerkerID)
+            if (id != medewerker.MedewerkerID)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace mijnZorgRooster.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MedewerkerExists(medewerker.medewerkerID))
+                    if (!MedewerkerExists(medewerker.MedewerkerID))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace mijnZorgRooster.Controllers
             }
 
             var medewerker = await _context.Medewerkers
-                .FirstOrDefaultAsync(m => m.medewerkerID == id);
+                .FirstOrDefaultAsync(m => m.MedewerkerID == id);
             if (medewerker == null)
             {
                 return NotFound();
@@ -147,7 +147,7 @@ namespace mijnZorgRooster.Controllers
 
         private bool MedewerkerExists(int id)
         {
-            return _context.Medewerkers.Any(e => e.medewerkerID == id);
+            return _context.Medewerkers.Any(e => e.MedewerkerID == id);
         }
     }
 }

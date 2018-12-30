@@ -7,12 +7,15 @@ namespace mijnZorgRooster.Models
 {
     public class Contract
     {
+        //private Contract _contract;
+
         public int ContractID { get; set; }
         public DateTime BeginDatum { get; set; }
         public DateTime Einddatum { get; set; }
         public int ContractUren { get; set; }
 
         public Medewerker Medewerker { get; set; }
+        public ICollection<Contract> Contracts { get; set; }
 
         // Dit is wederom iets wat berekend moet worden. Dit moet ik nog even navragen voor ik Controllers, Views en databases met connectiestrings aan ga maken.
         public int verlofDagenPerJaar { get; set; }
