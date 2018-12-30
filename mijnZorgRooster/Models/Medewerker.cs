@@ -23,8 +23,11 @@ namespace mijnZorgRooster.Models
         public ICollection<Certificaat> Certificaats { get; set; }
         public ICollection <Rol> Rols { get; set; }
 
-        //er moet een methode komen om de leeftijd in jaren te berekenen. Deze is nodig om het aantal vrije dagen te bepalen. Hoe doe ik dat? //vraag ik op mijn werk
-        //Wanneer ik weet hoe dit moet, Scaffold model om de CRUD mogelijk te maken. tevens database initialiseren zodat deze aangemaakt wordt.
-        //De view wordt dan ook aangemaakt en dan kunnen er medewerkers worden toegevoegd. 
-    }
+		//er moet een methode komen om de leeftijd in jaren te berekenen. Deze is nodig om het aantal vrije dagen te bepalen. Hoe doe ik dat? //vraag ik op mijn werk
+		//Wanneer ik weet hoe dit moet, Scaffold model om de CRUD mogelijk te maken. tevens database initialiseren zodat deze aangemaakt wordt.
+		//De view wordt dan ook aangemaakt en dan kunnen er medewerkers worden toegevoegd. 
+
+		// CH: Misschien dat we hier wat mee kunnen: https://gist.github.com/faisalman/1724253
+
+	}
 }
