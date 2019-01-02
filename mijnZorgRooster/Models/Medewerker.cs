@@ -38,7 +38,7 @@ namespace mijnZorgRooster.Models
         [Required, StringLength(50), Display(Name ="Woonplaats")]
         public String Woonplaats { get; set; }
 
-        [Required, StringLength(10), Display(Name = "Geboortedatum")] //dit in view mogelijk nog omzetten naar juiste formaat
+        //[Required, StringLength(10), Display(Name = "Geboortedatum")] //dit in view mogelijk nog omzetten naar juiste formaat
         public DateTime Geboortedatum { get; set; }
         public int  LeeftijdInJaren { get; set; }
 
