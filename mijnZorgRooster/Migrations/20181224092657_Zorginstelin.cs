@@ -12,16 +12,16 @@ namespace mijnZorgRooster.Migrations
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Rol_Medewerker_medewerkerID",
-                table: "Rol");
+                table: "Roll");
 
             migrationBuilder.RenameColumn(
                 name: "medewerkerID",
-                table: "Rol",
+                table: "Roll",
                 newName: "MedewerkerID");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Rol_medewerkerID",
-                table: "Rol",
+                table: "Roll",
                 newName: "IX_Rol_MedewerkerID");
 
             migrationBuilder.RenameColumn(
@@ -73,7 +73,7 @@ namespace mijnZorgRooster.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Rol_Medewerker_MedewerkerID",
-                table: "Rol",
+                table: "Roll",
                 column: "MedewerkerID",
                 principalTable: "Medewerker",
                 principalColumn: "MedewerkerID",
@@ -92,7 +92,7 @@ namespace mijnZorgRooster.Migrations
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Rol_Medewerker_MedewerkerID",
-                table: "Rol");
+                table: "Roll");
 
             migrationBuilder.DropIndex(
                 name: "IX_Contract_ContractID1",
@@ -108,12 +108,12 @@ namespace mijnZorgRooster.Migrations
 
             migrationBuilder.RenameColumn(
                 name: "MedewerkerID",
-                table: "Rol",
+                table: "Roll",
                 newName: "medewerkerID");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Rol_MedewerkerID",
-                table: "Rol",
+                table: "Roll",
                 newName: "IX_Rol_medewerkerID");
 
             migrationBuilder.RenameColumn(
@@ -141,7 +141,7 @@ namespace mijnZorgRooster.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Rol_Medewerker_medewerkerID",
-                table: "Rol",
+                table: "Roll",
                 column: "medewerkerID",
                 principalTable: "Medewerker",
                 principalColumn: "medewerkerID",

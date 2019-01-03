@@ -19,7 +19,7 @@ namespace mijnZorgRooster.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Certificaat", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Certificate", b =>
                 {
                     b.Property<int>("CertificaatID")
                         .ValueGeneratedOnAdd()
@@ -35,7 +35,7 @@ namespace mijnZorgRooster.Migrations
 
                     b.HasIndex("MedewerkerID");
 
-                    b.ToTable("Certificaat");
+                    b.ToTable("Certificate");
                 });
 
             modelBuilder.Entity("mijnZorgRooster.Models.Contract", b =>
@@ -100,7 +100,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Medewerker");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Rol", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Roll", b =>
                 {
                     b.Property<int>("RolID")
                         .ValueGeneratedOnAdd()
@@ -112,13 +112,13 @@ namespace mijnZorgRooster.Migrations
 
                     b.HasIndex("MedewerkerID");
 
-                    b.ToTable("Rol");
+                    b.ToTable("Roll");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Certificaat", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Certificate", b =>
                 {
                     b.HasOne("mijnZorgRooster.Models.Medewerker", "Medewerker")
-                        .WithMany("Certificaats")
+                        .WithMany("Certificates")
                         .HasForeignKey("MedewerkerID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -134,10 +134,10 @@ namespace mijnZorgRooster.Migrations
                         .HasForeignKey("MedewerkerID");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Rol", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Roll", b =>
                 {
                     b.HasOne("mijnZorgRooster.Models.Medewerker")
-                        .WithMany("Rols")
+                        .WithMany("Rolls")
                         .HasForeignKey("MedewerkerID");
                 });
 #pragma warning restore 612, 618
