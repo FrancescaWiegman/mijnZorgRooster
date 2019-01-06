@@ -7,6 +7,6 @@ namespace mijnZorgRooster.Services
 {
     interface IContractService
     {
-        int berekenParttimePercentage(int MedewerkerID);
+        int BerekenParttimePercentage(int medewerkerID);
     }
 }

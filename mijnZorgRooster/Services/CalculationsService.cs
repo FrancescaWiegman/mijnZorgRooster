@@ -12,18 +12,13 @@ namespace mijnZorgRooster.Services
             _medewerkerRepository = medewerkerRepository;
         }
 
-        public int BerekenVakantieDagen(int MedewerkerID)
+        public int BerekenVakantieDagen(int medewerkerID)
         {
-            int vakantieDagen;
-            var medewerker = _medewerkerRepository.GetMedewerkerById(MedewerkerID);
+            var medewerker = _medewerkerRepository.GetMedewerkerById(medewerkerID);
             var leeftijd = (DateTime.Now - medewerker.Geboortedatum);
-            var contract = _medewerkerRepository.GetContractForEmployee(DateTime.Now, MedewerkerID);
-            vakantieDagen = 25 * contract.ParttimePercentage + ((int)leeftijd.TotalDays / 5) - 3;
-            return vakantieDagen;         
-            
+            var contract = _medewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
+            // TODO: Wat heeft leeftijd met vakantiedagen te maken?
+            return 25 * contract.ParttimePercentage + ((int)leeftijd.TotalDays / 5) - 3;
         }
-
-       
-        
     }
 }

@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <Folder Include="Repository\" />
+    <Folder Include="Models\Entities\" />
+    <Folder Include="Models\DTO\" />
   </ItemGroup>
 
 </Project>
