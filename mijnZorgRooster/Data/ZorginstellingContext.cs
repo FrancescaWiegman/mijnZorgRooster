@@ -12,17 +12,17 @@ namespace mijnZorgRooster.Data
         public ZorginstellingContext(DbContextOptions<ZorginstellingContext> options) : base(options)
         {
         }
-        public DbSet<Certificate> Certificates { get; set; }
-        public DbSet<Contract> Contracts { get; set; }
+        public DbSet<Certificaat> Certificaten { get; set; }
+        public DbSet<Contract> Contracten { get; set; }
         public DbSet<Medewerker> Medewerkers { get; set; }
-        public DbSet<Roll> Rolls { get; set; }
+        public DbSet<Rol> Rollen { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Certificate>().ToTable("Certificate");
+            modelBuilder.Entity<Certificaat>().ToTable("Certificaat");
             modelBuilder.Entity<Contract>().ToTable("Contract");
             modelBuilder.Entity<Medewerker>().ToTable("Medewerker");
-            modelBuilder.Entity<Roll>().ToTable("Roll");
+            modelBuilder.Entity<Rol>().ToTable("Rol");
 
         }
     }

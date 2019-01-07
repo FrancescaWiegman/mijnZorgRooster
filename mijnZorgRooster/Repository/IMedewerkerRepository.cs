@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using mijnZorgRooster.Models;
 
-namespace mijnZorgRooster.Services
+namespace mijnZorgRooster.Repository
 {
     public interface IMedewerkerRepository
     {
-        Medewerker GetMedewerkerById(int MedewerkerID);
-        Contract GetContractForEmployee(DateTime referenceDate, int medewerkerId);
+        Medewerker GetMedewerkerById(int medewerkerID);
+        Contract GetContractVoorMedewerker(DateTime referenceDate, int medewerkerId);
     }
 }

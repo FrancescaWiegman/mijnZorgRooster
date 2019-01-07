@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +7,6 @@ namespace mijnZorgRooster.Models
 {
     public class Contract
     {
-        //private Contract _contract;
 
         public int ContractID { get; set; }
         public DateTime BeginDatum { get; set; }
@@ -17,10 +15,11 @@ namespace mijnZorgRooster.Models
 
         public Medewerker Medewerker { get; set; }
 
-        [NotMapped]
-        public ICollection<Medewerker> Medewerkers { get; set; }
-        
+        // Dit is wederom iets wat berekend moet worden. Dit moet ik nog even navragen voor ik Controllers, Views en databases met connectiestrings aan ga maken.
+        public int VerlofDagenPerJaar { get; set; }
 
+        //Parttime percentage zou berekend moeten worden. Weet nog niet hoe
+        public int ParttimePercentage { get; set; }
 
     }
 }

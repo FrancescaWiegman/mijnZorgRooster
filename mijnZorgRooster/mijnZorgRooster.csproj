@@ -6,24 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190106151449_Zorginstlling.cs" />
-    <Compile Remove="Migrations\20190106151449_Zorginstlling.Designer.cs" />
-    <Compile Remove="Migrations\20190106155603_abc.cs" />
-    <Compile Remove="Migrations\20190106155603_abc.Designer.cs" />
-    <Compile Remove="Migrations\20190106160515_abc.cs" />
-    <Compile Remove="Migrations\20190106160515_abc.Designer.cs" />
-    <Compile Remove="Migrations\20190106192530_612019_ZorgApp.cs" />
-    <Compile Remove="Migrations\20190106192530_612019_ZorgApp.Designer.cs" />
-    <Compile Remove="Migrations\20190106193425_ZorgApp612019.cs" />
-    <Compile Remove="Migrations\20190106193425_ZorgApp612019.Designer.cs" />
-    <Compile Remove="Migrations\20190106204148_ZorgApp6jn.cs" />
-    <Compile Remove="Migrations\20190106204148_ZorgApp6jn.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.6" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repository\" />
+    <Folder Include="Models\Entities\" />
+    <Folder Include="Models\DTO\" />
   </ItemGroup>
 
 </Project>
