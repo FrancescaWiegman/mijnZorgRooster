@@ -46,16 +46,16 @@
 //            }
 //            context.SaveChanges();
 
-//            var certificaats = new Certificaat[]
+//            var certificaats = new Certificate[]
 //            {
-//            new Certificaat{CertificaatID = 2, MedewerkerID=1, Datum =DateTime.Parse("01-07-2005"),
+//            new Certificate{CertificaatID = 2, MedewerkerID=1, Datum =DateTime.Parse("01-07-2005"),
 //                geldigTot =DateTime.Parse("01-07-2055")}
 //            };
           
           
-//            foreach (Certificaat e in certificaats)
+//            foreach (Certificate e in certificaats)
 //            {
-//                context.Certificaats.Add(e);
+//                context.Certificates.Add(e);
 //            }
 //            context.SaveChanges();
 //        }

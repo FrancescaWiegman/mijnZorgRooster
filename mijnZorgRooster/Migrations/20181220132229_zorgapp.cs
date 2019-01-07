@@ -31,7 +31,7 @@ namespace mijnZorgRooster.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Certificaat",
+                name: "Certificate",
                 columns: table => new
                 {
                     CertificaatID = table.Column<int>(nullable: false)
@@ -76,7 +76,7 @@ namespace mijnZorgRooster.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rol",
+                name: "Roll",
                 columns: table => new
                 {
                     RolID = table.Column<int>(nullable: false)
@@ -96,7 +96,7 @@ namespace mijnZorgRooster.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Certificaat_MedewerkerID",
-                table: "Certificaat",
+                table: "Certificate",
                 column: "MedewerkerID");
 
             migrationBuilder.CreateIndex(
@@ -106,20 +106,20 @@ namespace mijnZorgRooster.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rol_medewerkerID",
-                table: "Rol",
+                table: "Roll",
                 column: "medewerkerID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Certificaat");
+                name: "Certificate");
 
             migrationBuilder.DropTable(
                 name: "Contract");
 
             migrationBuilder.DropTable(
-                name: "Rol");
+                name: "Roll");
 
             migrationBuilder.DropTable(
                 name: "Medewerker");

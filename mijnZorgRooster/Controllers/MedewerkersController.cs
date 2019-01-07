@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.Data;
 using mijnZorgRooster.Models;
+using mijnZorgRooster.Services;
+using mijnZorgRooster.ViewModels;
 
 namespace mijnZorgRooster.Controllers
 {
     public class MedewerkersController : Controller
     {
         private readonly ZorginstellingContext _context;
-
-        public MedewerkersController(ZorginstellingContext context)
+        private readonly ICalculationsService _calculationsService;
+            
+        public MedewerkersController(ZorginstellingContext context,ICalculationsService calculationsService)
         {
             _context = context;
+            _calculationsService = calculationsService;
         }
 
         // GET: Medewerkers
@@ -39,8 +43,11 @@ namespace mijnZorgRooster.Controllers
             {
                 return NotFound();
             }
+            MedewerkerDetailsdto medewerkerDetails = new MedewerkerDetailsdto(medewerker);
 
-            return View(medewerker);
+            medewerkerDetails.LeeftijdInJaren = _calculationsService.BerekenLeeftijdInJaren(medewerker.MedewerkerID);
+            
+            return View(medewerkerDetails);
         }
 
         // GET: Medewerkers/Create

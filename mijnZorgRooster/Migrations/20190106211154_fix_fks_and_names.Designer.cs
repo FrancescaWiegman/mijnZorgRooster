@@ -10,8 +10,8 @@ using mijnZorgRooster.Data;
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingContext))]
-    [Migration("20181224092657_Zorginstelin")]
-    partial class Zorginstelling
+    [Migration("20190106211154_fix_fks_and_names")]
+    partial class fix_fks_and_names
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,8 +48,6 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<DateTime>("BeginDatum");
 
-                    b.Property<int?>("ContractID1");
-
                     b.Property<int>("ContractUren");
 
                     b.Property<DateTime>("Einddatum");
@@ -58,11 +56,9 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<int>("ParttimePercentage");
 
-                    b.Property<int>("verlofDagenPerJaar");
+                    b.Property<int>("VerlofDagenPerJaar");
 
                     b.HasKey("ContractID");
-
-                    b.HasIndex("ContractID1");
 
                     b.HasIndex("MedewerkerID");
 
@@ -95,8 +91,6 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<string>("Woonplaats");
 
-                    b.Property<int>("leeftijdInJaren");
-
                     b.HasKey("MedewerkerID");
 
                     b.ToTable("Medewerker");
@@ -110,6 +104,8 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<int?>("MedewerkerID");
 
+                    b.Property<string>("Naam");
+
                     b.HasKey("RolID");
 
                     b.HasIndex("MedewerkerID");
@@ -120,26 +116,22 @@ namespace mijnZorgRooster.Migrations
             modelBuilder.Entity("mijnZorgRooster.Models.Certificaat", b =>
                 {
                     b.HasOne("mijnZorgRooster.Models.Medewerker", "Medewerker")
-                        .WithMany("Certificaats")
+                        .WithMany("Certificaten")
                         .HasForeignKey("MedewerkerID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("mijnZorgRooster.Models.Contract", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Contract")
-                        .WithMany("Contracts")
-                        .HasForeignKey("ContractID1");
-
                     b.HasOne("mijnZorgRooster.Models.Medewerker", "Medewerker")
-                        .WithMany("Contracts")
+                        .WithMany("Contracten")
                         .HasForeignKey("MedewerkerID");
                 });
 
             modelBuilder.Entity("mijnZorgRooster.Models.Rol", b =>
                 {
                     b.HasOne("mijnZorgRooster.Models.Medewerker")
-                        .WithMany("Rols")
+                        .WithMany("Rollen")
                         .HasForeignKey("MedewerkerID");
                 });
 #pragma warning restore 612, 618

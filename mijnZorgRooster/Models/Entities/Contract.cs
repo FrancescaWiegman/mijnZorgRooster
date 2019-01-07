@@ -7,7 +7,6 @@ namespace mijnZorgRooster.Models
 {
     public class Contract
     {
-        //private Contract _contract;
 
         public int ContractID { get; set; }
         public DateTime BeginDatum { get; set; }
@@ -15,10 +14,9 @@ namespace mijnZorgRooster.Models
         public int ContractUren { get; set; }
 
         public Medewerker Medewerker { get; set; }
-        public ICollection<Contract> Contracts { get; set; }
 
         // Dit is wederom iets wat berekend moet worden. Dit moet ik nog even navragen voor ik Controllers, Views en databases met connectiestrings aan ga maken.
-        public int verlofDagenPerJaar { get; set; }
+        public int VerlofDagenPerJaar { get; set; }
 
         //Parttime percentage zou berekend moeten worden. Weet nog niet hoe
         public int ParttimePercentage { get; set; }

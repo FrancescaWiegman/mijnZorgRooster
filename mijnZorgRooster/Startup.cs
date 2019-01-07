@@ -31,6 +31,7 @@ namespace mijnZorgRooster
             services.AddDbContext<ZorginstellingContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<ICalculationsService, CalculationsService>();
+            services.AddScoped<IMedewerkerRepository, MedewerkerRepository>();
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

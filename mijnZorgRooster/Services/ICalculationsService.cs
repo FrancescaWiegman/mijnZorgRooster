@@ -1,10 +1,16 @@
 ﻿
 
+using System;
+
 namespace mijnZorgRooster.Services
 {
     public interface ICalculationsService 
     {
-        int BerekenVakantieDagen(int MedewerkerID);
-        
+        int BerekenMaandenInDienst(int MedewerkerID);
+        double BerekenVakantieDagen(int MedewerkerID);
+
+        int BerekenLeeftijdInJaren(int MedewerkerID);
+
+    
     }
 }

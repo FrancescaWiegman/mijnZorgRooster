@@ -1,4 +1,4 @@
-﻿@model mijnZorgRooster.Models.Medewerker
+﻿@model mijnZorgRooster.ViewModels.MedewerkerDetailsdto
 
 @{
     ViewData["Title"] = "Details";
@@ -10,6 +10,12 @@
     <h4>Medewerker</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MedewerkerID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MedewerkerID)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Voornaam)
         </dt>
@@ -70,6 +76,13 @@
         <dd>
             @Html.DisplayFor(model => model.Geboortedatum)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LeeftijdInJaren)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LeeftijdInJaren)
+        </dd>
+
     </dl>
 </div>
 <div>

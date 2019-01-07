@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Services
 {
-    interface IContractService
+    public class IRoosterService
     {
-        int BerekenParttimePercentage(int MedewerkerID);
     }
 }
