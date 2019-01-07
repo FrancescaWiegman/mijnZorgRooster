@@ -10,8 +10,8 @@ using mijnZorgRooster.Data;
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingContext))]
-    [Migration("20181224092657_Zorginstelin")]
-    partial class Zorginstelling
+    [Migration("20190106211154_fix_fks_and_names")]
+    partial class fix_fks_and_names
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace mijnZorgRooster.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Certificate", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Certificaat", b =>
                 {
                     b.Property<int>("CertificaatID")
                         .ValueGeneratedOnAdd()
@@ -37,7 +37,7 @@ namespace mijnZorgRooster.Migrations
 
                     b.HasIndex("MedewerkerID");
 
-                    b.ToTable("Certificate");
+                    b.ToTable("Certificaat");
                 });
 
             modelBuilder.Entity("mijnZorgRooster.Models.Contract", b =>
@@ -48,8 +48,6 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<DateTime>("BeginDatum");
 
-                    b.Property<int?>("ContractID1");
-
                     b.Property<int>("ContractUren");
 
                     b.Property<DateTime>("Einddatum");
@@ -58,11 +56,9 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<int>("ParttimePercentage");
 
-                    b.Property<int>("verlofDagenPerJaar");
+                    b.Property<int>("VerlofDagenPerJaar");
 
                     b.HasKey("ContractID");
-
-                    b.HasIndex("ContractID1");
 
                     b.HasIndex("MedewerkerID");
 
@@ -95,14 +91,12 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<string>("Woonplaats");
 
-                    b.Property<int>("leeftijdInJaren");
-
                     b.HasKey("MedewerkerID");
 
                     b.ToTable("Medewerker");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Roll", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Rol", b =>
                 {
                     b.Property<int>("RolID")
                         .ValueGeneratedOnAdd()
@@ -110,36 +104,34 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<int?>("MedewerkerID");
 
+                    b.Property<string>("Naam");
+
                     b.HasKey("RolID");
 
                     b.HasIndex("MedewerkerID");
 
-                    b.ToTable("Roll");
+                    b.ToTable("Rol");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Certificate", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Certificaat", b =>
                 {
                     b.HasOne("mijnZorgRooster.Models.Medewerker", "Medewerker")
-                        .WithMany("Certificates")
+                        .WithMany("Certificaten")
                         .HasForeignKey("MedewerkerID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("mijnZorgRooster.Models.Contract", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Contract")
-                        .WithMany("Contracts")
-                        .HasForeignKey("ContractID1");
-
                     b.HasOne("mijnZorgRooster.Models.Medewerker", "Medewerker")
-                        .WithMany("Contracts")
+                        .WithMany("Contracten")
                         .HasForeignKey("MedewerkerID");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Roll", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Rol", b =>
                 {
                     b.HasOne("mijnZorgRooster.Models.Medewerker")
-                        .WithMany("Rolls")
+                        .WithMany("Rollen")
                         .HasForeignKey("MedewerkerID");
                 });
 #pragma warning restore 612, 618

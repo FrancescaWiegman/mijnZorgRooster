@@ -16,14 +16,14 @@ namespace mijnZorgRooster.Services
             _context = context;
         }
 
-        public Contract GetContractForEmployee(DateTime referenceDate, int medewerkerId)
+        public Contract GetContractVoorMedewerker(DateTime referenceDate, int medewerkerId)
         {
-            return _context.Contracts.FirstOrDefault(c => c.BeginDatum <= referenceDate && c.Einddatum >= referenceDate && c.Medewerker.MedewerkerID == medewerkerId);
+            return _context.Contracten.FirstOrDefault(c => c.BeginDatum <= referenceDate && c.Einddatum >= referenceDate && c.Medewerker.MedewerkerID == medewerkerId);
         }
 
-        public Medewerker GetMedewerkerById(int MedewerkerID)
+        public Medewerker GetMedewerkerById(int medewerkerID)
         {
-            return _context.Medewerkers.FirstOrDefault(m => m.MedewerkerID == MedewerkerID);
+            return _context.Medewerkers.FirstOrDefault(m => m.MedewerkerID == medewerkerID);
         }
     }
     }
