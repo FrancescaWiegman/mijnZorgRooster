@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using mijnZorgRooster.Data;
 using mijnZorgRooster.Models;
 
-namespace mijnZorgRooster.Services
+namespace mijnZorgRooster.Repository
 {
     public class MedewerkerRepository : IMedewerkerRepository
     {

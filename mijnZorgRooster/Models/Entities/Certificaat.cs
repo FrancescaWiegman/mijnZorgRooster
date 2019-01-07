@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Models
 {
-    public class Certificate
+    public class Certificaat
     {
        [Key]
         public int CertificaatID { get; set; }
