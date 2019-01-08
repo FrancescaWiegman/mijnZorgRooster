@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.Data;
-using mijnZorgRooster.Models;
+using mijnZorgRooster.Models.Entities;
 
 namespace mijnZorgRooster.Repository
 {
@@ -16,14 +17,19 @@ namespace mijnZorgRooster.Repository
             _context = context;
         }
 
+        public async Task<List<Medewerker>> GetAllMedewerkers()
+        {
+            return await _context.Medewerkers.ToListAsync();
+        }
+
         public Contract GetContractVoorMedewerker(DateTime referenceDate, int medewerkerId)
         {
             return _context.Contracten.FirstOrDefault(c => c.BeginDatum <= referenceDate && c.Einddatum >= referenceDate && c.Medewerker.MedewerkerID == medewerkerId);
         }
 
-        public Medewerker GetMedewerkerById(int medewerkerID)
+        public async Task<Medewerker> GetMedewerkerById(int medewerkerID)
         {
-            return _context.Medewerkers.FirstOrDefault(m => m.MedewerkerID == medewerkerID);
+            return await _context.Medewerkers.FirstOrDefaultAsync(m => m.MedewerkerID == medewerkerID);
         }
     }
     }

@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using mijnZorgRooster.Models.Entities;
 
 namespace mijnZorgRooster.Data
 {
