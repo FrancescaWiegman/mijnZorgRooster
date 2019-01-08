@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 using mijnZorgRooster.Models;
-using mijnZorgRooster.Repository;
+using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Services
 {
     public class CalculationsService : ICalculationsService
     {
-        private IMedewerkerRepository _medewerkerRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private int leeftijdInJaren;
         private readonly double vakantieUren = 237.4;
         private int maandenInDienst;
 
-        public CalculationsService(IMedewerkerRepository medewerkerRepository)
+        public CalculationsService(IUnitOfWork unitOfWork)
         {
-            _medewerkerRepository = medewerkerRepository;
+            _unitOfWork = unitOfWork;
         }
 
         //public double BerekenVakantieDagen(int MedewerkerID)
@@ -30,7 +30,7 @@ namespace mijnZorgRooster.Services
 
         public async Task<int> BerekenLeeftijdInJaren(int medewerkerID)
         { //berekening klopt niet. moet op dag,maand, jaar
-            var medewerker = await _medewerkerRepository.GetMedewerkerById(medewerkerID);
+            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
             var today = DateTime.Today;
             leeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
             return leeftijdInJaren;
@@ -40,7 +40,7 @@ namespace mijnZorgRooster.Services
         {
             int year = DateTime.Now.Year;
             DateTime lastDay = new DateTime(year, 12, 31);
-            var contract = _medewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
+            var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
             
             if(contract.Einddatum == DateTime.MinValue)
             {
@@ -55,7 +55,7 @@ namespace mijnZorgRooster.Services
         public double BerekenVakantieDagen(int medewerkerID)
         {
             //TODO: medewerker wordt niet gebruikt.
-            var medewerker = _medewerkerRepository.GetMedewerkerById(medewerkerID);
+            var medewerker = _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
     
             return (maandenInDienst / 12 * vakantieUren)/8;
         }

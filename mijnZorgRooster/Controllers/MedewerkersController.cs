@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.Data;
-using mijnZorgRooster.Models;
 using mijnZorgRooster.Models.DTO;
 using mijnZorgRooster.Models.Entities;
-using mijnZorgRooster.Repository;
+using mijnZorgRooster.DAL;
 using mijnZorgRooster.Services;
 
 
@@ -17,13 +15,11 @@ namespace mijnZorgRooster.Controllers
 {
     public class MedewerkersController : Controller
     {
-        private readonly IMedewerkerRepository _repository;
-        private readonly ICalculationsService _calculationsService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICalculationsService _calculationsService;
             
-        public MedewerkersController(IMedewerkerRepository repository, ICalculationsService calculationsService, IUnitOfWork unitOfWork)
+        public MedewerkersController(ICalculationsService calculationsService, IUnitOfWork unitOfWork)
         {
-            _repository = repository;
             _calculationsService = calculationsService;
             _unitOfWork = unitOfWork;
         }
@@ -31,7 +27,7 @@ namespace mijnZorgRooster.Controllers
         // GET: Medewerkers
         public async Task<IActionResult> Index()
         {
-            return View(await _repository.GetAllMedewerkers());
+            return View(await _unitOfWork.MedewerkerRepository.GetAsync());
         }
 
         // GET: Medewerkers/Details/5
@@ -41,7 +37,7 @@ namespace mijnZorgRooster.Controllers
     
             if (id.HasValue)
             {
-                medewerker = await _repository.GetMedewerkerById(id.Value);
+                medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id.Value);
             }
             else
             {
@@ -67,105 +63,106 @@ namespace mijnZorgRooster.Controllers
         // POST: Medewerkers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("medewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(medewerker);
-        //        await _unitOfWork.CommitAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(medewerker);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("medewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.MedewerkerRepository.Insert(medewerker);
+                await _unitOfWork.SaveAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(medewerker);
+        }
 
         //// GET: Medewerkers/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var medewerker = await _context.Medewerkers.FindAsync(id);
-        //    if (medewerker == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(medewerker);
-        //}
+            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
+            if (medewerker == null)
+            {
+                return NotFound();
+            }
+            return View(medewerker);
+        }
 
         //// POST: Medewerkers/Edit/5
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("medewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
-        //{
-        //    if (id != medewerker.MedewerkerID)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("MedewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
+        {
+            if (id != medewerker.MedewerkerID)
+            {
+                return NotFound();
+            }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(medewerker);
-        //            await 
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!MedewerkerExists(medewerker.MedewerkerID))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(medewerker);
-        //}
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _unitOfWork.MedewerkerRepository.Update(medewerker);
+                    await _unitOfWork.SaveAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await MedewerkerExists(medewerker.MedewerkerID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(medewerker);
+        }
 
         //// GET: Medewerkers/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    Medewerker medewerker = null;
-        //    if (id.HasValue)
-        //    {
-        //        medewerker = await _repository.GetMedewerkerById(id.Value);
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            Medewerker medewerker = null;
+            if (id.HasValue)
+            {
+                medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id.Value);
+            }
+            else
+            {
+                return NotFound();
+            }
 
-        //    if (medewerker == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (medewerker == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(medewerker);
-        //}
+            return View(medewerker);
+        }
 
-        //// POST: Medewerkers/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var medewerker = await _repository.GetMedewerkerById(id);
-        //    _context.Medewerkers.Remove(medewerker);
-        //    await _unitOfWork.CommitAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        // POST: Medewerkers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
+            _unitOfWork.MedewerkerRepository.Delete(medewerker);
+            await _unitOfWork.SaveAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-        //private bool MedewerkerExists(int id)
-        //{
-        //    return _context.Medewerkers.Any(e => e.MedewerkerID == id);
-        //}
+        private async Task<bool> MedewerkerExists(int id)
+        {
+            var res = await _unitOfWork.MedewerkerRepository.GetAsync();
+            return res.Any(m => m.MedewerkerID == id);
+        }
     }
 }

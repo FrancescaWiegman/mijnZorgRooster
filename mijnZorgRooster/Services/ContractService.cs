@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using mijnZorgRooster.Models;
-using mijnZorgRooster.Repository;
+using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Services
 {
     public class ContractService : IContractService
     {
         const int fulltime = 36;
-        private IMedewerkerRepository _medewerkerRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ContractService(IMedewerkerRepository medewerkerRepository)
+        public ContractService(IUnitOfWork unitOfWork)
         {
-            _medewerkerRepository = medewerkerRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public int BerekenParttimePercentage(int medewerkerID)
         {
-            var medewerker = _medewerkerRepository.GetMedewerkerById(medewerkerID);
-            var contract = _medewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
+            var medewerker = _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
+            var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
 
             return contract.ContractUren / fulltime * 100;
         }
