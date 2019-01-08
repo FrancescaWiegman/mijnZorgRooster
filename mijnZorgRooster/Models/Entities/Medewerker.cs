@@ -43,7 +43,7 @@ namespace mijnZorgRooster.Models
         public DateTime Geboortedatum { get; set; }
 
         public ICollection<Contract> Contracten { get; set; }
-        public ICollection<Certificaat> Certificaten { get; set; }
+        public ICollection<Certificate> Certificaten { get; set; }
         public ICollection <Rol> Rollen { get; set; }
 
         //er moet een methode komen om de leeftijd in jaren te berekenen. Deze is nodig om het aantal vrije dagen te bepalen. Hoe doe ik dat? //vraag ik op mijn werk

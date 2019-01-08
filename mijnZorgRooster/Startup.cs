@@ -13,6 +13,7 @@ using mijnZorgRooster.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using mijnZorgRooster.Services;
+using mijnZorgRooster.Repository;
 
 namespace mijnZorgRooster
 {

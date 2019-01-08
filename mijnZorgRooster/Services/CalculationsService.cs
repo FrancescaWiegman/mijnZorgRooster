@@ -1,5 +1,6 @@
 ﻿using System;
 using mijnZorgRooster.Models;
+using mijnZorgRooster.Repository;
 
 namespace mijnZorgRooster.Services
 {
@@ -30,7 +31,14 @@ namespace mijnZorgRooster.Services
         { //berekening klopt niet. moet op dag,maand, jaar
             var medewerker = _medewerkerRepository.GetMedewerkerById(MedewerkerID);
             var today = DateTime.Today;
-            LeeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
+            if (medewerker.Geboortedatum.Month > today.Month)
+            {
+                LeeftijdInJaren = (today.Year - medewerker.Geboortedatum.Year) - 1;
+            }
+            else
+            {
+                LeeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
+            }
             return LeeftijdInJaren;
 
         }
@@ -38,7 +46,7 @@ namespace mijnZorgRooster.Services
         {
             int year = DateTime.Now.Year;
             DateTime lastDay = new DateTime(year, 12, 31);
-            var contract = _medewerkerRepository.GetContractForEmployee(DateTime.Now, MedewerkerID);
+            var contract = _medewerkerRepository.GetContractVoorMedewerker(DateTime.Now, MedewerkerID);
             
             if(contract.Einddatum == DateTime.MinValue)
             {

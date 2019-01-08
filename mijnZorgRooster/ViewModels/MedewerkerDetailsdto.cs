@@ -13,7 +13,15 @@ namespace mijnZorgRooster.ViewModels
         {
             MedewerkerID = medewerker.MedewerkerID;
             Voornaam = medewerker.Voornaam;
-            //enz 
+            Achternaam = medewerker.Achternaam;
+            Tussenvoegsels = medewerker.Tussenvoegsels;
+            Telefoonnummer = medewerker.Telefoonnummer;
+            MobielNummer = medewerker.MobielNummer;
+            Emailadres = medewerker.Emailadres;
+            Adres = medewerker.Adres;
+            Postcode = medewerker.Postcode;
+            Woonplaats = medewerker.Woonplaats;
+            Geboortedatum = medewerker.Geboortedatum;
         }
         public int LeeftijdInJaren { get; set; }
         
