@@ -1,0 +1,54 @@
+﻿@model mijnZorgRooster.Models.ContractDto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>ContractDto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ContractID" />
+            <div class="form-group">
+                <label asp-for="BeginDatum" class="control-label"></label>
+                <input asp-for="BeginDatum" class="form-control" />
+                <span asp-validation-for="BeginDatum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Einddatum" class="control-label"></label>
+                <input asp-for="Einddatum" class="form-control" />
+                <span asp-validation-for="Einddatum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContractUren" class="control-label"></label>
+                <input asp-for="ContractUren" class="form-control" />
+                <span asp-validation-for="ContractUren" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VerlofDagenPerJaar" class="control-label"></label>
+                <input asp-for="VerlofDagenPerJaar" class="form-control" />
+                <span asp-validation-for="VerlofDagenPerJaar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParttimePercentage" class="control-label"></label>
+                <input asp-for="ParttimePercentage" class="form-control" />
+                <span asp-validation-for="ParttimePercentage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

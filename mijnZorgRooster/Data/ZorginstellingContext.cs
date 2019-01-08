@@ -25,6 +25,8 @@ namespace mijnZorgRooster.Data
             modelBuilder.Entity<Rol>().ToTable("Rol");
 
         }
+
+        public DbSet<mijnZorgRooster.Models.ContractDto> ContractDto { get; set; }
     }
 }
 

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Models
 {
-    public class Contract
+    public class ContractDto
     {
-
         [Key]
         [ScaffoldColumn(false)]
         public int ContractID { get; set; }

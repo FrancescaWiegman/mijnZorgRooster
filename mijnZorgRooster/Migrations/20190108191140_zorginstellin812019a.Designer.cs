@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mijnZorgRooster.Data;
 
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingContext))]
-    partial class ZorginstellingContextModelSnapshot : ModelSnapshot
+    [Migration("20190108191140_zorginstellin812019a")]
+    partial class zorginstellin812019a
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

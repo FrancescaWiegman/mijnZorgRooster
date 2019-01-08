@@ -1,0 +1,48 @@
+﻿@model mijnZorgRooster.Models.ContractDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ContractDto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BeginDatum)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BeginDatum)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Einddatum)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Einddatum)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ContractUren)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ContractUren)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VerlofDagenPerJaar)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VerlofDagenPerJaar)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ParttimePercentage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ParttimePercentage)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ContractID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
