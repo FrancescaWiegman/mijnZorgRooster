@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using mijnZorgRooster.Models;
 using mijnZorgRooster.Repository;
 
@@ -27,9 +28,9 @@ namespace mijnZorgRooster.Services
             
         //}
 
-        public int BerekenLeeftijdInJaren(int medewerkerID)
+        public async Task<int> BerekenLeeftijdInJaren(int medewerkerID)
         { //berekening klopt niet. moet op dag,maand, jaar
-            var medewerker = _medewerkerRepository.GetMedewerkerById(medewerkerID);
+            var medewerker = await _medewerkerRepository.GetMedewerkerById(medewerkerID);
             var today = DateTime.Today;
             leeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
             return leeftijdInJaren;

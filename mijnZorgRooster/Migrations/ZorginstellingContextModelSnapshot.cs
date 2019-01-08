@@ -19,7 +19,7 @@ namespace mijnZorgRooster.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Certificaat", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Certificaat", b =>
                 {
                     b.Property<int>("CertificaatID")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Certificaat");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Contract", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Contract", b =>
                 {
                     b.Property<int>("ContractID")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Contract");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Medewerker", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Medewerker", b =>
                 {
                     b.Property<int>("MedewerkerID")
                         .ValueGeneratedOnAdd()
@@ -94,9 +94,9 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Medewerker");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Rol", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rol", b =>
                 {
-                    b.Property<int>("RolID")
+                    b.Property<int>("RollID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -104,31 +104,31 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<string>("Naam");
 
-                    b.HasKey("RolID");
+                    b.HasKey("RollID");
 
                     b.HasIndex("MedewerkerID");
 
                     b.ToTable("Rol");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Certificaat", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Certificaat", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Medewerker", "Medewerker")
+                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
                         .WithMany("Certificaten")
                         .HasForeignKey("MedewerkerID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Contract", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Contract", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Medewerker", "Medewerker")
+                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
                         .WithMany("Contracten")
                         .HasForeignKey("MedewerkerID");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Rol", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rol", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Medewerker")
+                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker")
                         .WithMany("Rollen")
                         .HasForeignKey("MedewerkerID");
                 });
