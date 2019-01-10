@@ -6,6 +6,7 @@ namespace mijnZorgRooster.DAL
     public interface IUnitOfWork
     {
         IMedewerkerRepository MedewerkerRepository { get; }
+        IGenericRepository<Rol> RolRepository { get; }
         Task SaveAsync();
         void Save();
         void Dispose();
