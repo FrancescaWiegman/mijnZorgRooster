@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace mijnZorgRooster.Migrations
 {
-    public partial class zorgapp : Migration
+    public partial class InitialDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace mijnZorgRooster.Migrations
                 name: "Medewerker",
                 columns: table => new
                 {
-                    medewerkerID = table.Column<int>(nullable: false)
+                    MedewerkerID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Voornaam = table.Column<string>(nullable: true),
                     Achternaam = table.Column<string>(nullable: true),
@@ -27,11 +27,11 @@ namespace mijnZorgRooster.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Medewerker", x => x.medewerkerID);
+                    table.PrimaryKey("PK_Medewerker", x => x.MedewerkerID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Certificate",
+                name: "Certificaat",
                 columns: table => new
                 {
                     CertificaatID = table.Column<int>(nullable: false)
@@ -47,7 +47,7 @@ namespace mijnZorgRooster.Migrations
                         name: "FK_Certificaat_Medewerker_MedewerkerID",
                         column: x => x.MedewerkerID,
                         principalTable: "Medewerker",
-                        principalColumn: "medewerkerID",
+                        principalColumn: "MedewerkerID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -60,66 +60,67 @@ namespace mijnZorgRooster.Migrations
                     BeginDatum = table.Column<DateTime>(nullable: false),
                     Einddatum = table.Column<DateTime>(nullable: false),
                     ContractUren = table.Column<int>(nullable: false),
-                    medewerkerID = table.Column<int>(nullable: true),
-                    verlofDagenPerJaar = table.Column<int>(nullable: false),
+                    MedewerkerID = table.Column<int>(nullable: true),
+                    VerlofDagenPerJaar = table.Column<int>(nullable: false),
                     ParttimePercentage = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contract", x => x.ContractID);
                     table.ForeignKey(
-                        name: "FK_Contract_Medewerker_medewerkerID",
-                        column: x => x.medewerkerID,
+                        name: "FK_Contract_Medewerker_MedewerkerID",
+                        column: x => x.MedewerkerID,
                         principalTable: "Medewerker",
-                        principalColumn: "medewerkerID",
+                        principalColumn: "MedewerkerID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roll",
+                name: "Rol",
                 columns: table => new
                 {
-                    RolID = table.Column<int>(nullable: false)
+                    RollID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    medewerkerID = table.Column<int>(nullable: true)
+                    Naam = table.Column<string>(nullable: true),
+                    MedewerkerID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rol", x => x.RolID);
+                    table.PrimaryKey("PK_Rol", x => x.RollID);
                     table.ForeignKey(
-                        name: "FK_Rol_Medewerker_medewerkerID",
-                        column: x => x.medewerkerID,
+                        name: "FK_Rol_Medewerker_MedewerkerID",
+                        column: x => x.MedewerkerID,
                         principalTable: "Medewerker",
-                        principalColumn: "medewerkerID",
+                        principalColumn: "MedewerkerID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Certificaat_MedewerkerID",
-                table: "Certificate",
+                table: "Certificaat",
                 column: "MedewerkerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contract_medewerkerID",
+                name: "IX_Contract_MedewerkerID",
                 table: "Contract",
-                column: "medewerkerID");
+                column: "MedewerkerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rol_medewerkerID",
-                table: "Roll",
-                column: "medewerkerID");
+                name: "IX_Rol_MedewerkerID",
+                table: "Rol",
+                column: "MedewerkerID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Certificate");
+                name: "Certificaat");
 
             migrationBuilder.DropTable(
                 name: "Contract");
 
             migrationBuilder.DropTable(
-                name: "Roll");
+                name: "Rol");
 
             migrationBuilder.DropTable(
                 name: "Medewerker");

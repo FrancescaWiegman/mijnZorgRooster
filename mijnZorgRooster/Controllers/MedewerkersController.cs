@@ -5,47 +5,51 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.Data;
-using mijnZorgRooster.Models;
+using mijnZorgRooster.Models.DTO;
+using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.DAL;
 using mijnZorgRooster.Services;
-using mijnZorgRooster.ViewModels;
+
 
 namespace mijnZorgRooster.Controllers
 {
     public class MedewerkersController : Controller
     {
-        private readonly ZorginstellingContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ICalculationsService _calculationsService;
             
-        public MedewerkersController(ZorginstellingContext context,ICalculationsService calculationsService)
+        public MedewerkersController(ICalculationsService calculationsService, IUnitOfWork unitOfWork)
         {
-            _context = context;
             _calculationsService = calculationsService;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: Medewerkers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Medewerkers.ToListAsync());
+            return View(await _unitOfWork.MedewerkerRepository.GetAsync());
         }
 
         // GET: Medewerkers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            Medewerker medewerker = null;
+    
+            if (id.HasValue)
+            {
+                medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id.Value);
+            }
+            else
             {
                 return NotFound();
             }
 
-            var medewerker = await _context.Medewerkers
-                .FirstOrDefaultAsync(m => m.MedewerkerID == id);
-            if (medewerker == null)
-            {
-                return NotFound();
-            }
-            MedewerkerDetailsdto medewerkerDetails = new MedewerkerDetailsdto(medewerker);
 
-            medewerkerDetails.LeeftijdInJaren = _calculationsService.BerekenLeeftijdInJaren(medewerker.MedewerkerID);
+            MedewerkerDetailDto medewerkerDetails = new MedewerkerDetailDto(medewerker);
+
+            medewerkerDetails.LeeftijdInJaren = await _calculationsService.BerekenLeeftijdInJaren(medewerker.MedewerkerID);
+            medewerkerDetails.Achternaam = medewerker.Achternaam;
+            medewerkerDetails.Voornaam = medewerker.Voornaam;
             
             return View(medewerkerDetails);
         }
@@ -65,14 +69,14 @@ namespace mijnZorgRooster.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(medewerker);
-                await _context.SaveChangesAsync();
+                _unitOfWork.MedewerkerRepository.Insert(medewerker);
+                await _unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(medewerker);
         }
 
-        // GET: Medewerkers/Edit/5
+        //// GET: Medewerkers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,7 +84,7 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            var medewerker = await _context.Medewerkers.FindAsync(id);
+            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
             if (medewerker == null)
             {
                 return NotFound();
@@ -88,12 +92,12 @@ namespace mijnZorgRooster.Controllers
             return View(medewerker);
         }
 
-        // POST: Medewerkers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //// POST: Medewerkers/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("medewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
+        public async Task<IActionResult> Edit(int id, [Bind("MedewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
         {
             if (id != medewerker.MedewerkerID)
             {
@@ -104,12 +108,12 @@ namespace mijnZorgRooster.Controllers
             {
                 try
                 {
-                    _context.Update(medewerker);
-                    await _context.SaveChangesAsync();
+                    _unitOfWork.MedewerkerRepository.Update(medewerker);
+                    await _unitOfWork.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MedewerkerExists(medewerker.MedewerkerID))
+                    if (!await MedewerkerExists(medewerker.MedewerkerID))
                     {
                         return NotFound();
                     }
@@ -123,16 +127,19 @@ namespace mijnZorgRooster.Controllers
             return View(medewerker);
         }
 
-        // GET: Medewerkers/Delete/5
+        //// GET: Medewerkers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            Medewerker medewerker = null;
+            if (id.HasValue)
+            {
+                medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id.Value);
+            }
+            else
             {
                 return NotFound();
             }
 
-            var medewerker = await _context.Medewerkers
-                .FirstOrDefaultAsync(m => m.MedewerkerID == id);
             if (medewerker == null)
             {
                 return NotFound();
@@ -146,15 +153,16 @@ namespace mijnZorgRooster.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var medewerker = await _context.Medewerkers.FindAsync(id);
-            _context.Medewerkers.Remove(medewerker);
-            await _context.SaveChangesAsync();
+            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
+            _unitOfWork.MedewerkerRepository.Delete(medewerker);
+            await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MedewerkerExists(int id)
+        private async Task<bool> MedewerkerExists(int id)
         {
-            return _context.Medewerkers.Any(e => e.MedewerkerID == id);
+            var res = await _unitOfWork.MedewerkerRepository.GetAsync();
+            return res.Any(m => m.MedewerkerID == id);
         }
     }
 }

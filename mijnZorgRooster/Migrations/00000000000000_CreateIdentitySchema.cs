@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace mijnZorgRooster.Data.Migrations
+namespace mijnZorgRooster.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

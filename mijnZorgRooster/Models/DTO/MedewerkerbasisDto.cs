@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace mijnZorgRooster.ViewModels
+namespace mijnZorgRooster.Models.DTO
 {
-    public class MedewerkerbasisDto
+    public class MedewerkerBasisDto
     {
 
             

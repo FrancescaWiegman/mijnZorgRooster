@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Services
 {
@@ -9,7 +10,7 @@ namespace mijnZorgRooster.Services
         int BerekenMaandenInDienst(int MedewerkerID);
         double BerekenVakantieDagen(int MedewerkerID);
 
-        int BerekenLeeftijdInJaren(int MedewerkerID);
+        Task<int> BerekenLeeftijdInJaren(int MedewerkerID);
 
     
     }

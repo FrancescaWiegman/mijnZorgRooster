@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using mijnZorgRooster.Data;
+using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Controllers
 {
 	public class RoosterController : Controller
 	{
-		private readonly ZorginstellingContext _context;
+		private readonly ZorginstellingDbContext _context;
 
-		public RoosterController(ZorginstellingContext context)
+		public RoosterController(ZorginstellingDbContext context)
 		{
 			_context = context;
 		}

@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace mijnZorgRooster.Models
+namespace mijnZorgRooster.Models.Entities
 {
-    public class Certificate
+    public class Certificaat
     {
        [Key]
         public int CertificaatID { get; set; }

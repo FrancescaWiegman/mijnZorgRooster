@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.Data;
+using mijnZorgRooster.DAL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using mijnZorgRooster.Services;
@@ -28,8 +28,10 @@ namespace mijnZorgRooster
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ZorginstellingContext>(options =>
+            services.AddDbContext<ZorginstellingDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICalculationsService, CalculationsService>();
             services.AddScoped<IMedewerkerRepository, MedewerkerRepository>();
             services.Configure<CookiePolicyOptions>(options =>
@@ -38,12 +40,8 @@ namespace mijnZorgRooster
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ZorginstellingDbContext>();       
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
