@@ -20,14 +20,6 @@ namespace mijnZorgRooster.DAL
             get { return _medewerkerRepository ?? (_medewerkerRepository = new MedewerkerRepository(_context)); }
         }
 
-        //public IGenericRepository<Medewerker> MedewerkerRepository
-        //{
-        //    get
-        //    {
-        //        return _medewerkerRepository ?? (_medewerkerRepository = new  GenericRepository<Medewerker>(_context));
-        //    }
-        //}
-
         public void Save()
         {
             _context.SaveChanges();
