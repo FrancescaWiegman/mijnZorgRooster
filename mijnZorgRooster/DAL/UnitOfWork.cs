@@ -6,11 +6,11 @@ namespace mijnZorgRooster.DAL
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly ZorginstellingContext _context;
+        private readonly ZorginstellingDbContext _context;
         private IMedewerkerRepository _medewerkerRepository;
        // private IGenericRepository<Medewerker> _medewerkerRepository;
 
-        public UnitOfWork(ZorginstellingContext context)
+        public UnitOfWork(ZorginstellingDbContext context)
         {
             _context = context;
         }

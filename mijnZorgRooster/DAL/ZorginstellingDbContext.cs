@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.Models.Entities;
 
 namespace mijnZorgRooster.DAL
 {
-    public class ZorginstellingContext : DbContext
+    public class ZorginstellingDbContext : IdentityDbContext
     {
-        public ZorginstellingContext(DbContextOptions<ZorginstellingDbContext> options) : base(options)
+        public ZorginstellingDbContext(DbContextOptions<ZorginstellingDbContext> options)
+            : base(options)
         {
         }
 
@@ -17,6 +21,8 @@ namespace mijnZorgRooster.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Certificaat>().ToTable("Certificaat");
             modelBuilder.Entity<Contract>().ToTable("Contract");
             modelBuilder.Entity<Medewerker>().ToTable("Medewerker");
@@ -24,4 +30,3 @@ namespace mijnZorgRooster.DAL
         }
     }
 }
-

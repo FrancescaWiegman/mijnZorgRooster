@@ -9,7 +9,7 @@ using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Migrations
 {
-    [DbContext(typeof(ZorginstellingContext))]
+    [DbContext(typeof(ZorginstellingDbContext))]
     [Migration("20190107214712_Initial-Database")]
     partial class InitialDatabase
     {

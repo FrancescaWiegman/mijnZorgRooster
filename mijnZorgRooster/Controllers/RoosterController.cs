@@ -9,9 +9,9 @@ namespace mijnZorgRooster.Controllers
 {
 	public class RoosterController : Controller
 	{
-		private readonly ZorginstellingContext _context;
+		private readonly ZorginstellingDbContext _context;
 
-		public RoosterController(ZorginstellingContext context)
+		public RoosterController(ZorginstellingDbContext context)
 		{
 			_context = context;
 		}

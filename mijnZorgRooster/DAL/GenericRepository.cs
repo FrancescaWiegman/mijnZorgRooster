@@ -9,10 +9,10 @@ namespace mijnZorgRooster.DAL
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        internal ZorginstellingContext _context;
+        internal ZorginstellingDbContext _context;
         internal DbSet<TEntity> dbSet;
 
-        public GenericRepository(ZorginstellingContext context)
+        public GenericRepository(ZorginstellingDbContext context)
         {
             this._context = context;
             this.dbSet = _context.Set<TEntity>();

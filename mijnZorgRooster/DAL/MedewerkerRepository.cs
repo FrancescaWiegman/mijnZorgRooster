@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using mijnZorgRooster.Models.Entities;
+using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.DAL;
-using mijnZorgRooster.Models.Entities;
 
 namespace mijnZorgRooster.DAL
 {
     public class MedewerkerRepository : GenericRepository<Medewerker>, IMedewerkerRepository
     {
-        public MedewerkerRepository(ZorginstellingContext context) : base(context)
+        public MedewerkerRepository(ZorginstellingDbContext context) : base(context)
         {
         }
 
