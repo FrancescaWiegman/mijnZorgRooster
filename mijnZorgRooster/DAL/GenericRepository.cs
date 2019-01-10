@@ -18,7 +18,7 @@ namespace mijnZorgRooster.DAL
             this.dbSet = _context.Set<TEntity>();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAsync()
+        public virtual async Task<IList<TEntity>> GetAsync()
         {
             return await dbSet.ToListAsync();
         }

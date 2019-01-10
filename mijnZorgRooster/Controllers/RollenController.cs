@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.DAL;
+using mijnZorgRooster.Models.DTO;
 using mijnZorgRooster.Models.Entities;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,7 +22,19 @@ namespace mijnZorgRooster.Controllers
         // GET: Rollen
         public async Task<IActionResult> Index()
         {
-            return View(await _unitOfWork.RolRepository.GetAsync());
+            IList<Rol> rolList = await _unitOfWork.RolRepository.GetAsync();
+            List<RolDto> rolListDto = new List<RolDto>();
+            RolDto rolDto = new RolDto();
+
+            foreach (var rol in rolList)
+            {
+                rolDto = new RolDto();
+                rolDto.RolID = rol.RolID;
+                rolDto.Naam = rol.Naam;
+                rolListDto.Add(rolDto);
+            }
+
+            return View(rolListDto);
         }
 
         // GET: Rollen/Details/5
@@ -36,8 +50,12 @@ namespace mijnZorgRooster.Controllers
             {
                 return NotFound();
             }
+
+            RolDto rolDto = new RolDto();
+            rolDto.RolID = rol.RolID;
+            rolDto.Naam = rol.Naam;
            
-            return View(rol);
+            return View(rolDto);
         }
 
         // GET: Rol/Create
@@ -51,15 +69,18 @@ namespace mijnZorgRooster.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RolID,Naam")] Rol rol)
+        public async Task<IActionResult> Create([Bind("RolID,Naam")] RolDto rolDto)
         {
             if (ModelState.IsValid)
             {
+                Rol rol = new Rol();
+                rol.Naam = rolDto.Naam;
+
                 _unitOfWork.RolRepository.Insert(rol);
                 await _unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(rol);
+            return View(rolDto);
         }
 
         //// GET: Rol/Edit/5
@@ -75,7 +96,12 @@ namespace mijnZorgRooster.Controllers
             {
                 return NotFound();
             }
-            return View(rol);
+
+            RolDto rolDto = new RolDto();
+            rolDto.RolID = rol.RolID;
+            rolDto.Naam = rol.Naam;
+
+            return View(rolDto);
         }
 
         //// POST: Rol/Edit/5
@@ -110,7 +136,12 @@ namespace mijnZorgRooster.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(rol);
+
+            RolDto rolDto = new RolDto();
+            rolDto.RolID = rol.RolID;
+            rolDto.Naam = rol.Naam;
+
+            return View(rolDto);
         }
 
         //// GET: Rol/Delete/5
@@ -131,7 +162,11 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            return View(rol);
+            RolDto rolDto = new RolDto();
+            rolDto.RolID = rol.RolID;
+            rolDto.Naam = rol.Naam;
+
+            return View(rolDto);
         }
 
         // POST: Rol/Delete/5

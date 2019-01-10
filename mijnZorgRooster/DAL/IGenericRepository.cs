@@ -7,7 +7,7 @@ namespace mijnZorgRooster.DAL
 {
     public interface IGenericRepository<TEntity>
     {
-        Task<IEnumerable<TEntity>> GetAsync();
+        Task<IList<TEntity>> GetAsync();
         Task<TEntity> GetByIdAsync(object id);
         void Insert(TEntity entity);
         void Delete(object id);

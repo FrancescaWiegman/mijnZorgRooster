@@ -7,7 +7,7 @@ namespace mijnZorgRooster.DAL
 {
     public interface IMedewerkerRepository
     {
-        Task<IEnumerable<Medewerker>> GetAsync();
+        Task<IList<Medewerker>> GetAsync();
         Task<Medewerker> GetByIdAsync(object id);
         void Insert(Medewerker medewerker);
         void Delete(object id);
