@@ -42,7 +42,7 @@ namespace mijnZorgRooster.Models.Entities
 
         public ICollection<Contract> Contracten { get; set; }
         public ICollection<Certificaat> Certificaten { get; set; }
-        public ICollection <Rol> Rollen { get; set; }
+        public ICollection <MedewerkerRol> MedewerkersRollen { get; set; }
 
         //er moet een methode komen om de leeftijd in jaren te berekenen. Deze is nodig om het aantal vrije dagen te bepalen. Hoe doe ik dat? //vraag ik op mijn werk
         //Wanneer ik weet hoe dit moet, 

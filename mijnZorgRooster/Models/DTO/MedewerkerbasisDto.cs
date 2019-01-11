@@ -30,13 +30,13 @@ namespace mijnZorgRooster.Models.DTO
 
             public DateTime Geboortedatum { get; set; }
 
-            //public ICollection<Contract> Contracts { get; set; }
-            //public ICollection<Certificate> Certificates { get; set; }
-            //public ICollection<Roll> Rols { get; set; }
+        //public ICollection<Contract> Contracts { get; set; }
+        //public ICollection<Certificate> Certificates { get; set; }
+        //public ICollection<Roll> Rols { get; set; }
 
-            [BindProperty]
-            [Display(Name = "Rollen")]
-            public IList<Rol> SelectedRollen { get; set; }
+        [BindProperty]
+        [Display(Name = "Rollen")]
+        public IList<Rol> SelectedRollen { get; set; }
             public SelectList RollenOptions { get; set; }
     }
 }

@@ -64,7 +64,8 @@
                 <span asp-validation-for="Geboortedatum" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <select asp-for="SelectedRollen" asp-items="Model.RollenOptions"></select>
+                <label asp-for="SelectedRollen" class="control-label"></label>
+                <select asp-for="SelectedRollen" asp-items="Model.RollenOptions" class="form-control"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

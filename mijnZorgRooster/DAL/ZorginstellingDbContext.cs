@@ -18,6 +18,7 @@ namespace mijnZorgRooster.DAL
         public DbSet<Contract> Contracten { get; set; }
         public DbSet<Medewerker> Medewerkers { get; set; }
         public DbSet<Rol> Rollen { get; set; }
+        public DbSet<MedewerkerRol> MedewerkersRollen { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,8 @@ namespace mijnZorgRooster.DAL
             modelBuilder.Entity<Contract>().ToTable("Contract");
             modelBuilder.Entity<Medewerker>().ToTable("Medewerker");
             modelBuilder.Entity<Rol>().ToTable("Rol");
+
+            modelBuilder.Entity<MedewerkerRol>().HasKey(e => new { e.MedewerkerId, e.RolId });
         }
     }
 }

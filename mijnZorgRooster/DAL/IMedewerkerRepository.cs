@@ -9,6 +9,7 @@ namespace mijnZorgRooster.DAL
     {
         Task<IList<Medewerker>> GetAsync();
         Task<Medewerker> GetByIdAsync(object id);
+        Task<Medewerker> GetMedewerkerMetRollen(int? medewerkerId);
         void Insert(Medewerker medewerker);
         void Delete(object id);
         void Delete(Medewerker medewerker);

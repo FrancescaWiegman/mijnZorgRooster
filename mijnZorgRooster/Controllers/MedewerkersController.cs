@@ -85,13 +85,20 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
+            //var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
+            var medewerker = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollen(id);
+            List<Rol> medewerkerRollen = new List<Rol>();
+            foreach(var medewerkerRol in medewerker.MedewerkersRollen.ToList())
+            {
+                medewerkerRollen.Add(medewerkerRol.Rol);
+            }
+
             if (medewerker == null)
             {
                 return NotFound();
             }
 
-            IEnumerable<Rol> rollen = await _unitOfWork.RolRepository.GetAsync();
+            IList<Rol> rollen = await _unitOfWork.RolRepository.GetAsync();
 
             MedewerkerBasisDto medewerkerBasisDto = new MedewerkerBasisDto()
             {
@@ -104,8 +111,8 @@ namespace mijnZorgRooster.Controllers
                 Postcode = medewerker.Postcode,
                 Woonplaats = medewerker.Woonplaats,
                 Geboortedatum = medewerker.Geboortedatum,
-                SelectedRollen = medewerker.Rollen.ToList(),
-                RollenOptions = new SelectList(rollen)
+                SelectedRollen = medewerkerRollen,
+                RollenOptions = new SelectList(rollen, nameof(Rol.RolID), nameof(Rol.Naam))
             };
 
             return View(medewerkerBasisDto);
