@@ -7,6 +7,7 @@ namespace mijnZorgRooster.DAL
     {
         IMedewerkerRepository MedewerkerRepository { get; }
         IGenericRepository<Rol> RolRepository { get; }
+        IGenericRepository<Certificaat> CertificaatRepository { get; }
         Task SaveAsync();
         void Save();
         void Dispose();

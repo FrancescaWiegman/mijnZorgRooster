@@ -28,9 +28,11 @@ namespace mijnZorgRooster.Controllers
 
             foreach (var rol in rolList)
             {
-                rolDto = new RolDto();
-                rolDto.RolID = rol.RolID;
-                rolDto.Naam = rol.Naam;
+                rolDto = new RolDto
+                {
+                    RolID = rol.RolID,
+                    Naam = rol.Naam
+                };
                 rolListDto.Add(rolDto);
             }
 
@@ -51,10 +53,12 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            RolDto rolDto = new RolDto();
-            rolDto.RolID = rol.RolID;
-            rolDto.Naam = rol.Naam;
-           
+            RolDto rolDto = new RolDto
+            {
+                RolID = rol.RolID,
+                Naam = rol.Naam
+            };
+
             return View(rolDto);
         }
 
@@ -73,8 +77,10 @@ namespace mijnZorgRooster.Controllers
         {
             if (ModelState.IsValid)
             {
-                Rol rol = new Rol();
-                rol.Naam = rolDto.Naam;
+                Rol rol = new Rol
+                {
+                    Naam = rolDto.Naam
+                };
 
                 _unitOfWork.RolRepository.Insert(rol);
                 await _unitOfWork.SaveAsync();
@@ -97,9 +103,11 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            RolDto rolDto = new RolDto();
-            rolDto.RolID = rol.RolID;
-            rolDto.Naam = rol.Naam;
+            RolDto rolDto = new RolDto
+            {
+                RolID = rol.RolID,
+                Naam = rol.Naam
+            };
 
             return View(rolDto);
         }
@@ -137,9 +145,11 @@ namespace mijnZorgRooster.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            RolDto rolDto = new RolDto();
-            rolDto.RolID = rol.RolID;
-            rolDto.Naam = rol.Naam;
+            RolDto rolDto = new RolDto
+            {
+                RolID = rol.RolID,
+                Naam = rol.Naam
+            };
 
             return View(rolDto);
         }
@@ -162,9 +172,11 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            RolDto rolDto = new RolDto();
-            rolDto.RolID = rol.RolID;
-            rolDto.Naam = rol.Naam;
+            RolDto rolDto = new RolDto
+            {
+                RolID = rol.RolID,
+                Naam = rol.Naam
+            };
 
             return View(rolDto);
         }

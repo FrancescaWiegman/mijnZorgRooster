@@ -276,6 +276,19 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Rol");
                 });
 
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Test", b =>
+                {
+                    b.Property<int>("testID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Naam");
+
+                    b.HasKey("testID");
+
+                    b.ToTable("Testen");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")

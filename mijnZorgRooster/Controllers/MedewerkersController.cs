@@ -45,12 +45,13 @@ namespace mijnZorgRooster.Controllers
             }
 
 
-            MedewerkerDetailDto medewerkerDetails = new MedewerkerDetailDto(medewerker);
+            MedewerkerDetailDto medewerkerDetails = new MedewerkerDetailDto(medewerker)
+            {
+                LeeftijdInJaren = await _calculationsService.BerekenLeeftijdInJaren(medewerker.MedewerkerID),
+                Achternaam = medewerker.Achternaam,
+                Voornaam = medewerker.Voornaam
+            };
 
-            medewerkerDetails.LeeftijdInJaren = await _calculationsService.BerekenLeeftijdInJaren(medewerker.MedewerkerID);
-            medewerkerDetails.Achternaam = medewerker.Achternaam;
-            medewerkerDetails.Voornaam = medewerker.Voornaam;
-            
             return View(medewerkerDetails);
         }
 
@@ -89,7 +90,25 @@ namespace mijnZorgRooster.Controllers
             {
                 return NotFound();
             }
-            return View(medewerker);
+
+            IEnumerable<Rol> rollen = await _unitOfWork.RolRepository.GetAsync();
+
+            MedewerkerBasisDto medewerkerBasisDto = new MedewerkerBasisDto()
+            {
+                Voornaam = medewerker.Voornaam,
+                Tussenvoegsels = medewerker.Tussenvoegsels,
+                Telefoonnummer = medewerker.Telefoonnummer,
+                MobielNummer = medewerker.MobielNummer,
+                Emailadres = medewerker.Emailadres,
+                Adres = medewerker.Adres,
+                Postcode = medewerker.Postcode,
+                Woonplaats = medewerker.Woonplaats,
+                Geboortedatum = medewerker.Geboortedatum,
+                SelectedRollen = medewerker.Rollen.ToList(),
+                RollenOptions = new SelectList(rollen)
+            };
+
+            return View(medewerkerBasisDto);
         }
 
         //// POST: Medewerkers/Edit/5

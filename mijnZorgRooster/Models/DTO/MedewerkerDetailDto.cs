@@ -1,4 +1,7 @@
 ﻿using mijnZorgRooster.Models.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace mijnZorgRooster.Models.DTO
 {
@@ -12,6 +15,6 @@ namespace mijnZorgRooster.Models.DTO
             //enz 
         }
         public int LeeftijdInJaren { get; set; }
-        
+
     }
   }
