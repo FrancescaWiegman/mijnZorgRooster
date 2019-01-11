@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using mijnZorgRooster.Models.Entities;
 using System;
@@ -10,19 +10,12 @@ using System.Threading.Tasks;
 namespace mijnZorgRooster.Models.DTO
 {
     public class MedewerkerBasisDto
-    {
-
-            
+    {        
             public int MedewerkerID { get; set; }
-
             public String Voornaam { get; set; }
-
             public String Achternaam { get; set; }
-            [Display(Name = "Tussenvoegsels(s)")]
             public String Tussenvoegsels { get; set; }
-
             public String Telefoonnummer { get; set; }
-
             [Display(Name = "Mobiel Telefoonnummer")]
             public String MobielNummer { get; set; }
 
@@ -46,5 +39,4 @@ namespace mijnZorgRooster.Models.DTO
             public IList<Rol> SelectedRollen { get; set; }
             public SelectList RollenOptions { get; set; }
     }
-    }
-
+}

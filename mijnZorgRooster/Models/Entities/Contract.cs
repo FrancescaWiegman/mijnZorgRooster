@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace mijnZorgRooster.Models.Entities
 {
     public class Contract
     {
-
+        [Key]
+        [ScaffoldColumn(false)]
         public int ContractID { get; set; }
         public DateTime BeginDatum { get; set; }
         public DateTime Einddatum { get; set; }

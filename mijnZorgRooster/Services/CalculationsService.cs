@@ -8,7 +8,6 @@ namespace mijnZorgRooster.Services
     public class CalculationsService : ICalculationsService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private int leeftijdInJaren;
         private readonly double vakantieUren = 237.4;
         private int maandenInDienst;
 
@@ -29,10 +28,19 @@ namespace mijnZorgRooster.Services
         //}
 
         public async Task<int> BerekenLeeftijdInJaren(int medewerkerID)
-        { //berekening klopt niet. moet op dag,maand, jaar
+        { 
+            var leeftijdInJaren = 0;
             var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
             var today = DateTime.Today;
-            leeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
+
+            if (medewerker.Geboortedatum.Month > today.Month)
+            {
+                leeftijdInJaren = (today.Year - medewerker.Geboortedatum.Year) - 1;
+            }
+            else
+            {
+                leeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
+            }
             return leeftijdInJaren;
 
         }
