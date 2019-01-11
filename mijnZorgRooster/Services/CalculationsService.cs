@@ -32,10 +32,18 @@ namespace mijnZorgRooster.Services
         { //berekening klopt niet. moet op dag,maand, jaar
             var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
             var today = DateTime.Today;
-            leeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
+            if(medewerker.Geboortedatum.Month > today.Month)
+            {
+                leeftijdInJaren = (today.Year - medewerker.Geboortedatum.Year)-1;
+            } else
+            {
+                leeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
+            }
+            
             return leeftijdInJaren;
+                    }
+       
 
-        }
         public int BerekenMaandenInDienst(int medewerkerID)
         {
             int year = DateTime.Now.Year;
