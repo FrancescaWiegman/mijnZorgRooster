@@ -87,10 +87,10 @@ namespace mijnZorgRooster.Controllers
 
             //var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
             var medewerker = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollen(id);
-            List<Rol> medewerkerRollen = new List<Rol>();
+            List<int> medewerkerRollen = new List<int>();
             foreach(var medewerkerRol in medewerker.MedewerkersRollen.ToList())
             {
-                medewerkerRollen.Add(medewerkerRol.Rol);
+                medewerkerRollen.Add(medewerkerRol.Rol.RolID);
             }
 
             if (medewerker == null)

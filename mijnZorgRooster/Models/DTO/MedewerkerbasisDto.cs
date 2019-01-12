@@ -36,7 +36,7 @@ namespace mijnZorgRooster.Models.DTO
 
         [BindProperty]
         [Display(Name = "Rollen")]
-        public IList<Rol> SelectedRollen { get; set; }
-            public SelectList RollenOptions { get; set; }
+        public IList<int> SelectedRollen { get; set; }
+        public SelectList RollenOptions { get; set; }
     }
 }
