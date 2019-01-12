@@ -8,9 +8,12 @@ namespace mijnZorgRooster.DAL
     {
         private readonly ZorginstellingDbContext _context;
         private IMedewerkerRepository _medewerkerRepository;
-       // private IGenericRepository<Medewerker> _medewerkerRepository;
+		// private IGenericRepository<Medewerker> _medewerkerRepository;
+		private IDienstProfielRepository _dienstProfielRepository;
+		private IDienstRepository _dienstRepository;
+		private IRoosterRepository _roosterRepository;
 
-        public UnitOfWork(ZorginstellingDbContext context)
+		public UnitOfWork(ZorginstellingDbContext context)
         {
             _context = context;
         }
@@ -20,7 +23,22 @@ namespace mijnZorgRooster.DAL
             get { return _medewerkerRepository ?? (_medewerkerRepository = new MedewerkerRepository(_context)); }
         }
 
-        public void Save()
+		public IDienstProfielRepository DienstProfielRepository
+		{
+			get { return _dienstProfielRepository ?? (_dienstProfielRepository = new DienstProfielRepository(_context)); }
+		}
+
+		public IDienstRepository DienstRepository
+		{
+			get { return _dienstRepository ?? (_dienstRepository = new DienstRepository(_context)); }
+		}
+
+		public IRoosterRepository RoosterRepository
+		{
+			get { return _roosterRepository ?? (_roosterRepository = new RoosterRepository(_context)); }
+		}
+
+		public void Save()
         {
             _context.SaveChanges();
         }

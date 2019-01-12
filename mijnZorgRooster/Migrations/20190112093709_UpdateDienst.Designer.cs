@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingDbContext))]
-    partial class ZorginstellingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190112093709_UpdateDienst")]
+    partial class UpdateDienst
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,13 +238,9 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<DateTime>("Datum");
 
-                    b.Property<int?>("DienstDataDienstProfielID");
-
                     b.Property<int?>("RoosterID");
 
                     b.HasKey("DienstID");
-
-                    b.HasIndex("DienstDataDienstProfielID");
 
                     b.HasIndex("RoosterID");
 
@@ -251,9 +249,7 @@ namespace mijnZorgRooster.Migrations
 
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.DienstProfiel", b =>
                 {
-                    b.Property<int>("DienstProfielID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("DienstID");
 
                     b.Property<TimeSpan>("Begintijd");
 
@@ -263,7 +259,7 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<int>("MinimaleBezetting");
 
-                    b.HasKey("DienstProfielID");
+                    b.HasKey("DienstID");
 
                     b.ToTable("DienstProfiel");
                 });
@@ -401,13 +397,17 @@ namespace mijnZorgRooster.Migrations
 
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.Dienst", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.DienstProfiel", "DienstData")
-                        .WithMany()
-                        .HasForeignKey("DienstDataDienstProfielID");
-
                     b.HasOne("mijnZorgRooster.Models.Entities.Rooster")
                         .WithMany("Diensten")
                         .HasForeignKey("RoosterID");
+                });
+
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.DienstProfiel", b =>
+                {
+                    b.HasOne("mijnZorgRooster.Models.Entities.Dienst")
+                        .WithOne("DienstData")
+                        .HasForeignKey("mijnZorgRooster.Models.Entities.DienstProfiel", "DienstID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rol", b =>

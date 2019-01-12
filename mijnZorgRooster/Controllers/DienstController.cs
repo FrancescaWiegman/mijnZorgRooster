@@ -12,18 +12,18 @@ using mijnZorgRooster.Services;
 
 namespace mijnZorgRooster.Controllers
 {
-	public class RoosterController : Controller
-	{
+    public class DienstController : Controller
+    {
 		private readonly IUnitOfWork _unitOfWork;
 
-		public RoosterController(IUnitOfWork unitOfWork)
+		public DienstController(IUnitOfWork unitOfWork)
 		{
 			_unitOfWork = unitOfWork;
 		}
 
-		public IActionResult Rooster()
-		{
-			return View(); 
-		}
-	}
+		public IActionResult Index()
+        {
+            return View();
+        }
+    }
 }
