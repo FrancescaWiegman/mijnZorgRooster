@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ using mijnZorgRooster.Services;
 
 namespace mijnZorgRooster.Controllers
 {
-	public class RoosterController : Controller
+    public class RoosterController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IRoosterService _roosterService;
@@ -21,6 +21,7 @@ namespace mijnZorgRooster.Controllers
 		{
 			_roosterService = roosterService;
 			_unitOfWork = unitOfWork;
+
 		}
 
 		// GET: Rooster

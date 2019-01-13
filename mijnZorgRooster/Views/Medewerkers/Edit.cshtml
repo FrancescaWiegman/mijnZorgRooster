@@ -1,4 +1,4 @@
-﻿@model mijnZorgRooster.Models.Entities.Medewerker
+﻿@model mijnZorgRooster.Models.DTO.MedewerkerMetRollenDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -62,6 +62,10 @@
                 <label asp-for="Geboortedatum" class="control-label"></label>
                 <input asp-for="Geboortedatum" class="form-control" />
                 <span asp-validation-for="Geboortedatum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedRollen" class="control-label"></label>
+                <select asp-for="SelectedRollen" asp-items="Model.RollenOptions" class="form-control"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

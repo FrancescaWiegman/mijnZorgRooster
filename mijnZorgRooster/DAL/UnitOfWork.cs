@@ -8,10 +8,11 @@ namespace mijnZorgRooster.DAL
     {
         private readonly ZorginstellingDbContext _context;
         private IMedewerkerRepository _medewerkerRepository;
-		// private IGenericRepository<Medewerker> _medewerkerRepository;
-		private IGenericRepository<DienstProfiel> _dienstProfielRepository;
-		private IDienstRepository _dienstRepository;
-		private IRoosterRepository _roosterRepository;
+		    private IDienstProfielRepository _dienstProfielRepository;
+		    private IDienstRepository _dienstRepository;
+		    private IRoosterRepository _roosterRepository;
+        private IGenericRepository<Rol> _rolRepository;
+        private IGenericRepository<Certificaat> _certficaatRepository;
 
 		public UnitOfWork(ZorginstellingDbContext context)
         {
@@ -23,22 +24,32 @@ namespace mijnZorgRooster.DAL
             get { return _medewerkerRepository ?? (_medewerkerRepository = new MedewerkerRepository(_context)); }
         }
 
-		public IGenericRepository<DienstProfiel> DienstProfielRepository
-		{
-			get { return _dienstProfielRepository ?? (_dienstProfielRepository = new GenericRepository<DienstProfiel>(_context)); }
-		}
+        public IDienstProfielRepository DienstProfielRepository
+        {
+          get { return _dienstProfielRepository ?? (_dienstProfielRepository = new DienstProfielRepository(_context)); }
+        }
 
-		public IDienstRepository DienstRepository
-		{
-			get { return _dienstRepository ?? (_dienstRepository = new DienstRepository(_context)); }
-		}
+        public IDienstRepository DienstRepository
+        {
+          get { return _dienstRepository ?? (_dienstRepository = new DienstRepository(_context)); }
+        }
 
-		public IRoosterRepository RoosterRepository
-		{
-			get { return _roosterRepository ?? (_roosterRepository = new RoosterRepository(_context)); }
-		}
+        public IRoosterRepository RoosterRepository
+        {
+          get { return _roosterRepository ?? (_roosterRepository = new RoosterRepository(_context)); }
+        }
 
-		public void Save()
+        public IGenericRepository<Rol> RolRepository
+        {
+            get { return _rolRepository ?? (_rolRepository = new GenericRepository<Rol>(_context)); }
+        }
+
+        public IGenericRepository<Certificaat> CertificaatRepository
+        {
+            get { return _certficaatRepository ?? (_certficaatRepository = new GenericRepository<Certificaat>(_context)); }
+        }
+
+        public void Save()
         {
             _context.SaveChanges();
         }
