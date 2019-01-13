@@ -1,15 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Models.Entities
 {
     public class Rol
     {
         [Key]
-        public int RollID { get; set; }
+        public int RolID { get; set; }
         public string Naam { get; set; }
+
+        public ICollection<MedewerkerRol> MedewerkersRollen { get; set; }
+    }
+
+    public class MedewerkerRol
+    {
+        public int RolId { get; set; }
+        public Rol Rol { get; set; }
+        public int MedewerkerId { get; set; }
+        public Medewerker Medewerker { get; set; }
     }
 }

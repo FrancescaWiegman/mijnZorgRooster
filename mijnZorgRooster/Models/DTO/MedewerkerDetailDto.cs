@@ -1,4 +1,7 @@
 ﻿using mijnZorgRooster.Models.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace mijnZorgRooster.Models.DTO
 {
@@ -18,9 +21,9 @@ namespace mijnZorgRooster.Models.DTO
             Woonplaats = medewerker.Woonplaats;
             Geboortedatum = medewerker.Geboortedatum;
         }
+        
         public int LeeftijdInJaren { get; set; }
 
         public string Naam { get { return string.Concat(Voornaam, " ", Tussenvoegsels, " ", Achternaam); } }
-
     }
   }

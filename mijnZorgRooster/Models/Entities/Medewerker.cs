@@ -25,7 +25,7 @@ namespace mijnZorgRooster.Models.Entities
         //[Required, StringLength(12), Display(Name = "Mobiel Telefoonnummer")]
         public String MobielNummer { get; set; }
 
-        //[Required, StringLength(40), Display(Name ="E-mailadres")]
+        [Required, StringLength(40), Display(Name = "E-mailadres")]
         public String Emailadres { get; set; }
 
         //[Required, StringLength(100), Display(Name = "Adres")]
@@ -42,7 +42,7 @@ namespace mijnZorgRooster.Models.Entities
 
         public ICollection<Contract> Contracten { get; set; }
         public ICollection<Certificaat> Certificaten { get; set; }
-        public ICollection <Rol> Rollen { get; set; }
+        public ICollection <MedewerkerRol> MedewerkersRollen { get; set; }
 
         //er moet een methode komen om de leeftijd in jaren te berekenen. Deze is nodig om het aantal vrije dagen te bepalen. Hoe doe ik dat? //vraag ik op mijn werk
         //Wanneer ik weet hoe dit moet, 

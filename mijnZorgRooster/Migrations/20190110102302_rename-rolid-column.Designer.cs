@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingDbContext))]
-    partial class ZorginstellingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190110102302_rename-rolid-column")]
+    partial class renamerolidcolumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,46 +230,6 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Contract");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Dienst", b =>
-                {
-                    b.Property<int>("DienstID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Datum");
-
-                    b.Property<int?>("DienstDataDienstProfielID");
-
-                    b.Property<int?>("RoosterID");
-
-                    b.HasKey("DienstID");
-
-                    b.HasIndex("DienstDataDienstProfielID");
-
-                    b.HasIndex("RoosterID");
-
-                    b.ToTable("Dienst");
-                });
-
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.DienstProfiel", b =>
-                {
-                    b.Property<int>("DienstProfielID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<TimeSpan>("Begintijd");
-
-                    b.Property<string>("Beschrijving");
-
-                    b.Property<TimeSpan>("Eindtijd");
-
-                    b.Property<int>("MinimaleBezetting");
-
-                    b.HasKey("DienstProfielID");
-
-                    b.ToTable("DienstProfiel");
-                });
-
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.Medewerker", b =>
                 {
                     b.Property<int>("MedewerkerID")
@@ -299,53 +261,21 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Medewerker");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerRol", b =>
-                {
-                    b.Property<int>("MedewerkerId");
-
-                    b.Property<int>("RolId");
-
-                    b.HasKey("MedewerkerId", "RolId");
-
-                    b.HasIndex("RolId");
-
-                    b.ToTable("MedewerkersRollen");
-                });
-
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rol", b =>
                 {
                     b.Property<int>("RolID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("MedewerkerID");
+
                     b.Property<string>("Naam");
 
                     b.HasKey("RolID");
 
+                    b.HasIndex("MedewerkerID");
+
                     b.ToTable("Rol");
-                });
-
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rooster", b =>
-                {
-                    b.Property<int>("RoosterID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("AanmaakDatum");
-
-                    b.Property<int>("AantalDagen");
-
-                    b.Property<bool>("IsGevalideerd");
-
-                    b.Property<int>("Jaar");
-
-                    b.Property<DateTime>("LaatsteWijzigingsDatum");
-
-                    b.Property<int>("Maand");
-
-                    b.HasKey("RoosterID");
-
-                    b.ToTable("Rooster");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -408,28 +338,11 @@ namespace mijnZorgRooster.Migrations
                         .HasForeignKey("MedewerkerID");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Dienst", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rol", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.DienstProfiel", "DienstData")
-                        .WithMany()
-                        .HasForeignKey("DienstDataDienstProfielID");
-
-                    b.HasOne("mijnZorgRooster.Models.Entities.Rooster")
-                        .WithMany("Diensten")
-                        .HasForeignKey("RoosterID");
-                });
-
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerRol", b =>
-                {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
-                        .WithMany("MedewerkersRollen")
-                        .HasForeignKey("MedewerkerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("mijnZorgRooster.Models.Entities.Rol", "Rol")
-                        .WithMany("MedewerkersRollen")
-                        .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker")
+                        .WithMany("Rollen")
+                        .HasForeignKey("MedewerkerID");
                 });
 #pragma warning restore 612, 618
         }

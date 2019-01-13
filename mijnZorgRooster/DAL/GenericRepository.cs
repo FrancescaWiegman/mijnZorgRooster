@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace mijnZorgRooster.DAL
@@ -18,7 +15,7 @@ namespace mijnZorgRooster.DAL
             this.dbSet = _context.Set<TEntity>();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAsync()
+        public virtual async Task<List<TEntity>> GetAsync()
         {
             return await dbSet.ToListAsync();
         }
@@ -50,7 +47,7 @@ namespace mijnZorgRooster.DAL
 
         public virtual void Update(TEntity entityToUpdate)
         {
-            dbSet.Attach(entityToUpdate);
+            _context.Attach(entityToUpdate);
             _context.Entry(entityToUpdate).State = EntityState.Modified;
         }
     }
