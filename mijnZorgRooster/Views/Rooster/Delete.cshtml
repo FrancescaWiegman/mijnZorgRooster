@@ -1,0 +1,51 @@
+﻿@model mijnZorgRooster.Models.Entities.Rooster
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+	<h4>Rooster</h4>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.Jaar)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Jaar)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Maand)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Maand)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.AanmaakDatum)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.AanmaakDatum)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.LaatsteWijzigingsDatum)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.IsGevalideerd)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.IsGevalideerd)
+		</dd>
+	</dl>
+
+	<form asp-action="Delete">
+		<input type="hidden" asp-for="RoosterID" />
+		<input type="submit" value="Delete" class="btn btn-default" /> |
+		<a asp-action="Index">Back to List</a>
+	</form>
+</div>

@@ -9,5 +9,7 @@ namespace mijnZorgRooster.Services
     {
 		DateTime geefDatumVanVandaag();
 		int geefAantalDagen(int maand, int jaar);
+		DateTime genereerStartDatum(int maand, int jaar);
+		int geefToelaatbaarJaarInvoer();
 	}
 }

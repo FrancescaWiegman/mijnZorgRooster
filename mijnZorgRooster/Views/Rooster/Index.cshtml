@@ -9,22 +9,22 @@
 <p>
 	<a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table" id="sortableTable">
 	<thead>
 		<tr>
-			<th>
+			<th onclick="sortTable(0)">
 				@Html.DisplayNameFor(model => model.Jaar)
 			</th>
-			<th>
+			<th onclick="sortTable(1)">
 				@Html.DisplayNameFor(model => model.Maand)
 			</th>
-			<th>
+			<th onclick="sortTable(2)">
 				@Html.DisplayNameFor(model => model.AanmaakDatum)
 			</th>
-			<th>
+			<th onclick="sortTable(3)">
 				@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
 			</th>
-			<th>
+			<th onclick="sortTable(4)">
 				@Html.DisplayNameFor(model => model.IsGevalideerd)
 			</th>
 			<th></th>

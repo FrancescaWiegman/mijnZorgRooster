@@ -6,7 +6,7 @@ namespace mijnZorgRooster.DAL
     public interface IUnitOfWork
     {
         IMedewerkerRepository MedewerkerRepository { get; }
-		IDienstProfielRepository DienstProfielRepository { get; }
+		IGenericRepository<DienstProfiel> DienstProfielRepository { get; }
 		IDienstRepository DienstRepository { get; }
 		IRoosterRepository RoosterRepository { get; }
 		Task SaveAsync();

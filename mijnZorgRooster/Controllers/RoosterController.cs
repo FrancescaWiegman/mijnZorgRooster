@@ -43,8 +43,9 @@ namespace mijnZorgRooster.Controllers
 				return NotFound();
 			}
 
-
 			RoosterDetailDto roosterDetails = new RoosterDetailDto(rooster);
+			roosterDetails.AantalDagen = _roosterService.geefAantalDagen(rooster.Maand, rooster.Jaar);
+			roosterDetails.StartDatum = _roosterService.genereerStartDatum(rooster.Maand, rooster.Jaar);
 			return View(roosterDetails);
 		}
 
@@ -71,6 +72,96 @@ namespace mijnZorgRooster.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 			return View(rooster);
+		}
+
+		// GET: Rooster/Edit/5
+		public async Task<IActionResult> Edit(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var rooster = await _unitOfWork.RoosterRepository.GetByIdAsync(id);
+			if (rooster == null)
+			{
+				return NotFound();
+			}
+			return View(rooster);
+		}
+
+		// POST: Rooster/Edit/5
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, [Bind("RoosterID,Jaar,Maand,IsGevalideerd")] Rooster rooster)
+		{
+			if (id != rooster.RoosterID)
+			{
+				return NotFound();
+			}
+
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					rooster.LaatsteWijzigingsDatum = _roosterService.geefDatumVanVandaag();
+					_unitOfWork.RoosterRepository.Update(rooster);
+					await _unitOfWork.SaveAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!await RoosterExists(rooster.RoosterID))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				return RedirectToAction(nameof(Index));
+			}
+			return View(rooster);
+		}
+
+		// GET: Rooster/Delete/5
+		public async Task<IActionResult> Delete(int? id)
+		{
+			Rooster rooster = null;
+			if (id.HasValue)
+			{
+				rooster = await _unitOfWork.RoosterRepository.GetByIdAsync(id.Value);
+			}
+			else
+			{
+				return NotFound();
+			}
+
+			if (rooster == null)
+			{
+				return NotFound();
+			}
+
+			return View(rooster);
+		}
+
+		// POST: Rooster/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			var rooster = await _unitOfWork.RoosterRepository.GetByIdAsync(id);
+			_unitOfWork.RoosterRepository.Delete(rooster);
+			await _unitOfWork.SaveAsync();
+			return RedirectToAction(nameof(Index));
+		}
+
+		private async Task<bool> RoosterExists(int id)
+		{
+			var res = await _unitOfWork.RoosterRepository.GetAsync();
+			return res.Any(r => r.RoosterID == id);
 		}
 	}
 }

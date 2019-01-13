@@ -1,0 +1,60 @@
+﻿@model mijnZorgRooster.Models.DTO.RoosterDetailDto
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+	<h4>Rooster</h4>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.Jaar)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Jaar)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Maand)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Maand)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.StartDatum)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.StartDatum)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.AantalDagen)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.AantalDagen)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.AanmaakDatum)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.AanmaakDatum)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.LaatsteWijzigingsDatum)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.IsGevalideerd)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.IsGevalideerd)
+		</dd>
+	</dl>
+</div>
+<div>
+	<a asp-action="Edit" asp-route-id="@Model.RoosterID">Edit</a> |
+	<a asp-action="Index">Back to List</a>
+</div>
