@@ -25,7 +25,7 @@ namespace mijnZorgRooster.Models.Entities
         //[Required, StringLength(12), Display(Name = "Mobiel Telefoonnummer")]
         public String MobielNummer { get; set; }
 
-        //[Required, StringLength(40), Display(Name ="E-mailadres")]
+        [Required, StringLength(40), Display(Name = "E-mailadres")]
         public String Emailadres { get; set; }
 
         //[Required, StringLength(100), Display(Name = "Adres")]

@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using mijnZorgRooster.DAL;
+using mijnZorgRooster.Models.DTO;
+using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.Models.DTO;
-using mijnZorgRooster.Models.Entities;
-using mijnZorgRooster.DAL;
-using mijnZorgRooster.Services;
 
 
 namespace mijnZorgRooster.Controllers
@@ -85,7 +84,6 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            //var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
             MedewerkerMetRollenDto medewerkerDto = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollenMappedDto(id);
 
             if (medewerkerDto == null)
@@ -117,7 +115,7 @@ namespace mijnZorgRooster.Controllers
 
                     var oudMedewerker = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollen(medewerker.MedewerkerID);
                     var lijstMetRollenIds = oudMedewerker.MedewerkersRollen.Select(mr => mr.RolId).ToList();
-                    if (!lijstMetRollenIds.SequenceEqual(SelectedRollen))//check of de rollen van medewerker is veranderd
+                    if (!lijstMetRollenIds.SequenceEqual(SelectedRollen)) //check of de rollen van medewerker is veranderd
                         await _unitOfWork.MedewerkerRepository.UpdateMedewerkerRollen(oudMedewerker.MedewerkerID, SelectedRollen);
 
                     _unitOfWork.Save();

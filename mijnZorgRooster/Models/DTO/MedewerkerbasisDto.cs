@@ -1,11 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using mijnZorgRooster.Models.Entities;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Models.DTO
 {
@@ -29,11 +23,5 @@ namespace mijnZorgRooster.Models.DTO
             public String Woonplaats { get; set; }
 
             public DateTime Geboortedatum { get; set; }
-
-        //public ICollection<Contract> Contracts { get; set; }
-        //public ICollection<Certificate> Certificates { get; set; }
-        //public ICollection<Roll> Rols { get; set; }
-
-
     }
 }
