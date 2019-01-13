@@ -19,8 +19,8 @@ namespace mijnZorgRooster.DAL
         public DbSet<Medewerker> Medewerkers { get; set; }
         public DbSet<Rol> Rollen { get; set; }
 		public DbSet<DienstProfiel> DienstProfielen { get; set; }
-		public DbSet<Rooster> Roosters { get; set; }
 		public DbSet<Dienst> Diensten { get; set; }
+		public DbSet<Rooster> Roosters { get; set; }
 		
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

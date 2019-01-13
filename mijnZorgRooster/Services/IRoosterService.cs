@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Services
 {
-    public class IRoosterService
+    public interface IRoosterService
     {
-    }
+		DateTime geefDatumVanVandaag();
+		int geefAantalDagen(int maand, int jaar);
+	}
 }
