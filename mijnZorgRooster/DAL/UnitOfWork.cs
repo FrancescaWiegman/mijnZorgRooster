@@ -8,7 +8,8 @@ namespace mijnZorgRooster.DAL
     {
         private readonly ZorginstellingDbContext _context;
         private IMedewerkerRepository _medewerkerRepository;
-       // private IGenericRepository<Medewerker> _medewerkerRepository;
+        private IGenericRepository<Rol> _rolRepository;
+        private IGenericRepository<Certificaat> _certficaatRepository;
 
         public UnitOfWork(ZorginstellingDbContext context)
         {
@@ -18,6 +19,16 @@ namespace mijnZorgRooster.DAL
         public IMedewerkerRepository MedewerkerRepository
         {
             get { return _medewerkerRepository ?? (_medewerkerRepository = new MedewerkerRepository(_context)); }
+        }
+
+        public IGenericRepository<Rol> RolRepository
+        {
+            get { return _rolRepository ?? (_rolRepository = new GenericRepository<Rol>(_context)); }
+        }
+
+        public IGenericRepository<Certificaat> CertificaatRepository
+        {
+            get { return _certficaatRepository ?? (_certficaatRepository = new GenericRepository<Certificaat>(_context)); }
         }
 
         public void Save()

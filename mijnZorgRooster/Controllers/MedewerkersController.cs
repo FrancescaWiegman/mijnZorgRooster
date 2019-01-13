@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using mijnZorgRooster.DAL;
+using mijnZorgRooster.Models.DTO;
+using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.Models.DTO;
-using mijnZorgRooster.Models.Entities;
-using mijnZorgRooster.DAL;
-using mijnZorgRooster.Services;
 
 
 namespace mijnZorgRooster.Controllers
@@ -45,10 +44,13 @@ namespace mijnZorgRooster.Controllers
             }
 
 
-            MedewerkerDetailDto medewerkerDetails = new MedewerkerDetailDto(medewerker);
+            MedewerkerDetailDto medewerkerDetails = new MedewerkerDetailDto(medewerker)
+            {
+                LeeftijdInJaren = await _calculationsService.BerekenLeeftijdInJaren(medewerker.MedewerkerID),
+                Achternaam = medewerker.Achternaam,
+                Voornaam = medewerker.Voornaam
+            };
 
-            medewerkerDetails.LeeftijdInJaren = await _calculationsService.BerekenLeeftijdInJaren(medewerker.MedewerkerID);
-            
             return View(medewerkerDetails);
         }
 
@@ -82,22 +84,25 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
-            if (medewerker == null)
+            MedewerkerMetRollenDto medewerkerDto = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollenMappedDto(id);
+
+            if (medewerkerDto == null)
             {
                 return NotFound();
             }
-            return View(medewerker);
+            
+            return View(medewerkerDto);
         }
+
 
         // POST: Medewerkers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MedewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
+        public async Task<IActionResult> Edit([Bind("MedewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker, List<int> SelectedRollen)
         {
-            if (id != medewerker.MedewerkerID)
+            if (medewerker.MedewerkerID == 0)
             {
                 return NotFound();
             }
@@ -107,7 +112,13 @@ namespace mijnZorgRooster.Controllers
                 try
                 {
                     _unitOfWork.MedewerkerRepository.Update(medewerker);
-                    await _unitOfWork.SaveAsync();
+
+                    var oudMedewerker = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollen(medewerker.MedewerkerID);
+                    var lijstMetRollenIds = oudMedewerker.MedewerkersRollen.Select(mr => mr.RolId).ToList();
+                    if (!lijstMetRollenIds.SequenceEqual(SelectedRollen)) //check of de rollen van medewerker is veranderd
+                        await _unitOfWork.MedewerkerRepository.UpdateMedewerkerRollen(oudMedewerker.MedewerkerID, SelectedRollen);
+
+                    _unitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

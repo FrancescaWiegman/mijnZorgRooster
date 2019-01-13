@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingDbContext))]
-    partial class ZorginstellingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190110102302_rename-rolid-column")]
+    partial class renamerolidcolumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,28 +261,19 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Medewerker");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerRol", b =>
-                {
-                    b.Property<int>("MedewerkerId");
-
-                    b.Property<int>("RolId");
-
-                    b.HasKey("MedewerkerId", "RolId");
-
-                    b.HasIndex("RolId");
-
-                    b.ToTable("MedewerkersRollen");
-                });
-
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rol", b =>
                 {
                     b.Property<int>("RolID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("MedewerkerID");
+
                     b.Property<string>("Naam");
 
                     b.HasKey("RolID");
+
+                    b.HasIndex("MedewerkerID");
 
                     b.ToTable("Rol");
                 });
@@ -345,17 +338,11 @@ namespace mijnZorgRooster.Migrations
                         .HasForeignKey("MedewerkerID");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerRol", b =>
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rol", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
-                        .WithMany("MedewerkersRollen")
-                        .HasForeignKey("MedewerkerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("mijnZorgRooster.Models.Entities.Rol", "Rol")
-                        .WithMany("MedewerkersRollen")
-                        .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker")
+                        .WithMany("Rollen")
+                        .HasForeignKey("MedewerkerID");
                 });
 #pragma warning restore 612, 618
         }
