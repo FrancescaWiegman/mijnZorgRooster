@@ -21,9 +21,10 @@ namespace mijnZorgRooster.Controllers
 			_unitOfWork = unitOfWork;
 		}
 
-		public IActionResult Rooster()
+		// GET: Rooster
+		public async Task<IActionResult> Index()
 		{
-			return View(); 
+			return View(await _unitOfWork.RoosterRepository.GetAsync());
 		}
 	}
 }
