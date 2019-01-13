@@ -86,46 +86,25 @@ namespace mijnZorgRooster.Controllers
             }
 
             //var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
-            var medewerker = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollen(id);
-            List<int> medewerkerRollen = new List<int>();
-            foreach(var medewerkerRol in medewerker.MedewerkersRollen.ToList())
-            {
-                medewerkerRollen.Add(medewerkerRol.Rol.RolID);
-            }
+            MedewerkerMetRollenDto medewerkerDto = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollenMappedDto(id);
 
-            if (medewerker == null)
+            if (medewerkerDto == null)
             {
                 return NotFound();
             }
-
-            IList<Rol> rollen = await _unitOfWork.RolRepository.GetAsync();
-
-            MedewerkerBasisDto medewerkerBasisDto = new MedewerkerBasisDto()
-            {
-                Voornaam = medewerker.Voornaam,
-                Tussenvoegsels = medewerker.Tussenvoegsels,
-                Telefoonnummer = medewerker.Telefoonnummer,
-                MobielNummer = medewerker.MobielNummer,
-                Emailadres = medewerker.Emailadres,
-                Adres = medewerker.Adres,
-                Postcode = medewerker.Postcode,
-                Woonplaats = medewerker.Woonplaats,
-                Geboortedatum = medewerker.Geboortedatum,
-                SelectedRollen = medewerkerRollen,
-                RollenOptions = new SelectList(rollen, nameof(Rol.RolID), nameof(Rol.Naam))
-            };
-
-            return View(medewerkerBasisDto);
+            
+            return View(medewerkerDto);
         }
+
 
         // POST: Medewerkers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MedewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
+        public async Task<IActionResult> Edit([Bind("MedewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker, List<int> SelectedRollen)
         {
-            if (id != medewerker.MedewerkerID)
+            if (medewerker.MedewerkerID == 0)
             {
                 return NotFound();
             }
@@ -135,7 +114,13 @@ namespace mijnZorgRooster.Controllers
                 try
                 {
                     _unitOfWork.MedewerkerRepository.Update(medewerker);
-                    await _unitOfWork.SaveAsync();
+
+                    var oudMedewerker = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollen(medewerker.MedewerkerID);
+                    var lijstMetRollenIds = oudMedewerker.MedewerkersRollen.Select(mr => mr.RolId).ToList();
+                    if (!lijstMetRollenIds.SequenceEqual(SelectedRollen))//check of de rollen van medewerker is veranderd
+                        await _unitOfWork.MedewerkerRepository.UpdateMedewerkerRollen(oudMedewerker.MedewerkerID, SelectedRollen);
+
+                    _unitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

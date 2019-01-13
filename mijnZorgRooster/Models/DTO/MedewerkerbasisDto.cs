@@ -34,9 +34,6 @@ namespace mijnZorgRooster.Models.DTO
         //public ICollection<Certificate> Certificates { get; set; }
         //public ICollection<Roll> Rols { get; set; }
 
-        [BindProperty]
-        [Display(Name = "Rollen")]
-        public IList<int> SelectedRollen { get; set; }
-        public SelectList RollenOptions { get; set; }
+
     }
 }
