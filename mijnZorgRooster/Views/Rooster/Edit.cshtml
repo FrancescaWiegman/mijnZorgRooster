@@ -13,14 +13,15 @@
 		<form asp-action="Edit">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<input type="hidden" asp-for="RoosterID" />
+			<input type="hidden" asp-for="AanmaakDatum" />
 			<div class="form-group">
 				<label asp-for="Jaar" class="control-label"></label>
-				<input asp-for="Jaar" class="form-control" min="2019"/>
+				<input asp-for="Jaar" class="form-control" min="2019" />
 				<span asp-validation-for="Jaar" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="Maand" class="control-label"></label>
-				<input asp-for="Maand" class="form-control" min="1" max="12"/>
+				<input asp-for="Maand" class="form-control" min="1" max="12" />
 				<span asp-validation-for="Maand" class="text-danger"></span>
 			</div>
 			<div class="form-group">

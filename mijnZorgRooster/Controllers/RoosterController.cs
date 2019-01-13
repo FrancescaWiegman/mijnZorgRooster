@@ -96,7 +96,7 @@ namespace mijnZorgRooster.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("RoosterID,Jaar,Maand,IsGevalideerd")] Rooster rooster)
+		public async Task<IActionResult> Edit(int id, [Bind("RoosterID,AanmaakDatum,Jaar,Maand,IsGevalideerd")] Rooster rooster)
 		{
 			if (id != rooster.RoosterID)
 			{
