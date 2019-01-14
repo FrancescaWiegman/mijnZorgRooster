@@ -8,10 +8,13 @@ namespace mijnZorgRooster.DAL
     {
         private readonly ZorginstellingDbContext _context;
         private IMedewerkerRepository _medewerkerRepository;
+		private IGenericRepository<DienstProfiel> _dienstProfielRepository;
+		private IGenericRepository<Dienst> _dienstRepository;
+		private IGenericRepository<Rooster> _roosterRepository;
         private IGenericRepository<Rol> _rolRepository;
         private IGenericRepository<Certificaat> _certficaatRepository;
 
-        public UnitOfWork(ZorginstellingDbContext context)
+		public UnitOfWork(ZorginstellingDbContext context)
         {
             _context = context;
         }
@@ -19,6 +22,21 @@ namespace mijnZorgRooster.DAL
         public IMedewerkerRepository MedewerkerRepository
         {
             get { return _medewerkerRepository ?? (_medewerkerRepository = new MedewerkerRepository(_context)); }
+        }
+
+		public IGenericRepository<DienstProfiel> DienstProfielRepository
+		{
+			get { return _dienstProfielRepository ?? (_dienstProfielRepository = new GenericRepository<DienstProfiel>(_context)); }
+		}
+
+		public IGenericRepository<Dienst> DienstRepository
+        {
+          get { return _dienstRepository ?? (_dienstRepository = new GenericRepository<Dienst>(_context)); }
+        }
+
+        public IGenericRepository<Rooster> RoosterRepository
+        {
+          get { return _roosterRepository ?? (_roosterRepository = new GenericRepository<Rooster>(_context)); }
         }
 
         public IGenericRepository<Rol> RolRepository

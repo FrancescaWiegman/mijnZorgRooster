@@ -5,36 +5,33 @@ using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Services
 {
-	public class RoosterService
+	public class RoosterService : IRoosterService
 	{
-		private int maand;
-		private int jaar;
-		private Boolean isGevalideerd;
-		private int aantalDagen;
 
-
-		public RoosterService(DateTime datum)
+		public DateTime geefDatumVanVandaag()
 		{
-			this.maand = datum.Month;
-			this.jaar = datum.Year;
-			this.isGevalideerd = false;
-			this.aantalDagen = geefAantalDagen(maand, jaar);
+			return DateTime.UtcNow;
 		}
-
-		public int getMaand() { return maand; }
-
-		public int getJaar() { return jaar; }
-
-		public int getAantalDagen () { return aantalDagen; }
-
-		public void setIsGevalideerd(Boolean validatie)
-		{
-			this.isGevalideerd = validatie;
-		}
-
-		private int geefAantalDagen(int maand, int jaar)
+		
+		public int geefAantalDagen(int maand, int jaar)
 		{
 			return DateTime.DaysInMonth(jaar, maand);
+		}
+
+		public DateTime genereerStartDatum(int maand, int jaar)
+		{
+			string stringMaand;
+
+			if (maand < 9) stringMaand = "0" + maand.ToString();
+			else stringMaand = maand.ToString();
+
+			string input = "01-" + stringMaand + "-" + jaar;
+			return DateTime.ParseExact(input, "dd-MM-yyyy", null);
+		}
+
+		public int geefToelaatbaarJaarInvoer()
+		{
+			return DateTime.UtcNow.Year;
 		}
 	}
 }

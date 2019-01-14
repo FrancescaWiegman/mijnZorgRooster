@@ -1,0 +1,60 @@
+﻿@model IEnumerable<mijnZorgRooster.Models.Entities.Rooster>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h2>Overzicht roosters</h2>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table" id="sortableTable">
+	<thead>
+		<tr>
+			<th onclick="sortTable(0)">
+				@Html.DisplayNameFor(model => model.Jaar)
+			</th>
+			<th onclick="sortTable(1)">
+				@Html.DisplayNameFor(model => model.Maand)
+			</th>
+			<th onclick="sortTable(2)">
+				@Html.DisplayNameFor(model => model.AanmaakDatum)
+			</th>
+			<th onclick="sortTable(3)">
+				@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
+			</th>
+			<th onclick="sortTable(4)">
+				@Html.DisplayNameFor(model => model.IsGevalideerd)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Jaar)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Maand)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.AanmaakDatum)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.LaatsteWijzigingsDatum)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsGevalideerd)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.RoosterID">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.RoosterID">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.RoosterID">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
