@@ -1,0 +1,59 @@
+﻿@model IEnumerable<mijnZorgRooster.Models.Entities.Contract>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BeginDatum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Einddatum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContractUren)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VerlofDagenPerJaar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParttimePercentage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeginDatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Einddatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContractUren)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VerlofDagenPerJaar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParttimePercentage)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ContractID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ContractID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ContractID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -10,6 +10,7 @@ namespace mijnZorgRooster.DAL
 		IGenericRepository<Dienst> DienstRepository { get; }
 		IRoosterRepository RoosterRepository { get; }
         IGenericRepository<Rol> RolRepository { get; }
+        IGenericRepository<Contract> ContractRepository { get; }
         IGenericRepository<Certificaat> CertificaatRepository { get; }
         Task SaveAsync();
         void Save();

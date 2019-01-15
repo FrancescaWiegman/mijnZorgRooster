@@ -8,24 +8,14 @@ namespace mijnZorgRooster.Services
     public class CalculationsService : ICalculationsService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly double vakantieUren = 237.4;
+       // private readonly double vakantieUren = 237.4;
         private int maandenInDienst;
 
         public CalculationsService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+         
         }
-
-        //public double BerekenVakantieDagen(int MedewerkerID)
-        //{
-        //    double vakantieDagen;
-        //    var medewerker = _medewerkerRepository.GetMedewerkerById(MedewerkerID);
-        //    var LeeftijdInJaren = (DateTime.Now - medewerker.Geboortedatum);
-        //    var contract = _medewerkerRepository.GetContractForEmployee(DateTime.Now, MedewerkerID);
-        //    vakantieDagen = 25 * contract.ParttimePercentage + ((int)LeeftijdInJaren.TotalDays / 5) - 3;
-        //    return vakantieDagen;         
-            
-        //}
 
         public async Task<int> BerekenLeeftijdInJaren(int medewerkerID)
         { 
@@ -59,14 +49,18 @@ namespace mijnZorgRooster.Services
             return maandenInDienst;
         }
 
-        
-        public double BerekenVakantieDagen(int medewerkerID)
-        {
-            //TODO: medewerker wordt niet gebruikt.
-            var medewerker = _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
-    
-            return (maandenInDienst / 12 * vakantieUren)/8;
-        }
+
+        //public async Task<double> BerekenVakantieDagen(int medewerkerID)
+        //{
+        //    //TODO: medewerker wordt niet gebruikt.
+        //    //TODO: parttime percentage ophalen uit de Contract Service
+        //    var medewerker = _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
+        //    var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
+        //    var vakantieDagenFulltime = (maandenInDienst / 12 * vakantieUren) / 8;
+
+           
+        //    return vakantieDagenFulltime;
+        //}
 
 
     }
