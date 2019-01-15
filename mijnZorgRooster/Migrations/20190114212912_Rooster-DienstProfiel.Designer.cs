@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingDbContext))]
-    partial class ZorginstellingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190114212912_Rooster-DienstProfiel")]
+    partial class RoosterDienstProfiel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,7 +265,11 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<int>("MinimaleBezetting");
 
+                    b.Property<int?>("RoosterID");
+
                     b.HasKey("DienstProfielID");
+
+                    b.HasIndex("RoosterID");
 
                     b.ToTable("DienstProfiel");
                 });
@@ -436,6 +442,13 @@ namespace mijnZorgRooster.Migrations
                         .HasForeignKey("RoosterID");
                 });
 
+            modelBuilder.Entity("mijnZorgRooster.Models.Entities.DienstProfiel", b =>
+                {
+                    b.HasOne("mijnZorgRooster.Models.Entities.Rooster")
+                        .WithMany("DienstProfielen")
+                        .HasForeignKey("RoosterID");
+                });
+
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.Medewerker", b =>
                 {
                     b.HasOne("mijnZorgRooster.Models.Entities.Dienst")
@@ -464,7 +477,7 @@ namespace mijnZorgRooster.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("mijnZorgRooster.Models.Entities.Rooster", "Rooster")
-                        .WithMany("RoosterDienstProfielen")
+                        .WithMany()
                         .HasForeignKey("RoosterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

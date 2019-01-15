@@ -18,4 +18,12 @@ namespace mijnZorgRooster.Models.Entities
 		public int MinimaleBezetting { get; set; }
 		//TODO: Nadenken over hoe we willen aangeven welke certificaten de personen moeten hebben, die deze diensten gaan vervullen.
 	}
+
+	public class RoosterDienstProfiel
+	{
+		public int DienstProfielId { get; set; }
+		public DienstProfiel DienstProfiel { get; set; }
+		public int RoosterId { get; set; }
+		public Rooster Rooster { get; set; }
+	}
 }

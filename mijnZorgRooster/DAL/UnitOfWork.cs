@@ -10,7 +10,7 @@ namespace mijnZorgRooster.DAL
         private IMedewerkerRepository _medewerkerRepository;
 		private IGenericRepository<DienstProfiel> _dienstProfielRepository;
 		private IGenericRepository<Dienst> _dienstRepository;
-		private IGenericRepository<Rooster> _roosterRepository;
+		private IRoosterRepository _roosterRepository;
         private IGenericRepository<Rol> _rolRepository;
         private IGenericRepository<Certificaat> _certficaatRepository;
 
@@ -34,9 +34,9 @@ namespace mijnZorgRooster.DAL
           get { return _dienstRepository ?? (_dienstRepository = new GenericRepository<Dienst>(_context)); }
         }
 
-        public IGenericRepository<Rooster> RoosterRepository
+        public IRoosterRepository RoosterRepository
         {
-          get { return _roosterRepository ?? (_roosterRepository = new GenericRepository<Rooster>(_context)); }
+          get { return _roosterRepository ?? (_roosterRepository = new RoosterRepository(_context)); }
         }
 
         public IGenericRepository<Rol> RolRepository

@@ -7,20 +7,21 @@ using mijnZorgRooster.Models.Entities;
 
 namespace mijnZorgRooster.DAL
 {
-    public class ZorginstellingDbContext : IdentityDbContext
-    {
-        public ZorginstellingDbContext(DbContextOptions<ZorginstellingDbContext> options)
-            : base(options)
-        {
-        }
+	public class ZorginstellingDbContext : IdentityDbContext
+	{
+		public ZorginstellingDbContext(DbContextOptions<ZorginstellingDbContext> options)
+			: base(options)
+		{
+		}
 
-        public DbSet<Certificaat> Certificaten { get; set; }
-        public DbSet<Contract> Contracten { get; set; }
-        public DbSet<Medewerker> Medewerkers { get; set; }
-        public DbSet<Rol> Rollen { get; set; }
-	    	public DbSet<DienstProfiel> DienstProfielen { get; set; }
-    		public DbSet<Dienst> Diensten { get; set; }
-			public DbSet<Rooster> Roosters { get; set; }
+		public DbSet<Certificaat> Certificaten { get; set; }
+		public DbSet<Contract> Contracten { get; set; }
+		public DbSet<Medewerker> Medewerkers { get; set; }
+		public DbSet<Rol> Rollen { get; set; }
+		public DbSet<DienstProfiel> DienstProfielen { get; set; }
+		public DbSet<Dienst> Diensten { get; set; }
+		public DbSet<Rooster> Roosters { get; set; }
+		public DbSet<RoosterDienstProfiel> RoosterDienstProfielen {get; set;}
 		public DbSet<MedewerkerRol> MedewerkersRollen { get; set; }
 
 	    	protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,8 +35,8 @@ namespace mijnZorgRooster.DAL
 	      		modelBuilder.Entity<DienstProfiel>().ToTable("DienstProfiel");
 	      		modelBuilder.Entity<Dienst>().ToTable("Dienst");
       			modelBuilder.Entity<Rooster>().ToTable("Rooster");
-
-            modelBuilder.Entity<MedewerkerRol>().HasKey(e => new { e.MedewerkerId, e.RolId });
+			modelBuilder.Entity<RoosterDienstProfiel>().HasKey(e => new { e.RoosterId, e.DienstProfielId });
+			modelBuilder.Entity<MedewerkerRol>().HasKey(e => new { e.MedewerkerId, e.RolId });
         }
     }
 }

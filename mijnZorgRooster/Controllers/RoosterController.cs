@@ -82,13 +82,13 @@ namespace mijnZorgRooster.Controllers
 			{
 				return NotFound();
 			}
+			RoosterMetDienstProfielenDto roosterDto = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(id);
 
-			var rooster = await _unitOfWork.RoosterRepository.GetByIdAsync(id);
-			if (rooster == null)
+			if (roosterDto == null)
 			{
 				return NotFound();
 			}
-			return View(rooster);
+			return View(roosterDto);
 		}
 
 		// POST: Rooster/Edit/5
@@ -96,7 +96,7 @@ namespace mijnZorgRooster.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("RoosterID,AanmaakDatum,Jaar,Maand,IsGevalideerd")] Rooster rooster)
+		public async Task<IActionResult> Edit(int id, [Bind("RoosterID,AanmaakDatum,Jaar,Maand,IsGevalideerd")] Rooster rooster, List<int> SelectedDienstProfielen)
 		{
 			if (id != rooster.RoosterID)
 			{
@@ -107,9 +107,15 @@ namespace mijnZorgRooster.Controllers
 			{
 				try
 				{
-					rooster.LaatsteWijzigingsDatum = _roosterService.geefDatumVanVandaag();
+
 					_unitOfWork.RoosterRepository.Update(rooster);
-					await _unitOfWork.SaveAsync();
+
+					var oudRooster = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielen(rooster.RoosterID);
+					var lijstMetRoosterDienstProfielIds = oudRooster.RoosterDienstProfielen.Select(d => d.DienstProfielId).ToList();
+					if (!lijstMetRoosterDienstProfielIds.SequenceEqual(SelectedDienstProfielen)) //check of de dienstprofielen van een rooster zijn veranderd
+						await _unitOfWork.RoosterRepository.UpdateRoosterDienstProfielen(oudRooster.RoosterID, SelectedDienstProfielen);
+
+					_unitOfWork.Save();
 				}
 				catch (DbUpdateConcurrencyException)
 				{
