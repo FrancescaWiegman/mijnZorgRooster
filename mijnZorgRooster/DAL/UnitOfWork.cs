@@ -12,7 +12,8 @@ namespace mijnZorgRooster.DAL
 		private IGenericRepository<Dienst> _dienstRepository;
 		private IGenericRepository<Rooster> _roosterRepository;
         private IGenericRepository<Rol> _rolRepository;
-        private IGenericRepository<Certificaat> _certficaatRepository;
+        private IGenericRepository<Certificaat> _certificaatRepository;
+        private IGenericRepository<Contract> _contractRepository;
 
 		public UnitOfWork(ZorginstellingDbContext context)
         {
@@ -34,6 +35,11 @@ namespace mijnZorgRooster.DAL
           get { return _dienstRepository ?? (_dienstRepository = new GenericRepository<Dienst>(_context)); }
         }
 
+        public IGenericRepository<Contract> ContractRepository
+        {
+            get { return _contractRepository ?? (_contractRepository = new GenericRepository<Contract>(_context)); }
+        }
+
         public IGenericRepository<Rooster> RoosterRepository
         {
           get { return _roosterRepository ?? (_roosterRepository = new GenericRepository<Rooster>(_context)); }
@@ -46,7 +52,7 @@ namespace mijnZorgRooster.DAL
 
         public IGenericRepository<Certificaat> CertificaatRepository
         {
-            get { return _certficaatRepository ?? (_certficaatRepository = new GenericRepository<Certificaat>(_context)); }
+            get { return _certificaatRepository ?? (_certificaatRepository = new GenericRepository<Certificaat>(_context)); }
         }
 
         public void Save()

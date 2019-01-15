@@ -9,7 +9,7 @@ namespace mijnZorgRooster.Services
     {
         private readonly IUnitOfWork _unitOfWork;
        // private readonly double vakantieUren = 237.4;
-        private int maandenInDienst;
+        const int fulltime = 36;
 
         public CalculationsService(IUnitOfWork unitOfWork)
         {
@@ -17,23 +17,18 @@ namespace mijnZorgRooster.Services
          
         }
 
-        public async Task<int> BerekenLeeftijdInJaren(int medewerkerID)
-        { 
-            var leeftijdInJaren = 0;
-            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
-            var today = DateTime.Today;
+        public int BerekenLeeftijdInJaren(DateTime geboortedatum)
+        {
+            int leeftijdInJaren = 0;
+            DateTime vandaag = DateTime.Today;
 
-            if (medewerker.Geboortedatum.Month > today.Month)
-            {
-                leeftijdInJaren = (today.Year - medewerker.Geboortedatum.Year) - 1;
-            }
-            else
-            {
-                leeftijdInJaren = today.Year - medewerker.Geboortedatum.Year;
-            }
+            DateTime beginDatum = new DateTime(1, 1, 1);
+            TimeSpan span = vandaag.Subtract(geboortedatum);
+            leeftijdInJaren = (beginDatum + span).Year - 1;
+
             return leeftijdInJaren;
-
         }
+
         public int BerekenMaandenInDienst(int medewerkerID)
         {
             int year = DateTime.Now.Year;
@@ -45,11 +40,16 @@ namespace mijnZorgRooster.Services
                 contract.Einddatum = lastDay;
             }
 
-            maandenInDienst = contract.Einddatum.Month - contract.BeginDatum.Month;
-            return maandenInDienst;
+            return contract.Einddatum.Month - contract.BeginDatum.Month;
         }
 
+        public int BerekenParttimePercentage(int medewerkerID)
+        {
+            var medewerker = _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
+            var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
 
+            return contract.ContractUren / fulltime * 100;
+        }
         //public async Task<double> BerekenVakantieDagen(int medewerkerID)
         //{
         //    //TODO: medewerker wordt niet gebruikt.
@@ -58,7 +58,7 @@ namespace mijnZorgRooster.Services
         //    var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
         //    var vakantieDagenFulltime = (maandenInDienst / 12 * vakantieUren) / 8;
 
-           
+
         //    return vakantieDagenFulltime;
         //}
 

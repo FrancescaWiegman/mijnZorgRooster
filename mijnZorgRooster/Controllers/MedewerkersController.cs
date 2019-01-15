@@ -49,7 +49,7 @@ namespace mijnZorgRooster.Controllers
 
             MedewerkerDetailDto medewerkerDetails = new MedewerkerDetailDto(medewerker)
             {
-                LeeftijdInJaren = await _calculationsService.BerekenLeeftijdInJaren(medewerker.MedewerkerID),
+                LeeftijdInJaren = _calculationsService.BerekenLeeftijdInJaren(medewerker.Geboortedatum),
             };
 
             return View(medewerkerDetails);
