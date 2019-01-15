@@ -10,7 +10,7 @@ namespace mijnZorgRooster.DAL
     {
         Task<MedewerkerMetRollenDto> GetMedewerkerMetRollenMappedDto(int? medewerkerId);
         Task<Medewerker> GetMedewerkerMetRollen(int? medewerkerId);
-        Task UpdateMedewerkerRollen(int medewerkerId, List<int> selectedRollen);
+        void UpdateMedewerkerRollen(Medewerker medewerker, List<int> selectedRollen);
         Contract GetContractVoorMedewerker(DateTime referenceDate, int medewerkerId);
     }
 }
