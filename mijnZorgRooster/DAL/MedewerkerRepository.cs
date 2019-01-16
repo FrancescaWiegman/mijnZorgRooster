@@ -18,28 +18,19 @@ namespace mijnZorgRooster.DAL
         public async Task<MedewerkerMetRollenDto> GetMedewerkerMetRollenMappedDto(int? medewerkerId)
         {
             List<Rol> rollen = await _context.Rollen.ToListAsync();
-            MedewerkerMetRollenDto medewerker = await _context.Medewerkers
+            Medewerker medewerker = await _context.Medewerkers
                 .Include(m => m.MedewerkersRollen)
                 .ThenInclude(r => r.Rol)
                 .Where(m => m.MedewerkerID == medewerkerId)
-                .Select(m => new MedewerkerMetRollenDto()
-                {
-                    MedewerkerID = m.MedewerkerID,
-                    Voornaam = m.Voornaam,
-                    Tussenvoegsels = m.Tussenvoegsels,
-                    Telefoonnummer = m.Telefoonnummer,
-                    MobielNummer = m.MobielNummer,
-                    Emailadres = m.Emailadres,
-                    Adres = m.Adres,
-                    Postcode = m.Postcode,
-                    Woonplaats = m.Woonplaats,
-                    Geboortedatum = m.Geboortedatum,
-                    SelectedRollen = m.MedewerkersRollen.Select(mr => mr.RolId).ToList(),
-                    RollenOptions = new SelectList(rollen, nameof(Rol.RolID), nameof(Rol.Naam)),
-                    Achternaam = m.Achternaam
-                })
                 .SingleOrDefaultAsync();
-            return medewerker;
+
+            MedewerkerMetRollenDto dto = new MedewerkerMetRollenDto(medewerker)
+            {
+                SelectedRollen = medewerker.MedewerkersRollen.Select(mr => mr.RolId).ToList(),
+                RollenOptions = new SelectList(rollen, nameof(Rol.RolID), nameof(Rol.Naam)),
+            };
+
+            return dto;
         }
 
         public async Task<Medewerker> GetMedewerkerMetRollen(int? medewerkerId)
@@ -51,9 +42,8 @@ namespace mijnZorgRooster.DAL
                 .SingleOrDefaultAsync();
         }
 
-        public async Task UpdateMedewerkerRollen(int medewerkerId, List<int> selectedRollen)
+        public void UpdateMedewerkerRollen(Medewerker medewerker, List<int> selectedRollen)
         {
-            Medewerker medewerker = await GetMedewerkerMetRollen(medewerkerId);
             medewerker.MedewerkersRollen.Clear();
 
             foreach (var selectedRolId in selectedRollen)
