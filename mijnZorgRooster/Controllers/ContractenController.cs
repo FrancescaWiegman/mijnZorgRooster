@@ -1,37 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.DAL;
 using mijnZorgRooster.Models.DTO;
 using mijnZorgRooster.Models.Entities;
 using mijnZorgRooster.Services;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Controllers
 {
-    public class ContractsController : Controller
+    public class ContractenController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IContractService _contractService;
+        private readonly ICalculationsService _calculationService;
 
         public int MedewerkerID { get; private set; }
 
-        public ContractsController(ContractService contractService, IUnitOfWork unitOfWork)
+        public ContractenController(ICalculationsService calculationService, IUnitOfWork unitOfWork)
         {
-            _contractService = contractService;
+            _calculationService = calculationService;
             _unitOfWork = unitOfWork; ;
         }
 
-        // GET: Contracts
+        // GET: Contracten
         public async Task<IActionResult> Index()
         {
             return View(await _unitOfWork.ContractRepository.GetAsync());
         }
 
-        // GET: Contracts/Details/5
+        // GET: Contracten/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             Contract contract = null;
@@ -46,26 +43,22 @@ namespace mijnZorgRooster.Controllers
             {
                 return NotFound();
             }
-            //ContractDetailDto contractDetails = new ContractDetailDto()
+            ContractDetailDto contractDetails = new ContractDetailDto()
             {
-                //TODO: ik moet op één of andere manier de Parttimepercentage er in krijgen. Ik doe iets verkeerd. Weet iemand wat?
-                //BerekenParttimePercentage = await _contractService.BerekenParttimePercentage(contract.MedewerkerID)
-                
-                //ContractID = contract.ContractID;
-                
-            }
+                BerekenParttimePercentage = _calculationService.BerekenParttimePercentage(contract.Medewerker.MedewerkerID)
+
+            };
+
             return View(contract);
         }
 
-        // GET: Contracts/Create
+        // GET: Contracten/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Contracts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Contracten/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BeginDatum,Einddatum,ContractUren,VerlofDagenPerJaar,ParttimePercentage")] Contract contract)
@@ -79,7 +72,7 @@ namespace mijnZorgRooster.Controllers
             return View(contract);
         }
 
-        // GET: Contracts/Edit/5
+        // GET: Contracten/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,9 +88,7 @@ namespace mijnZorgRooster.Controllers
             return View(contract);
         }
 
-        // POST: Contracts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Contracten/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BeginDatum,Einddatum,ContractUren,VerlofDagenPerJaar,ParttimePercentage")] Contract contract)
@@ -130,7 +121,7 @@ namespace mijnZorgRooster.Controllers
             return View(contract);
         }
 
-        // GET: Contracts/Delete/5
+        // GET: Contracten/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             Contract contract = null;
@@ -153,7 +144,7 @@ namespace mijnZorgRooster.Controllers
             return View(contract);
         }
 
-        // POST: Contracts/Delete/5
+        // POST: Contracten/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

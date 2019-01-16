@@ -7,47 +7,26 @@ namespace mijnZorgRooster.DAL
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ZorginstellingDbContext _context;
-        private IMedewerkerRepository _medewerkerRepository;
-		private IGenericRepository<DienstProfiel> _dienstProfielRepository;
-		private IGenericRepository<Dienst> _dienstRepository;
-		private IGenericRepository<Rooster> _roosterRepository;
-        private IGenericRepository<Rol> _rolRepository;
-        private IGenericRepository<Certificaat> _certficaatRepository;
+        public IMedewerkerRepository MedewerkerRepository { get; private set; }
+        public IGenericRepository<DienstProfiel> DienstProfielRepository { get; private set; }
+        public IGenericRepository<Dienst> DienstRepository { get; private set; }
+        public IGenericRepository<Rooster> RoosterRepository { get; private set; }
+        public IGenericRepository<Rol> RolRepository { get; private set; }
+        public IGenericRepository<Certificaat> CertificaatRepository { get; private set; }
+        public IGenericRepository<Contract> ContractRepository { get; private set; }
 
-		public UnitOfWork(ZorginstellingDbContext context)
+        public UnitOfWork(ZorginstellingDbContext context)
         {
             _context = context;
+            MedewerkerRepository = new MedewerkerRepository(context);
+            DienstProfielRepository = new GenericRepository<DienstProfiel>(context);
+            DienstRepository = new GenericRepository<Dienst>(context);
+            RoosterRepository = new GenericRepository<Rooster>(context);
+            RolRepository = new GenericRepository<Rol>(context);
+            CertificaatRepository = new GenericRepository<Certificaat>(context);
+            ContractRepository = new GenericRepository<Contract>(context);
         }
 
-        public IMedewerkerRepository MedewerkerRepository
-        {
-            get { return _medewerkerRepository ?? (_medewerkerRepository = new MedewerkerRepository(_context)); }
-        }
-
-		public IGenericRepository<DienstProfiel> DienstProfielRepository
-		{
-			get { return _dienstProfielRepository ?? (_dienstProfielRepository = new GenericRepository<DienstProfiel>(_context)); }
-		}
-
-		public IGenericRepository<Dienst> DienstRepository
-        {
-          get { return _dienstRepository ?? (_dienstRepository = new GenericRepository<Dienst>(_context)); }
-        }
-
-        public IGenericRepository<Rooster> RoosterRepository
-        {
-          get { return _roosterRepository ?? (_roosterRepository = new GenericRepository<Rooster>(_context)); }
-        }
-
-        public IGenericRepository<Rol> RolRepository
-        {
-            get { return _rolRepository ?? (_rolRepository = new GenericRepository<Rol>(_context)); }
-        }
-
-        public IGenericRepository<Certificaat> CertificaatRepository
-        {
-            get { return _certficaatRepository ?? (_certficaatRepository = new GenericRepository<Certificaat>(_context)); }
-        }
 
         public void Save()
         {
