@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using mijnZorgRooster.Models.DTO;
 
 namespace mijnZorgRooster.Services
 {
@@ -12,5 +13,6 @@ namespace mijnZorgRooster.Services
 		DateTime genereerStartDatum(int maand, int jaar);
 		DateTime genereerEindDatum(int maand, int jaar);
 		int geefToelaatbaarJaarInvoer();
+		int telAantalGeselecteerdeDienstProfielen(RoosterMetDienstProfielenDto rooster);
 	}
 }

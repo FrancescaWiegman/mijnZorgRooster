@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Models.DTO
 {
-	public class RoosterMetDienstProfielenDto : RoosterBasisDto
+	public class RoosterMetDienstProfielenDto : RoosterDetailDto
 	{
         [BindProperty]
 		[Display(Name = "DienstProfielen")]

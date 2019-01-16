@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace mijnZorgRooster.Utilities
 {
-	public class DienstPrototype
+	public interface IPrototype
 	{
+		IPrototype Clone();
+		object ReturnClonedObject();
 	}
 }

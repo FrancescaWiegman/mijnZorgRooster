@@ -10,6 +10,7 @@ using mijnZorgRooster.Models.DTO;
 using mijnZorgRooster.Models.Entities;
 using mijnZorgRooster.DAL;
 using mijnZorgRooster.Services;
+using mijnZorgRooster.Utilities;
 
 namespace mijnZorgRooster.Controllers
 {
@@ -100,8 +101,18 @@ namespace mijnZorgRooster.Controllers
 			{
 				return NotFound();
 			}
-			ViewBag.MinInvoerJaar = _roosterService.geefToelaatbaarJaarInvoer();
-			return View(roosterDto);
+
+			var minInvoerJaar = _roosterService.geefToelaatbaarJaarInvoer();
+
+			if (TempData.ContainsKey("RedirectToRoosterEdit"))
+			{
+				roosterDto.EditViewErrorMessage = TempData["RedirectToRoosterEdit"].ToString();
+				return View(roosterDto);
+			}
+			else
+			{
+				return View(roosterDto);
+			}
 		}
 
 		// POST: Rooster/Edit/5
