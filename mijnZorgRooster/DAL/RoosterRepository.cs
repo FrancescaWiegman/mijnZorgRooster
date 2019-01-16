@@ -31,7 +31,7 @@ namespace mijnZorgRooster.DAL
 					LaatsteWijzigingsDatum = r.LaatsteWijzigingsDatum,
 					IsGevalideerd = r.IsGevalideerd,
 					SelectedDienstProfielen = r.RoosterDienstProfielen.Select(rdp => rdp.DienstProfielId).ToList(),
-					DienstProfielOptions = new SelectList(dienstProfielen, nameof(DienstProfiel.DienstProfielID), nameof(DienstProfiel.Beschrijving)),
+					DienstProfielOptions = new SelectList(dienstProfielen, nameof(DienstProfiel.DienstProfielID), nameof(DienstProfiel.Beschrijving))
 				})
 				.SingleOrDefaultAsync();
 			return rooster;

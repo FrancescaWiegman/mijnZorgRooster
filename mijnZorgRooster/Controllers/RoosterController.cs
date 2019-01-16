@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,12 +22,20 @@ namespace mijnZorgRooster.Controllers
 		{
 			_roosterService = roosterService;
 			_unitOfWork = unitOfWork;
-
 		}
 
 		// GET: Rooster
 		public async Task<IActionResult> Index()
 		{
+			List<RoosterMetDienstProfielenDto> roosterDtoObjecten = new List<RoosterMetDienstProfielenDto>();
+			var roosters = await _unitOfWork.RoosterRepository.GetAsync();
+			foreach (Rooster r in roosters)
+			{
+				RoosterMetDienstProfielenDto roosterDto = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(r.RoosterID);
+				roosterDtoObjecten.Add(roosterDto);
+			}
+			ViewBag.DPHeader = "DienstProfielen";
+			ViewBag.DPValue = roosterDtoObjecten;
 			return View(await _unitOfWork.RoosterRepository.GetAsync());
 		}
 
@@ -47,18 +56,18 @@ namespace mijnZorgRooster.Controllers
 			RoosterDetailDto roosterDetails = new RoosterDetailDto(rooster);
 			roosterDetails.AantalDagen = _roosterService.geefAantalDagen(rooster.Maand, rooster.Jaar);
 			roosterDetails.StartDatum = _roosterService.genereerStartDatum(rooster.Maand, rooster.Jaar);
+			roosterDetails.EindDatum = _roosterService.genereerEindDatum(rooster.Maand, rooster.Jaar);
 			return View(roosterDetails);
 		}
 
 		// GET: Rooster/Create
 		public IActionResult Create()
 		{
+			ViewBag.MinInvoerJaar = _roosterService.geefToelaatbaarJaarInvoer();
 			return View();
 		}
 
 		// POST: Rooster/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create([Bind("RoosterID,Jaar,Maand")] Rooster rooster)
@@ -88,12 +97,11 @@ namespace mijnZorgRooster.Controllers
 			{
 				return NotFound();
 			}
+			ViewBag.MinInvoerJaar = _roosterService.geefToelaatbaarJaarInvoer();
 			return View(roosterDto);
 		}
 
 		// POST: Rooster/Edit/5
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(int id, [Bind("RoosterID,AanmaakDatum,Jaar,Maand,IsGevalideerd")] Rooster rooster, List<int> SelectedDienstProfielen)
@@ -107,7 +115,7 @@ namespace mijnZorgRooster.Controllers
 			{
 				try
 				{
-
+					rooster.LaatsteWijzigingsDatum = _roosterService.geefDatumVanVandaag();
 					_unitOfWork.RoosterRepository.Update(rooster);
 
 					var oudRooster = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielen(rooster.RoosterID);

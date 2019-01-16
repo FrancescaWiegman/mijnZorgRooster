@@ -59,7 +59,7 @@ namespace mijnZorgRooster.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("DienstProfielID,Beschrijving,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
+		public async Task<IActionResult> Create([Bind("DienstProfielID,Beschrijving,VolgordeNr,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
 		{
 			if (ModelState.IsValid)
 			{
@@ -91,7 +91,7 @@ namespace mijnZorgRooster.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("DienstProfielID,Beschrijving,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
+		public async Task<IActionResult> Edit(int id, [Bind("DienstProfielID,Beschrijving,VolgordeNr,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
 		{
 			if (id != dienstProfiel.DienstProfielID)
 			{

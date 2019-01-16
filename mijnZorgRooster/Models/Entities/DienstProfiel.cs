@@ -12,6 +12,7 @@ namespace mijnZorgRooster.Models.Entities
 	{
 		[Key]
 		public int DienstProfielID { get; set; }
+		public int VolgordeNr { get; set; }
 		public string Beschrijving { get; set; } // bv. "Vroege dienst", "Avonddienst", etc.
 		public TimeSpan Begintijd { get; set; }
 		public TimeSpan Eindtijd { get; set; }

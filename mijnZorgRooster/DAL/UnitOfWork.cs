@@ -1,4 +1,5 @@
 ﻿using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +13,8 @@ namespace mijnZorgRooster.DAL
 		private IGenericRepository<Dienst> _dienstRepository;
 		private IRoosterRepository _roosterRepository;
         private IGenericRepository<Rol> _rolRepository;
-        private IGenericRepository<Certificaat> _certficaatRepository;
+		private IGenericRepository<Contract> _contractRepository;
+		private IGenericRepository<Certificaat> _certficaatRepository;
 
 		public UnitOfWork(ZorginstellingDbContext context)
         {
@@ -44,7 +46,12 @@ namespace mijnZorgRooster.DAL
             get { return _rolRepository ?? (_rolRepository = new GenericRepository<Rol>(_context)); }
         }
 
-        public IGenericRepository<Certificaat> CertificaatRepository
+		public IGenericRepository<Contract> ContractRepository
+		{
+			get { return _contractRepository ?? (_contractRepository = new GenericRepository<Contract>(_context)); }
+		}
+
+		public IGenericRepository<Certificaat> CertificaatRepository
         {
             get { return _certficaatRepository ?? (_certficaatRepository = new GenericRepository<Certificaat>(_context)); }
         }

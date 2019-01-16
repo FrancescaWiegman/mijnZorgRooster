@@ -17,6 +17,11 @@
 				<span asp-validation-for="Beschrijving" class="text-danger"></span>
 			</div>
 			<div class="form-group">
+				<label asp-for="VolgordeNr" class="control-label"></label>
+				<input asp-for="VolgordeNr" class="form-control" min="1" />
+				<span asp-validation-for="VolgordeNr" class="text-danger"></span>
+			</div>
+			<div class="form-group">
 				<label asp-for="Begintijd" class="control-label"></label>
 				<input asp-for="Begintijd" class="form-control" type="time" />
 				<span asp-validation-for="Begintijd" class="text-danger"></span>

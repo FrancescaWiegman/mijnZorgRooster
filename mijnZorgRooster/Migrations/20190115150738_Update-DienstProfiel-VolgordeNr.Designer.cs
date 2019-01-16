@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingDbContext))]
-    partial class ZorginstellingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190115150738_Update-DienstProfiel-VolgordeNr")]
+    partial class UpdateDienstProfielVolgordeNr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -307,19 +309,6 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Medewerker");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerDienst", b =>
-                {
-                    b.Property<int>("MedewerkerId");
-
-                    b.Property<int>("DienstId");
-
-                    b.HasKey("MedewerkerId", "DienstId");
-
-                    b.HasIndex("DienstId");
-
-                    b.ToTable("MedewerkerDiensten");
-                });
-
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerRol", b =>
                 {
                     b.Property<int>("MedewerkerId");
@@ -365,19 +354,6 @@ namespace mijnZorgRooster.Migrations
                     b.HasKey("RoosterID");
 
                     b.ToTable("Rooster");
-                });
-
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.RoosterDienst", b =>
-                {
-                    b.Property<int>("RoosterId");
-
-                    b.Property<int>("DienstId");
-
-                    b.HasKey("RoosterId", "DienstId");
-
-                    b.HasIndex("DienstId");
-
-                    b.ToTable("RoosterDiensten");
                 });
 
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.RoosterDienstProfiel", b =>
@@ -471,19 +447,6 @@ namespace mijnZorgRooster.Migrations
                         .HasForeignKey("DienstID");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerDienst", b =>
-                {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Dienst", "Dienst")
-                        .WithMany()
-                        .HasForeignKey("DienstId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
-                        .WithMany()
-                        .HasForeignKey("MedewerkerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerRol", b =>
                 {
                     b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
@@ -494,19 +457,6 @@ namespace mijnZorgRooster.Migrations
                     b.HasOne("mijnZorgRooster.Models.Entities.Rol", "Rol")
                         .WithMany("MedewerkersRollen")
                         .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.RoosterDienst", b =>
-                {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Dienst", "Dienst")
-                        .WithMany()
-                        .HasForeignKey("DienstId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("mijnZorgRooster.Models.Entities.Rooster", "Rooster")
-                        .WithMany()
-                        .HasForeignKey("RoosterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
