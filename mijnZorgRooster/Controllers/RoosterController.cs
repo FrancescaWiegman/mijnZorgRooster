@@ -27,16 +27,19 @@ namespace mijnZorgRooster.Controllers
 		// GET: Rooster
 		public async Task<IActionResult> Index()
 		{
-			List<RoosterMetDienstProfielenDto> roosterDtoObjecten = new List<RoosterMetDienstProfielenDto>();
+			var roostersDto = from rooster in await _unitOfWork.RoosterRepository.GetAsync()
+							  select new RoosterBasisDto(rooster);
+			List<RoosterMetDienstProfielenDto> RoostersMetDienstProfielen = new List<RoosterMetDienstProfielenDto>();
 			var roosters = await _unitOfWork.RoosterRepository.GetAsync();
-			foreach (Rooster r in roosters)
+
+			foreach (var r in roosters)
 			{
 				RoosterMetDienstProfielenDto roosterDto = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(r.RoosterID);
-				roosterDtoObjecten.Add(roosterDto);
+				RoostersMetDienstProfielen.Add(roosterDto);
 			}
 			ViewBag.DPHeader = "DienstProfielen";
-			ViewBag.DPValue = roosterDtoObjecten;
-			return View(await _unitOfWork.RoosterRepository.GetAsync());
+			ViewBag.DPValue = RoostersMetDienstProfielen;
+			return View(roostersDto);
 		}
 
 		// GET: Rooster/Details/5

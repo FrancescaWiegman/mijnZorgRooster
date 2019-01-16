@@ -32,16 +32,7 @@ namespace mijnZorgRooster.Controllers
 
 			foreach (var dp in dienstProfielList)
 			{
-				//TODO: Uitzoeken waarom ik niet gewoon DienstProfiel als parameter aan de constructor kan meegeven, zonder dat de boel daardoor crasht
-				dienstProfielDto = new DienstProfielDto
-				{
-					DienstProfielID = dp.DienstProfielID,
-					Beschrijving = dp.Beschrijving,
-					VolgordeNr = dp.VolgordeNr,
-					Begintijd = dp.Begintijd,
-					Eindtijd = dp.Eindtijd,
-					MinimaleBezetting = dp.MinimaleBezetting
-				};
+				dienstProfielDto = new DienstProfielDto(dp);
 				dienstProfielenDtoList.Add(dienstProfielDto);
 			}
 			return View(dienstProfielenDtoList);
@@ -61,15 +52,7 @@ namespace mijnZorgRooster.Controllers
 				return NotFound();
 			}
 
-			var dienstProfielDto = new DienstProfielDto
-			{
-				DienstProfielID = dienstProfiel.DienstProfielID,
-				Beschrijving = dienstProfiel.Beschrijving,
-				VolgordeNr = dienstProfiel.VolgordeNr,
-				Begintijd = dienstProfiel.Begintijd,
-				Eindtijd = dienstProfiel.Eindtijd,
-				MinimaleBezetting = dienstProfiel.MinimaleBezetting
-			};
+			var dienstProfielDto = new DienstProfielDto(dienstProfiel);
 			return View(dienstProfielDto);
 		}
 
@@ -107,15 +90,7 @@ namespace mijnZorgRooster.Controllers
 				return NotFound();
 			}
 
-			var dienstProfielDto = new DienstProfielDto
-			{
-				DienstProfielID = dienstProfiel.DienstProfielID,
-				Beschrijving = dienstProfiel.Beschrijving,
-				VolgordeNr = dienstProfiel.VolgordeNr,
-				Begintijd = dienstProfiel.Begintijd,
-				Eindtijd = dienstProfiel.Eindtijd,
-				MinimaleBezetting = dienstProfiel.MinimaleBezetting
-			};
+			var dienstProfielDto = new DienstProfielDto(dienstProfiel);
 			return View(dienstProfielDto);
 		}
 

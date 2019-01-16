@@ -10,6 +10,7 @@ namespace mijnZorgRooster.Models.DTO
 		}
 		public DienstProfielDto(DienstProfiel dienstProfiel)
 		{
+			DienstProfielID = dienstProfiel.DienstProfielID;
 			Beschrijving = dienstProfiel.Beschrijving;
 			VolgordeNr = dienstProfiel.VolgordeNr;
 			Begintijd = dienstProfiel.Begintijd;

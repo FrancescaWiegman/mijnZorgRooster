@@ -8,6 +8,16 @@ namespace mijnZorgRooster.Models.DTO
 {
 	public class RoosterBasisDto
 	{
+		public RoosterBasisDto() { }
+		public RoosterBasisDto(Rooster rooster)
+		{
+			RoosterID = rooster.RoosterID;
+			Jaar = rooster.Jaar;
+			Maand = rooster.Maand;
+			AanmaakDatum = rooster.AanmaakDatum;
+			LaatsteWijzigingsDatum = rooster.LaatsteWijzigingsDatum;
+			IsGevalideerd = rooster.IsGevalideerd;
+		}
 		public int RoosterID { get; set; }
 		public int Jaar { get; set; }
 		public int Maand { get; set; }
