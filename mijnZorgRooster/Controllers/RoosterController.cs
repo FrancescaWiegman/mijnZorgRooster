@@ -162,7 +162,9 @@ namespace mijnZorgRooster.Controllers
 				return NotFound();
 			}
 
-			return View(rooster);
+			RoosterBasisDto roosterDto = new RoosterBasisDto(rooster);
+
+			return View(roosterDto);
 		}
 
 		// POST: Rooster/Delete/5
