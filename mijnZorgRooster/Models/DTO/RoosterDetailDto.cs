@@ -15,5 +15,7 @@ namespace mijnZorgRooster.Models.DTO
 		public DateTime EindDatum { get; set; }
 		public int ToelaatbaarJaarInvoer { get; set; }
 		public string EditViewErrorMessage { get; set; }
+		public int AantalDienstProfielen { get; set; }
+		public int AantalDiensten { get; set; }
 	}
 }

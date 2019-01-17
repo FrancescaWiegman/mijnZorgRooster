@@ -22,8 +22,12 @@ namespace mijnZorgRooster.DAL
         public DbSet<Dienst> Diensten { get; set; }
         public DbSet<Rooster> Roosters { get; set; }
         public DbSet<MedewerkerRol> MedewerkersRollen { get; set; }
+		public DbSet<RoosterDienstProfiel> RoosterDienstProfielen { get; set; }
+		public DbSet<RoosterDienst> RoosterDiensten { get; set; }
+		public DbSet<MedewerkerDienst> MedewerkerDiensten { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -34,8 +38,10 @@ namespace mijnZorgRooster.DAL
             modelBuilder.Entity<DienstProfiel>().ToTable("DienstProfiel");
             modelBuilder.Entity<Dienst>().ToTable("Dienst");
             modelBuilder.Entity<Rooster>().ToTable("Rooster");
-
-            modelBuilder.Entity<MedewerkerRol>().HasKey(e => new { e.MedewerkerId, e.RolId });
+			modelBuilder.Entity<RoosterDienstProfiel>().HasKey(e => new { e.RoosterId, e.DienstProfielId });
+			modelBuilder.Entity<RoosterDienst>().HasKey(e => new { e.RoosterId, e.DienstId });
+			modelBuilder.Entity<MedewerkerDienst>().HasKey(e => new { e.MedewerkerId, e.DienstId });
+			modelBuilder.Entity<MedewerkerRol>().HasKey(e => new { e.MedewerkerId, e.RolId });
         }
     }
 }

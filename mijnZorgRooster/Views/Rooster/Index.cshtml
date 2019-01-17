@@ -1,4 +1,4 @@
-﻿@model IEnumerable<mijnZorgRooster.Models.DTO.RoosterBasisDto>
+﻿@model IEnumerable<mijnZorgRooster.Models.DTO.RoosterDetailDto>
 
 @{
 	ViewData["Title"] = "Index";
@@ -28,7 +28,10 @@
 				@Html.DisplayNameFor(model => model.IsGevalideerd)
 			</th>
 			<th onclick="sortTable(5)">
-				@ViewBag.DPHeader
+				@TempData["DienstProfielen"]
+			</th>
+			<th onclick="sortTable(6)">
+				@TempData["Diensten"]
 			</th>
 			<th></th>
 		</tr>
@@ -53,21 +56,18 @@
 				@Html.DisplayFor(modelItem => item.IsGevalideerd)
 			</td>
 			<td>
-				@foreach (var roosterDto in ViewBag.DPValue)
-				{
-					if (roosterDto.RoosterID == item.RoosterID)
-					{
-						@roosterDto.SelectedDienstProfielen.Count
-					}
-				}
+				@Html.DisplayFor(modelItem => item.AantalDienstProfielen)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.AantalDiensten)
 			</td>
 			<td>
 				<a asp-action="Edit" asp-route-id="@item.RoosterID">Edit</a> |
 				<a asp-action="Details" asp-route-id="@item.RoosterID">Details</a> |
-				Diensten | 
+				<a asp-action="../Dienst/Index" asp-route-id="@item.RoosterID">Diensten</a> |
 				<a asp-action="Delete" asp-route-id="@item.RoosterID">Delete</a>
 			</td>
-			</tr>
+		</tr>
 		}
 	</tbody>
 </table>

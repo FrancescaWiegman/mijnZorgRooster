@@ -24,5 +24,7 @@ namespace mijnZorgRooster.Models.DTO
 		public DateTime Datum { get; set; }
 		public DienstProfiel DienstProfiel { get; set; }
 		public virtual ICollection<Medewerker> Medewerkers { get; set; }
+		public int IngeroosterdeZorgverleners { get; set; }
+		public Rooster ParentRooster { get; set; }
 	}
 }

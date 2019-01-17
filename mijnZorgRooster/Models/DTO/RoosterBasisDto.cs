@@ -17,6 +17,7 @@ namespace mijnZorgRooster.Models.DTO
 			AanmaakDatum = rooster.AanmaakDatum;
 			LaatsteWijzigingsDatum = rooster.LaatsteWijzigingsDatum;
 			IsGevalideerd = rooster.IsGevalideerd;
+			Diensten = rooster.Diensten;
 		}
 		public int RoosterID { get; set; }
 		public int Jaar { get; set; }

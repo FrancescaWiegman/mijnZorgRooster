@@ -40,18 +40,6 @@
 			@Html.DisplayFor(model => model.AantalDagen)
 		</dd>
 		<dt>
-			@Html.DisplayNameFor(model => model.AanmaakDatum)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.AanmaakDatum)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.LaatsteWijzigingsDatum)
-		</dd>
-		<dt>
 			@Html.DisplayNameFor(model => model.IsGevalideerd)
 		</dt>
 		<dd>
@@ -59,7 +47,25 @@
 		</dd>
 	</dl>
 </div>
-<div>
-	<a asp-action="../Rooster/Edit" asp-route-id="@Model.RoosterID">Edit</a> |
-	<a asp-action="Index">Back to List</a>
+
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="RoosterID" />
+			<div class="form-group">
+				<input type="submit" value="Genereer diensten" class="btn btn-default" />
+			</div>
+		</form>
+	</div>
 </div>
+
+<div>
+	<a asp-action="../Rooster/Edit" asp-route-id="@Model.RoosterID">Edit Rooster</a> |
+	<a asp-action="../Rooster/Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

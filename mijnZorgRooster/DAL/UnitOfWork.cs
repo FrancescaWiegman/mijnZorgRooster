@@ -9,8 +9,8 @@ namespace mijnZorgRooster.DAL
         private readonly ZorginstellingDbContext _context;
         public IMedewerkerRepository MedewerkerRepository { get; private set; }
         public IGenericRepository<DienstProfiel> DienstProfielRepository { get; private set; }
-        public IGenericRepository<Dienst> DienstRepository { get; private set; }
-        public IGenericRepository<Rooster> RoosterRepository { get; private set; }
+        public IDienstRepository DienstRepository { get; private set; }
+        public IRoosterRepository RoosterRepository { get; private set; }
         public IGenericRepository<Rol> RolRepository { get; private set; }
         public IGenericRepository<Certificaat> CertificaatRepository { get; private set; }
         public IGenericRepository<Contract> ContractRepository { get; private set; }
@@ -20,8 +20,8 @@ namespace mijnZorgRooster.DAL
             _context = context;
             MedewerkerRepository = new MedewerkerRepository(context);
             DienstProfielRepository = new GenericRepository<DienstProfiel>(context);
-            DienstRepository = new GenericRepository<Dienst>(context);
-            RoosterRepository = new GenericRepository<Rooster>(context);
+            DienstRepository = new DienstRepository(context);
+            RoosterRepository = new RoosterRepository(context);
             RolRepository = new GenericRepository<Rol>(context);
             CertificaatRepository = new GenericRepository<Certificaat>(context);
             ContractRepository = new GenericRepository<Contract>(context);

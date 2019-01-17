@@ -34,7 +34,8 @@ namespace mijnZorgRooster
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICalculationsService, CalculationsService>();
 			services.AddScoped<IRoosterService, RoosterService>();
-            services.Configure<CookiePolicyOptions>(options =>
+			services.AddScoped<IDienstService, DienstService>();
+			services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;

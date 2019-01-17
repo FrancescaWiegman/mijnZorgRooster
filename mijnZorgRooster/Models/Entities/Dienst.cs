@@ -30,5 +30,4 @@ namespace mijnZorgRooster.Models.Entities
 		public int DienstId { get; set; }
 		public virtual Dienst Dienst { get; set; }
 	}
-
 }

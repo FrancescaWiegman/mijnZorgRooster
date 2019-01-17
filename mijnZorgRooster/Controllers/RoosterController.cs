@@ -28,19 +28,21 @@ namespace mijnZorgRooster.Controllers
 		// GET: Rooster
 		public async Task<IActionResult> Index()
 		{
-			var roostersDto = from rooster in await _unitOfWork.RoosterRepository.GetAsync()
-							  select new RoosterBasisDto(rooster);
-			List<RoosterMetDienstProfielenDto> RoostersMetDienstProfielen = new List<RoosterMetDienstProfielenDto>();
-			var roosters = await _unitOfWork.RoosterRepository.GetAsync();
+			var roosters = (from rooster in await _unitOfWork.RoosterRepository.GetAsync() select new RoosterDetailDto(rooster)).ToList();
 
 			foreach (var r in roosters)
 			{
 				RoosterMetDienstProfielenDto roosterDto = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(r.RoosterID);
-				RoostersMetDienstProfielen.Add(roosterDto);
+
+				if (roosterDto.SelectedDienstProfielen == null) { r.AantalDienstProfielen = 0; }
+				else { r.AantalDienstProfielen = roosterDto.SelectedDienstProfielen.Count(); }
+
+				if (roosterDto.Diensten == null) { r.AantalDiensten = 0; }
+				else { r.AantalDiensten = roosterDto.Diensten.Count(); }
 			}
-			ViewBag.DPHeader = "DienstProfielen";
-			ViewBag.DPValue = RoostersMetDienstProfielen;
-			return View(roostersDto);
+			TempData ["DienstProfielen"] = "DienstProfielen";
+			TempData ["Diensten"] = "Diensten";
+			return View(roosters);
 		}
 
 		// GET: Rooster/Details/5
@@ -67,7 +69,7 @@ namespace mijnZorgRooster.Controllers
 		// GET: Rooster/Create
 		public IActionResult Create()
 		{
-			ViewBag.MinInvoerJaar = _roosterService.geefToelaatbaarJaarInvoer();
+			TempData ["MinInvoerJaar"] = _roosterService.geefToelaatbaarJaarInvoer();
 			return View();
 		}
 
@@ -102,7 +104,7 @@ namespace mijnZorgRooster.Controllers
 				return NotFound();
 			}
 
-			var minInvoerJaar = _roosterService.geefToelaatbaarJaarInvoer();
+			roosterDto.ToelaatbaarJaarInvoer = _roosterService.geefToelaatbaarJaarInvoer();
 
 			if (TempData.ContainsKey("RedirectToRoosterEdit"))
 			{
