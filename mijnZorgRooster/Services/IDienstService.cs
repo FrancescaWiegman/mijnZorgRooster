@@ -9,7 +9,9 @@ namespace mijnZorgRooster.Services
 {
 	public interface IDienstService
 	{
-		List<Dienst> GenereerDiensten(RoosterMetDienstProfielenDto roosterDto, List<DienstProfiel> dienstProfielen);
+        List<Dienst> GenereerDiensten(RoosterMetDienstProfielenDto rooster, List<int> dienstProfielen);
+
+        List<Dienst> GenereerDiensten(RoosterMetDienstProfielenDto roosterDto, List<DienstProfiel> dienstProfielen);
 		DienstProfiel ConvertIdToDienstProfiel(int dienstProfielId, List<DienstProfiel> dienstProfielen);
 	}
 }

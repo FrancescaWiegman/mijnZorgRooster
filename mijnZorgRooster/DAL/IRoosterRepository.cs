@@ -8,7 +8,10 @@ namespace mijnZorgRooster.DAL
 {
 	public interface IRoosterRepository : IGenericRepository<Rooster>
 	{
-		Task<RoosterMetDienstProfielenDto> GetRoosterMetDienstProfielenDto(int? roosterId);
+        Task<List<RoosterBasisDto>> GetRoosters();
+        Task<RoosterDetailDto> GetRooster(int? id);
+
+        Task<RoosterMetDienstProfielenDto> GetRoosterMetDienstProfielenDto(int? roosterId);
 		Task<Rooster> GetRoosterMetDienstProfielen(int? roosterId);
 		Task UpdateRoosterDienstProfielen(int roosterId, List<int> selectedDienstProfielen);
 	}

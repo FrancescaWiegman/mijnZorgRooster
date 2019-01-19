@@ -10,67 +10,48 @@ using mijnZorgRooster.Models.DTO;
 using mijnZorgRooster.Models.Entities;
 using mijnZorgRooster.DAL;
 using mijnZorgRooster.Services;
-using mijnZorgRooster.Utilities;
 
 namespace mijnZorgRooster.Controllers
 {
     public class RoosterController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly IRoosterService _roosterService;
+        private readonly IDienstService _dienstService;
 
-		public RoosterController(IRoosterService roosterService, IUnitOfWork unitOfWork)
+		public RoosterController(IUnitOfWork unitOfWork, IDienstService dienstService)
 		{
-			_roosterService = roosterService;
 			_unitOfWork = unitOfWork;
+            _dienstService = dienstService;
 		}
 
 		// GET: Rooster
 		public async Task<IActionResult> Index()
 		{
-			var roosters = (from rooster in await _unitOfWork.RoosterRepository.GetAsync() select new RoosterDetailDto(rooster)).ToList();
-
-			foreach (var r in roosters)
-			{
-				RoosterMetDienstProfielenDto roosterDto = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(r.RoosterID);
-
-				if (roosterDto.SelectedDienstProfielen == null) { r.AantalDienstProfielen = 0; }
-				else { r.AantalDienstProfielen = roosterDto.SelectedDienstProfielen.Count(); }
-
-				if (roosterDto.Diensten == null) { r.AantalDiensten = 0; }
-				else { r.AantalDiensten = roosterDto.Diensten.Count(); }
-			}
-			TempData ["DienstProfielen"] = "DienstProfielen";
-			TempData ["Diensten"] = "Diensten";
-			return View(roosters);
+			return View(await _unitOfWork.RoosterRepository.GetRoosters());
 		}
 
 		// GET: Rooster/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
-			Rooster rooster = null;
+			RoosterDetailDto rooster = null;
 
 			if (id.HasValue)
 			{
-				rooster = await _unitOfWork.RoosterRepository.GetByIdAsync(id.Value);
+                rooster = await _unitOfWork.RoosterRepository.GetRooster(id.Value);
 			}
 			else
 			{
 				return NotFound();
 			}
 
-			RoosterDetailDto roosterDetails = new RoosterDetailDto(rooster);
-			roosterDetails.AantalDagen = _roosterService.geefAantalDagen(rooster.Maand, rooster.Jaar);
-			roosterDetails.StartDatum = _roosterService.genereerStartDatum(rooster.Maand, rooster.Jaar);
-			roosterDetails.EindDatum = _roosterService.genereerEindDatum(rooster.Maand, rooster.Jaar);
-			return View(roosterDetails);
+			return View(rooster);
 		}
 
 		// GET: Rooster/Create
 		public IActionResult Create()
 		{
-			TempData ["MinInvoerJaar"] = _roosterService.geefToelaatbaarJaarInvoer();
-			return View();
+            TempData["MinInvoerJaar"] = DateTime.UtcNow.Year;
+            return View();
 		}
 
 		// POST: Rooster/Create
@@ -80,8 +61,6 @@ namespace mijnZorgRooster.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				rooster.AanmaakDatum = _roosterService.geefDatumVanVandaag();
-				rooster.LaatsteWijzigingsDatum = _roosterService.geefDatumVanVandaag();
 				rooster.IsGevalideerd = false;
 				_unitOfWork.RoosterRepository.Insert(rooster);
 				await _unitOfWork.SaveAsync();
@@ -104,9 +83,9 @@ namespace mijnZorgRooster.Controllers
 				return NotFound();
 			}
 
-			roosterDto.ToelaatbaarJaarInvoer = _roosterService.geefToelaatbaarJaarInvoer();
+            TempData["MinInvoerJaar"] = DateTime.UtcNow.Year;
 
-			if (TempData.ContainsKey("RedirectToRoosterEdit"))
+            if (TempData.ContainsKey("RedirectToRoosterEdit"))
 			{
 				roosterDto.EditViewErrorMessage = TempData["RedirectToRoosterEdit"].ToString();
 				return View(roosterDto);
@@ -120,7 +99,7 @@ namespace mijnZorgRooster.Controllers
 		// POST: Rooster/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("RoosterID,AanmaakDatum,Jaar,Maand,IsGevalideerd")] Rooster rooster, List<int> SelectedDienstProfielen)
+		public async Task<IActionResult> Edit(int id, [Bind("RoosterID,AanmaakDatum,Jaar,Maand,IsGevalideerd")] Rooster rooster, List<int> selectedDienstProfielen)
 		{
 			if (id != rooster.RoosterID)
 			{
@@ -131,13 +110,18 @@ namespace mijnZorgRooster.Controllers
 			{
 				try
 				{
-					rooster.LaatsteWijzigingsDatum = _roosterService.geefDatumVanVandaag();
 					_unitOfWork.RoosterRepository.Update(rooster);
 
-					var oudRooster = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielen(rooster.RoosterID);
-					var lijstMetRoosterDienstProfielIds = oudRooster.RoosterDienstProfielen.Select(d => d.DienstProfielId).ToList();
-					if (!lijstMetRoosterDienstProfielIds.SequenceEqual(SelectedDienstProfielen)) //check of de dienstprofielen van een rooster zijn veranderd
-						await _unitOfWork.RoosterRepository.UpdateRoosterDienstProfielen(oudRooster.RoosterID, SelectedDienstProfielen);
+					var oudRooster = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(rooster.RoosterID);
+					var lijstMetRoosterDienstProfielIds = oudRooster.Diensten.Select(d => d.DienstProfiel.DienstProfielID).Distinct().ToList();
+					if (!lijstMetRoosterDienstProfielIds.SequenceEqual(selectedDienstProfielen)) //check of de dienstprofielen van een rooster zijn veranderd
+                    {
+                        await _unitOfWork.RoosterRepository.UpdateRoosterDienstProfielen(oudRooster.RoosterID, selectedDienstProfielen);
+
+                        //Nu moeten we diensten die aan het rooster hangen nog updaten
+                        ICollection<Dienst> nieuweDiensten = _dienstService.GenereerDiensten(oudRooster, selectedDienstProfielen);
+                    }
+						
 
 					_unitOfWork.Save();
 				}

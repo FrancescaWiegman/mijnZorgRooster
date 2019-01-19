@@ -1,4 +1,4 @@
-﻿@model IEnumerable<mijnZorgRooster.Models.DTO.RoosterDetailDto>
+﻿@model IEnumerable<mijnZorgRooster.Models.DTO.RoosterBasisDto>
 
 @{
 	ViewData["Title"] = "Index";
@@ -22,17 +22,17 @@
 				@Html.DisplayNameFor(model => model.AanmaakDatum)
 			</th>
 			<th onclick="sortTable(3)">
-				@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
+				@Html.DisplayNameFor(model => model.WijzigingsDatum)
 			</th>
 			<th onclick="sortTable(4)">
 				@Html.DisplayNameFor(model => model.IsGevalideerd)
 			</th>
-			<th onclick="sortTable(5)">
-				@TempData["DienstProfielen"]
-			</th>
-			<th onclick="sortTable(6)">
-				@TempData["Diensten"]
-			</th>
+            <th onclick="sortTable(5)">
+                @Html.DisplayNameFor(model => model.AantalDienstProfielen)
+            </th>
+            <th onclick="sortTable(6)">
+                @Html.DisplayNameFor(model => model.AantalDiensten)
+            </th>
 			<th></th>
 		</tr>
 	</thead>
@@ -50,7 +50,7 @@
 				@Html.DisplayFor(modelItem => item.AanmaakDatum)
 			</td>
 			<td>
-				@Html.DisplayFor(modelItem => item.LaatsteWijzigingsDatum)
+				@Html.DisplayFor(modelItem => item.WijzigingsDatum)
 			</td>
 			<td>
 				@Html.DisplayFor(modelItem => item.IsGevalideerd)

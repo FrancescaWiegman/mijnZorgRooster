@@ -16,7 +16,7 @@
 			<input type="hidden" asp-for="AanmaakDatum" />
 			<div class="form-group">
 				<label asp-for="Jaar" class="control-label"></label>
-				<input asp-for="Jaar" class="form-control" min=@Model.ToelaatbaarJaarInvoer />
+				<input asp-for="Jaar" class="form-control" min=@TempData["MinInvoerJaar"] />
 				<span asp-validation-for="Jaar" class="text-danger"></span>
 			</div>
 			<div class="form-group">
@@ -37,7 +37,7 @@
 				<select asp-for="SelectedDienstProfielen" asp-items="Model.DienstProfielOptions" class="form-control"></select>
 			</div>
 			<div>
-				<a asp-action="../Dienst/Create" asp-route-id="@Model.RoosterID">Genereer diensten</a>
+				<a asp-action="Create" asp-controller="Dienst" asp-route-id="@Model.RoosterID">Genereer diensten</a>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />

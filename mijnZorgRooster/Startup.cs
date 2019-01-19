@@ -32,6 +32,7 @@ namespace mijnZorgRooster
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IMedewerkerRepository, MedewerkerRepository>();
             services.AddScoped<ICalculationsService, CalculationsService>();
 			services.AddScoped<IRoosterService, RoosterService>();
 			services.AddScoped<IDienstService, DienstService>();

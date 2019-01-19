@@ -15,26 +15,56 @@ namespace mijnZorgRooster.DAL
 		{
 		}
 
-		public async Task<RoosterMetDienstProfielenDto> GetRoosterMetDienstProfielenDto(int? roosterId)
+        public async Task<List<RoosterBasisDto>> GetRoosters()
+        {
+            List<Rooster> roosters = await _context.Roosters
+                .Include(r => r.RoosterDienstProfielen)
+                .Include(r => r.Diensten)
+                .ToListAsync();
+
+            var dto = from rooster in roosters select new RoosterBasisDto(rooster)
+            {
+                AantalDiensten = rooster.Diensten.Count(),
+                AantalDienstProfielen = rooster.RoosterDienstProfielen.Count()
+            };
+
+            return dto.OrderByDescending(d => d.Jaar).ThenByDescending(d => d.Maand).ToList();
+        }
+
+        public async Task<RoosterDetailDto> GetRooster(int? id)
+        {
+            Rooster rooster = await _context.Roosters
+                .Include(r => r.RoosterDienstProfielen)
+                .Include(r => r.Diensten).ThenInclude(d => d.DienstProfiel)
+                .Where(r => r.RoosterID == id)
+                .SingleOrDefaultAsync();
+
+            var dto = new RoosterDetailDto(rooster)
+            {
+                AantalDiensten = rooster.Diensten.Count(),
+                AantalDienstProfielen = rooster.RoosterDienstProfielen.Count()
+            };
+
+            return dto;
+        }
+
+        public async Task<RoosterMetDienstProfielenDto> GetRoosterMetDienstProfielenDto(int? roosterId)
 		{
 			List<DienstProfiel> dienstProfielen = await _context.DienstProfielen.ToListAsync();
-			RoosterMetDienstProfielenDto rooster = await _context.Roosters
+			Rooster rooster = await _context.Roosters
 				.Include(r => r.RoosterDienstProfielen)
-				.ThenInclude(d => d.DienstProfiel)
-				.Where(r => r.RoosterID == roosterId)
-				.Select(r => new RoosterMetDienstProfielenDto()
-				{
-					RoosterID = r.RoosterID,
-					Jaar = r.Jaar,
-					Maand = r.Maand,
-					AanmaakDatum = r.AanmaakDatum,
-					LaatsteWijzigingsDatum = r.LaatsteWijzigingsDatum,
-					IsGevalideerd = r.IsGevalideerd,
-					SelectedDienstProfielen = r.RoosterDienstProfielen.Select(rdp => rdp.DienstProfielId).ToList(),
-					DienstProfielOptions = new SelectList(dienstProfielen, nameof(DienstProfiel.DienstProfielID), nameof(DienstProfiel.Beschrijving))
-				})
+                .Include(r => r.Diensten).ThenInclude(d => d.DienstProfiel)
+                .Where(r => r.RoosterID == roosterId)
 				.SingleOrDefaultAsync();
-			return rooster;
+
+                var dto = new RoosterMetDienstProfielenDto(rooster)
+                {
+                    AantalDiensten = rooster.Diensten.Count(),
+                    AantalDienstProfielen = rooster.RoosterDienstProfielen.Count(),
+                    SelectedDienstProfielen = rooster.RoosterDienstProfielen.Select(rdp => rdp.DienstProfielId).ToList(),
+                    DienstProfielOptions = new SelectList(dienstProfielen, nameof(DienstProfiel.DienstProfielID), nameof(DienstProfiel.Beschrijving))
+                };
+            return dto;
 		}
 
 		public async Task<Rooster> GetRoosterMetDienstProfielen(int? roosterId)
@@ -61,5 +91,6 @@ namespace mijnZorgRooster.DAL
 				});
 			}
 		}
+
 	}
 }

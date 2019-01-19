@@ -13,7 +13,7 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
 				<label asp-for="Jaar" class="control-label"></label>
-				<input asp-for="Jaar" class="form-control" min=@TempData["MinInvoerJaar"] />
+				<input asp-for="Jaar" class="form-control" value=@TempData["MinInvoerJaar"] min=@TempData["MinInvoerJaar"] />
 				<span asp-validation-for="Jaar" class="text-danger"></span>
 			</div>
 			<div class="form-group">

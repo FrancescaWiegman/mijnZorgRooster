@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using mijnZorgRooster.Models.DTO;
 using mijnZorgRooster.Models.Entities;
-using mijnZorgRooster.Utilities;
 using mijnZorgRooster.DAL;
 using mijnZorgRooster.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace mijnZorgRooster.Models.DTO
 {
@@ -21,7 +21,9 @@ namespace mijnZorgRooster.Models.DTO
 			DienstProfiel = dienst.DienstProfiel;
 		}
 		public int DienstID { get; set; }
-		public DateTime Datum { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime Datum { get; set; }
 		public DienstProfiel DienstProfiel { get; set; }
 		public virtual ICollection<Medewerker> Medewerkers { get; set; }
 		public int IngeroosterdeZorgverleners { get; set; }

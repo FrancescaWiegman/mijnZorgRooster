@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using mijnZorgRooster.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,14 @@ namespace mijnZorgRooster.Models.DTO
 {
 	public class RoosterMetDienstProfielenDto : RoosterDetailDto
 	{
+        public RoosterMetDienstProfielenDto()
+        {
+        }
+        public RoosterMetDienstProfielenDto(Rooster rooster) : base(rooster)
+        {
+            Diensten = rooster.Diensten;
+        }
+
         [BindProperty]
 		[Display(Name = "DienstProfielen")]
 		public List<int> SelectedDienstProfielen { get; set; }
