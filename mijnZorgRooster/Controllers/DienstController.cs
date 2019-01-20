@@ -15,11 +15,9 @@ namespace mijnZorgRooster.Controllers
 	public class DienstController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly IRoosterService _roosterService;
 
-		public DienstController(IRoosterService roosterService, IUnitOfWork unitOfWork)
+		public DienstController(IUnitOfWork unitOfWork)
 		{
-			_roosterService = roosterService;
 			_unitOfWork = unitOfWork;
 		}
 
