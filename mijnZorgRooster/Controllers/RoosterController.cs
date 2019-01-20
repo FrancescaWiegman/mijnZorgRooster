@@ -16,12 +16,10 @@ namespace mijnZorgRooster.Controllers
     public class RoosterController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-        private readonly IDienstService _dienstService;
 
-		public RoosterController(IUnitOfWork unitOfWork, IDienstService dienstService)
+		public RoosterController(IUnitOfWork unitOfWork)
 		{
 			_unitOfWork = unitOfWork;
-            _dienstService = dienstService;
 		}
 
 		// GET: Rooster
@@ -110,20 +108,21 @@ namespace mijnZorgRooster.Controllers
 			{
 				try
 				{
-					_unitOfWork.RoosterRepository.Update(rooster);
+                    _unitOfWork.RoosterRepository.Update(rooster);
 
-					var oudRooster = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(rooster.RoosterID);
+                    var oudRooster = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(rooster.RoosterID);
 					var lijstMetRoosterDienstProfielIds = oudRooster.Diensten.Select(d => d.DienstProfiel.DienstProfielID).Distinct().ToList();
 					if (!lijstMetRoosterDienstProfielIds.SequenceEqual(selectedDienstProfielen)) //check of de dienstprofielen van een rooster zijn veranderd
                     {
                         await _unitOfWork.RoosterRepository.UpdateRoosterDienstProfielen(oudRooster.RoosterID, selectedDienstProfielen);
 
                         //Nu moeten we diensten die aan het rooster hangen nog updaten
-                        ICollection<Dienst> nieuweDiensten = _dienstService.GenereerDiensten(oudRooster, selectedDienstProfielen);
+                        ICollection<Dienst> nieuweDiensten = _unitOfWork.DienstRepository.GenereerDiensten(oudRooster, selectedDienstProfielen);
+                        rooster.Diensten = nieuweDiensten;
+                        _unitOfWork.RoosterRepository.Update(rooster);
                     }
-						
 
-					_unitOfWork.Save();
+                    _unitOfWork.Save();
 				}
 				catch (DbUpdateConcurrencyException)
 				{

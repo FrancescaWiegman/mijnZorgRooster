@@ -12,7 +12,8 @@ namespace mijnZorgRooster.DAL
 	{
 		public DienstRepository(ZorginstellingDbContext context) : base(context)
 		{
-		}
+            dbSet = _context.Set<Dienst>();
+        }
 
 		//TODO: Later uitbreiden met Medewerkersinformatie
 
@@ -45,5 +46,63 @@ namespace mijnZorgRooster.DAL
 			   .Where(d => d.DienstID == dienstId)
 			   .SingleOrDefaultAsync();
 		}
-	}
+
+        public List<Dienst> GenereerDiensten(RoosterMetDienstProfielenDto rooster, List<int> dienstProfielen)
+        {
+            List<Dienst> huidigeDiensten = rooster.Diensten.ToList();
+            List<Dienst> nieuweDiensten = VerwijderDienstenVanNietBestaandeProfielen(huidigeDiensten, dienstProfielen);
+
+            foreach (int dienstProfielID in dienstProfielen)
+            {
+                if (!ZijnDienstenVoorProfielAangemaakt(nieuweDiensten, dienstProfielID))
+                {
+                    DienstProfiel profiel = rooster.DienstProfielOptions.Items.Cast<DienstProfiel>().Where(dp => dp.DienstProfielID == dienstProfielID).SingleOrDefault();
+
+                    for (DateTime datum = rooster.StartDatum; datum.Date <= rooster.EindDatum.Date; datum = datum.AddDays(1))
+                    {
+                        Dienst dienst = new Dienst()
+                        {
+                            DienstProfiel = profiel,
+                            Datum = datum
+                        };
+
+                        nieuweDiensten.Add(dienst);
+                        dbSet.Add(dienst);
+                    }
+                }
+            }
+
+            return nieuweDiensten;
+        }
+
+        private List<Dienst> VerwijderDienstenVanNietBestaandeProfielen(List<Dienst> diensten, List<int> dienstProfielen)
+        {
+            List<Dienst> filteredDienstList = diensten.Where(d => dienstProfielen.Contains(d.DienstProfiel.DienstProfielID)).ToList();
+            List<Dienst> teVerwijderenDiensten = diensten.Except(filteredDienstList).ToList();
+
+            VerwijderDiensten(teVerwijderenDiensten);
+
+            return filteredDienstList;
+        }
+
+        private void VerwijderDiensten(List<Dienst> diensten)
+        {
+            foreach (Dienst dienst in diensten)
+            {
+                dbSet.Remove(dienst);
+            }
+        }
+
+        private bool ZijnDienstenVoorProfielAangemaakt(List<Dienst> diensten, int dienstProfielID)
+        {
+            foreach (Dienst dienst in diensten)
+            {
+                if (dienst.DienstProfiel.DienstProfielID == dienstProfielID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }

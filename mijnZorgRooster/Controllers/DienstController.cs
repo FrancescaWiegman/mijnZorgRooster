@@ -16,12 +16,10 @@ namespace mijnZorgRooster.Controllers
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IRoosterService _roosterService;
-		private readonly IDienstService _dienstService;
 
-		public DienstController(IRoosterService roosterService, IDienstService dienstService, IUnitOfWork unitOfWork)
+		public DienstController(IRoosterService roosterService, IUnitOfWork unitOfWork)
 		{
 			_roosterService = roosterService;
-			_dienstService = dienstService;
 			_unitOfWork = unitOfWork;
 		}
 
@@ -57,63 +55,5 @@ namespace mijnZorgRooster.Controllers
             return View(dienst);
         }
 
-        // GET: Dienst/Create
-        public async Task<IActionResult> Create(int? id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
-			RoosterMetDienstProfielenDto roosterDto = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(id);
-			if (roosterDto == null)
-			{
-				return NotFound();
-			}
-
-			if (_roosterService.telAantalGeselecteerdeDienstProfielen(roosterDto) < 1)
-			{
-				TempData["RedirectToRoosterEdit"] = "Kies eerst 1 of meer profielen";
-				return RedirectToAction("Edit", "Rooster", new { id = roosterDto.RoosterID });
-			}
-
-			return View(roosterDto);
-
-		}
-
-		// GET: Rooster/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(int roosterID)
-		{
-			if (ModelState.IsValid)
-			{
-				RoosterMetDienstProfielenDto roosterDto = await _unitOfWork.RoosterRepository.GetRoosterMetDienstProfielenDto(roosterID);
-				List<DienstProfiel> dienstProfielList = await _unitOfWork.DienstProfielRepository.GetAsync();
-				ICollection<Dienst> nieuweDiensten = _dienstService.GenereerDiensten(roosterDto, dienstProfielList);
-
-				//TODO: Uitzoeken waarom de nieuwe diensten niet worden gehangen aan het rooster
-
-				Rooster roosterUpdate = new Rooster
-				{
-					RoosterID = roosterDto.RoosterID,
-					Jaar = roosterDto.Jaar,
-					Maand = roosterDto.Maand,
-					//AanmaakDatum = roosterDto.AanmaakDatum,
-					//LaatsteWijzigingsDatum = roosterDto.LaatsteWijzigingsDatum,
-					IsGevalideerd = roosterDto.IsGevalideerd,
-                    Diensten = new List<Dienst>()
-				};
-
-                foreach (var dienst in nieuweDiensten)
-                {
-                    _unitOfWork.DienstRepository.Insert(dienst);
-                    roosterUpdate.Diensten.Add(dienst);
-                }
-
-                _unitOfWork.RoosterRepository.Update(roosterUpdate);
-                await _unitOfWork.SaveAsync();
-            }
-			return RedirectToAction(nameof(Index));
-		}
 	}
 }
