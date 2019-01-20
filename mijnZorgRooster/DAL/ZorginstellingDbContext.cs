@@ -44,7 +44,10 @@ namespace mijnZorgRooster.DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Certificaat>().ToTable("Certificaat");
+            modelBuilder.Entity<Certificaat>().ToTable("Certificaat")
+                .HasOne(c => c.Medewerker)
+                .WithMany(m => m.Certificaten)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Contract>().ToTable("Contract");
             modelBuilder.Entity<Medewerker>().ToTable("Medewerker");
             modelBuilder.Entity<Rol>().ToTable("Rol");
