@@ -39,12 +39,12 @@ namespace mijnZorgRooster.DAL
 			return dto;
 		}
 
-		public async Task<Dienst> GetDienstenMetAlleInfo(int? dienstId)
+		public async Task<List<DienstDto>> GetDienstenDto()
 		{
-			return await _context.Diensten
-			   .Include(rp => rp.DienstProfiel)
-			   .Where(d => d.DienstID == dienstId)
-			   .SingleOrDefaultAsync();
+            return await _context.Diensten
+               .Include(d => d.DienstProfiel)
+               .Select(d => new DienstDto(d))
+               .ToListAsync();
 		}
 
         public List<Dienst> GenereerDiensten(RoosterMetDienstProfielenDto rooster, List<int> dienstProfielen)

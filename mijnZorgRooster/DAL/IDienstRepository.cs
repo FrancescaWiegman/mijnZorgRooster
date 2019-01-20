@@ -10,8 +10,8 @@ namespace mijnZorgRooster.DAL
 	public interface IDienstRepository : IGenericRepository<Dienst>
 	{
         List<Dienst> GenereerDiensten(RoosterMetDienstProfielenDto rooster, List<int> dienstProfielen);
-
         Task<DienstDto> GetDienstDto(int? dienstId);
-		Task<Dienst> GetDienstenMetAlleInfo(int? dienstId);
-	}
+        Task<List<DienstDto>> GetDienstenDto();
+
+    }
 }

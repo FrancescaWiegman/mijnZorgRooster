@@ -49,12 +49,15 @@ namespace mijnZorgRooster.DAL
             modelBuilder.Entity<Medewerker>().ToTable("Medewerker");
             modelBuilder.Entity<Rol>().ToTable("Rol");
             modelBuilder.Entity<DienstProfiel>().ToTable("DienstProfiel");
-            modelBuilder.Entity<Dienst>().ToTable("Dienst");
+            modelBuilder.Entity<Dienst>().ToTable("Dienst")
+                .HasOne(d => d.Rooster)
+                .WithMany(r => r.Diensten)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Rooster>().ToTable("Rooster");
 			modelBuilder.Entity<RoosterDienstProfiel>().HasKey(e => new { e.RoosterId, e.DienstProfielId });;
 			modelBuilder.Entity<MedewerkerDienst>().HasKey(e => new { e.MedewerkerId, e.DienstId });
 			modelBuilder.Entity<MedewerkerRol>().HasKey(e => new { e.MedewerkerId, e.RolId });
-                
+
         }
         private void OnBeforeSaving()
         {

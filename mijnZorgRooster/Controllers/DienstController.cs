@@ -26,17 +26,9 @@ namespace mijnZorgRooster.Controllers
 		// GET: Dienst
 		public async Task<IActionResult> Index()
 		{
-			IList<Dienst> dienstList = await _unitOfWork.DienstRepository.GetAsync();
-			List<DienstDto> dienstDtoList = new List<DienstDto>();
-			DienstDto dienstDto = new DienstDto();
+            List<DienstDto> diensten = await _unitOfWork.DienstRepository.GetDienstenDto();
 
-			foreach (var d in dienstList)
-			{
-				dienstDto = await _unitOfWork.DienstRepository.GetDienstDto(d.DienstID);
-				// TODO: rooster nog aanhangen?
-				dienstDtoList.Add(dienstDto);
-			}
-			return View(dienstDtoList);
+			return View(diensten);
 		}
 
         public async Task<IActionResult> Details(int? id)

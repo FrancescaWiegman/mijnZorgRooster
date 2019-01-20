@@ -35,7 +35,7 @@ namespace mijnZorgRooster.Controllers
 
 			if (id.HasValue)
 			{
-                rooster = await _unitOfWork.RoosterRepository.GetRooster(id.Value);
+                rooster = await _unitOfWork.RoosterRepository.GetRoosterDetailDto(id.Value);
 			}
 			else
 			{
@@ -117,7 +117,7 @@ namespace mijnZorgRooster.Controllers
                         await _unitOfWork.RoosterRepository.UpdateRoosterDienstProfielen(oudRooster.RoosterID, selectedDienstProfielen);
 
                         //Nu moeten we diensten die aan het rooster hangen nog updaten
-                        ICollection<Dienst> nieuweDiensten = _unitOfWork.DienstRepository.GenereerDiensten(oudRooster, selectedDienstProfielen);
+                        List<Dienst> nieuweDiensten = _unitOfWork.DienstRepository.GenereerDiensten(oudRooster, selectedDienstProfielen);
                         rooster.Diensten = nieuweDiensten;
                         _unitOfWork.RoosterRepository.Update(rooster);
                     }
@@ -168,9 +168,9 @@ namespace mijnZorgRooster.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			var rooster = await _unitOfWork.RoosterRepository.GetByIdAsync(id);
+			var rooster = await _unitOfWork.RoosterRepository.GetRooster(id);
 			_unitOfWork.RoosterRepository.Delete(rooster);
-			await _unitOfWork.SaveAsync();
+			_unitOfWork.Save();
 			return RedirectToAction(nameof(Index));
 		}
 

@@ -13,7 +13,9 @@ namespace mijnZorgRooster.Models.Entities
 		public DateTime Datum { get; set; }
 		public DienstProfiel DienstProfiel { get; set; }
 		public virtual ICollection<Medewerker> Medewerkers { get; set; }
-	}
+        public int? RoosterID { get; set; }
+        public Rooster Rooster { get; set; }
+    }
 
 	public class MedewerkerDienst
 	{
