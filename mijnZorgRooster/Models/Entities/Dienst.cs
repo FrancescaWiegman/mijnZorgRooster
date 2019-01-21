@@ -11,8 +11,17 @@ namespace mijnZorgRooster.Models.Entities
 		[Key]
 		public int DienstID { get; set; }
 		public DateTime Datum { get; set; }
-		public DienstProfiel DienstData { get; set; }
-		// TODO: ICollection toevoegen voor de ingeroosterde zorgverleners. Maken we een aparte Zorgverlener klasse, 
-		// of gebruiken we voor nu alleen de Medewerker om het simpel te houden?
+		public DienstProfiel DienstProfiel { get; set; }
+		public virtual ICollection<Medewerker> Medewerkers { get; set; }
+        public int? RoosterID { get; set; }
+        public Rooster Rooster { get; set; }
+    }
+
+	public class MedewerkerDienst
+	{
+		public int MedewerkerId { get; set; }
+		public virtual Medewerker Medewerker { get; set; }
+		public int DienstId { get; set; }
+		public virtual Dienst Dienst { get; set; }
 	}
 }

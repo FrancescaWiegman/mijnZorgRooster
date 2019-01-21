@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mijnZorgRooster.DAL;
 
 namespace mijnZorgRooster.Migrations
 {
     [DbContext(typeof(ZorginstellingDbContext))]
-    partial class ZorginstellingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190119105706_roosterwijziging")]
+    partial class roosterwijziging
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -353,15 +355,17 @@ namespace mijnZorgRooster.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("AanmaakDatum");
+                    b.Property<DateTime>("AanmaakDatum")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<bool>("IsGevalideerd");
 
                     b.Property<int>("Jaar");
 
-                    b.Property<int>("Maand");
+                    b.Property<DateTime>("LaatsteWijzigingsDatum")
+                        .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTime>("WijzigingsDatum");
+                    b.Property<int>("Maand");
 
                     b.HasKey("RoosterID");
 

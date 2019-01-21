@@ -1,4 +1,4 @@
-﻿@model mijnZorgRooster.Models.Entities.DienstProfiel
+﻿@model mijnZorgRooster.Models.DTO.DienstProfielDto
 
 @{
 	ViewData["Title"] = "Edit";
@@ -17,6 +17,11 @@
 				<label asp-for="Beschrijving" class="control-label"></label>
 				<input asp-for="Beschrijving" class="form-control" />
 				<span asp-validation-for="Beschrijving" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="VolgordeNr" class="control-label"></label>
+				<input asp-for="VolgordeNr" class="form-control" min="1"/>
+				<span asp-validation-for="VolgordeNr" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="Begintijd" class="control-label"></label>

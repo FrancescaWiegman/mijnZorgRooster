@@ -29,6 +29,12 @@
 			@Html.DisplayFor(model => model.StartDatum)
 		</dd>
 		<dt>
+			@Html.DisplayNameFor(model => model.EindDatum)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.EindDatum)
+		</dd>
+		<dt>
 			@Html.DisplayNameFor(model => model.AantalDagen)
 		</dt>
 		<dd>
@@ -41,10 +47,10 @@
 			@Html.DisplayFor(model => model.AanmaakDatum)
 		</dd>
 		<dt>
-			@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
+			@Html.DisplayNameFor(model => model.WijzigingsDatum)
 		</dt>
 		<dd>
-			@Html.DisplayFor(model => model.LaatsteWijzigingsDatum)
+			@Html.DisplayFor(model => model.WijzigingsDatum)
 		</dd>
 		<dt>
 			@Html.DisplayNameFor(model => model.IsGevalideerd)
@@ -57,4 +63,50 @@
 <div>
 	<a asp-action="Edit" asp-route-id="@Model.RoosterID">Edit</a> |
 	<a asp-action="Index">Back to List</a>
+</div>
+<div>
+    @if (Model.Diensten != null)
+    {
+        <h3>Diensten behorende bij het rooster</h3>
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>Datum</th>
+                <th>Begintijd</th>
+                <th>Eindtijd</th>
+                <th>Beschrijving</th>
+                <th>Minimale bezetting</th>
+            </tr>
+
+            @foreach (var item in Model.Diensten)
+            {
+                string selectedRow = "";
+                if (item.DienstID == ViewBag.DienstID)
+                {
+                    selectedRow = "success";
+                }
+            <tr class="@selectedRow">
+                <td>
+                    <a asp-action="Details" asp-controller="Dienst" asp-route-id="@item.DienstID">Select</a>
+                </td>
+                <td>
+                    @item.Datum
+                </td>
+                <td>
+                    @item.DienstProfiel.Begintijd
+                </td>
+                <td>
+                    @item.DienstProfiel.Eindtijd
+                </td>
+                <td>
+                    @item.DienstProfiel.Beschrijving
+                </td>
+                <td>
+                    @item.DienstProfiel.MinimaleBezetting
+                </td>
+            </tr>
+            }
+
+        </table>
+    }
 </div>

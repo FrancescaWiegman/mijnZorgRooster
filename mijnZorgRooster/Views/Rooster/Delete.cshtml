@@ -1,4 +1,4 @@
-﻿@model mijnZorgRooster.Models.Entities.Rooster
+﻿@model mijnZorgRooster.Models.DTO.RoosterBasisDto
 
 @{
     ViewData["Title"] = "Delete";
@@ -30,10 +30,10 @@
 			@Html.DisplayFor(model => model.AanmaakDatum)
 		</dd>
 		<dt>
-			@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
+			@Html.DisplayNameFor(model => model.WijzigingsDatum)
 		</dt>
 		<dd>
-			@Html.DisplayFor(model => model.LaatsteWijzigingsDatum)
+			@Html.DisplayFor(model => model.WijzigingsDatum)
 		</dd>
 		<dt>
 			@Html.DisplayNameFor(model => model.IsGevalideerd)

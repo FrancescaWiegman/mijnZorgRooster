@@ -12,8 +12,8 @@ using mijnZorgRooster.Services;
 
 namespace mijnZorgRooster.Controllers
 {
-    public class DienstController : Controller
-    {
+	public class DienstController : Controller
+	{
 		private readonly IUnitOfWork _unitOfWork;
 
 		public DienstController(IUnitOfWork unitOfWork)
@@ -21,9 +21,29 @@ namespace mijnZorgRooster.Controllers
 			_unitOfWork = unitOfWork;
 		}
 
-		public IActionResult Index()
+		// GET: Dienst
+		public async Task<IActionResult> Index()
+		{
+            List<DienstDto> diensten = await _unitOfWork.DienstRepository.GetDienstenDto();
+
+			return View(diensten);
+		}
+
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            DienstDto dienst = null;
+
+            if (id.HasValue)
+            {
+                dienst = await _unitOfWork.DienstRepository.GetDienstDto(id.Value);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            return View(dienst);
         }
-    }
+
+	}
 }

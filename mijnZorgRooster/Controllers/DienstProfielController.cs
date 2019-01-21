@@ -26,8 +26,17 @@ namespace mijnZorgRooster.Controllers
 		// GET: DienstProfiel
 		public async Task<IActionResult> Index()
         {
-            return View(await _unitOfWork.DienstProfielRepository.GetAsync());
-        }
+			IList<DienstProfiel> dienstProfielList = await _unitOfWork.DienstProfielRepository.GetAsync();
+			List<DienstProfielDto> dienstProfielenDtoList = new List<DienstProfielDto>();
+			DienstProfielDto dienstProfielDto = new DienstProfielDto();
+
+			foreach (var dp in dienstProfielList)
+			{
+				dienstProfielDto = new DienstProfielDto(dp);
+				dienstProfielenDtoList.Add(dienstProfielDto);
+			}
+			return View(dienstProfielenDtoList);
+		}
 
 		// GET: DienstProfiel/Details/5
 		public async Task<IActionResult> Details(int? id)
@@ -43,9 +52,8 @@ namespace mijnZorgRooster.Controllers
 				return NotFound();
 			}
 
-
-			DienstProfielDetailDto dienstProfielDetails = new DienstProfielDetailDto(dienstProfiel);
-			return View(dienstProfielDetails);
+			var dienstProfielDto = new DienstProfielDto(dienstProfiel);
+			return View(dienstProfielDto);
 		}
 
 		// GET: DienstProfiel/Create
@@ -55,11 +63,9 @@ namespace mijnZorgRooster.Controllers
 		}
 
 		// POST: DienstProfiel/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("DienstProfielID,Beschrijving,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
+		public async Task<IActionResult> Create([Bind("DienstProfielID,Beschrijving,VolgordeNr,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
 		{
 			if (ModelState.IsValid)
 			{
@@ -83,15 +89,15 @@ namespace mijnZorgRooster.Controllers
 			{
 				return NotFound();
 			}
-			return View(dienstProfiel);
+
+			var dienstProfielDto = new DienstProfielDto(dienstProfiel);
+			return View(dienstProfielDto);
 		}
 
 		// POST: DienstProfiel/Edit/5
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("DienstProfielID,Beschrijving,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
+		public async Task<IActionResult> Edit(int id, [Bind("DienstProfielID,Beschrijving,VolgordeNr,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
 		{
 			if (id != dienstProfiel.DienstProfielID)
 			{
@@ -138,8 +144,8 @@ namespace mijnZorgRooster.Controllers
 			{
 				return NotFound();
 			}
-
-			return View(dienstProfiel);
+			var dienstProfielDto = new DienstProfielDto(dienstProfiel);
+			return View(dienstProfielDto);
 		}
 
 		// POST: DienstProfiel/Delete/5

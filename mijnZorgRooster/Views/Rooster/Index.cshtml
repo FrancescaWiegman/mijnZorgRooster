@@ -1,4 +1,4 @@
-﻿@model IEnumerable<mijnZorgRooster.Models.Entities.Rooster>
+﻿@model IEnumerable<mijnZorgRooster.Models.DTO.RoosterBasisDto>
 
 @{
 	ViewData["Title"] = "Index";
@@ -22,39 +22,52 @@
 				@Html.DisplayNameFor(model => model.AanmaakDatum)
 			</th>
 			<th onclick="sortTable(3)">
-				@Html.DisplayNameFor(model => model.LaatsteWijzigingsDatum)
+				@Html.DisplayNameFor(model => model.WijzigingsDatum)
 			</th>
 			<th onclick="sortTable(4)">
 				@Html.DisplayNameFor(model => model.IsGevalideerd)
 			</th>
+            <th onclick="sortTable(5)">
+                @Html.DisplayNameFor(model => model.AantalDienstProfielen)
+            </th>
+            <th onclick="sortTable(6)">
+                @Html.DisplayNameFor(model => model.AantalDiensten)
+            </th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var item in Model)
 		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.Jaar)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Maand)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.AanmaakDatum)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.LaatsteWijzigingsDatum)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.IsGevalideerd)
-				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.RoosterID">Edit</a> |
-					<a asp-action="Details" asp-route-id="@item.RoosterID">Details</a> |
-					<a asp-action="Delete" asp-route-id="@item.RoosterID">Delete</a>
-				</td>
-			</tr>
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Jaar)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Maand)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.AanmaakDatum)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.WijzigingsDatum)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.IsGevalideerd)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.AantalDienstProfielen)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.AantalDiensten)
+			</td>
+			<td>
+				<a asp-action="Edit" asp-route-id="@item.RoosterID">Edit</a> |
+				<a asp-action="Details" asp-route-id="@item.RoosterID">Details</a> |
+				<a asp-action="../Dienst/Index" asp-route-id="@item.RoosterID">Diensten</a> |
+				<a asp-action="Delete" asp-route-id="@item.RoosterID">Delete</a>
+			</td>
+		</tr>
 		}
 	</tbody>
 </table>
