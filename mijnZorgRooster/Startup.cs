@@ -13,6 +13,7 @@ using mijnZorgRooster.DAL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using mijnZorgRooster.Services;
+using mijnZorgRooster.DAL.Repositories;
 
 namespace mijnZorgRooster
 {
@@ -32,6 +33,12 @@ namespace mijnZorgRooster
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IRoosterRepository, RoosterRepository>();
+            services.AddScoped<IDienstProfielRepository, DienstProfielRepository>();
+            services.AddScoped<IRolRepository, RolRepository>();
+            services.AddScoped<IDienstRepository, DienstRepository>();
+            services.AddScoped<IContractRepository, ContractRepository>();
+            services.AddScoped<IMedewerkerRepository, MedewerkerRepository>();
             services.AddScoped<ICalculationsService, CalculationsService>();
 			services.Configure<CookiePolicyOptions>(options =>
             {
@@ -69,7 +76,7 @@ namespace mijnZorgRooster
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Rooster}/{action=Index}/{id?}");
             });
         }
     }

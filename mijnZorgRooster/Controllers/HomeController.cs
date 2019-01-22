@@ -17,7 +17,7 @@ namespace mijnZorgRooster.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "mijnZorgrooster - Uw roosterapplicatie voor kleinschalige zorgteams.";
 
             return View();
         }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace mijnZorgRooster.Models.Entities
+namespace mijnZorgRooster.DAL.Entities
 {
     public class Certificaat
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace mijnZorgRooster.Models.Entities
+namespace mijnZorgRooster.DAL.Entities
 {
 	// Class: Bedoeld om terugkerende data betreffende de diensten in op te slaan. Diensten hebben vaak dezelfde begin- en eindtijd, etc.
 	// Om later het Flyweight pattern op toe te passen, zie: https://en.wikipedia.org/wiki/Flyweight_pattern

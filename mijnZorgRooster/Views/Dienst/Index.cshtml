@@ -1,4 +1,4 @@
-﻿@model IEnumerable<mijnZorgRooster.Models.DTO.DienstDto>
+﻿@model IEnumerable<mijnZorgRooster.Models.DienstDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,16 +18,16 @@
 					@Html.DisplayNameFor(model => model.Datum)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.DienstProfiel.Beschrijving)
+					@Html.DisplayNameFor(model => model.Beschrijving)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.DienstProfiel.Begintijd)
+					@Html.DisplayNameFor(model => model.Begintijd)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.DienstProfiel.Eindtijd)
+					@Html.DisplayNameFor(model => model.Eindtijd)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.DienstProfiel.MinimaleBezetting)
+					@Html.DisplayNameFor(model => model.MinimaleBezetting)
 				</th>
 				<th></th>
 			</tr>
@@ -43,16 +43,16 @@
 					@Html.DisplayFor(modelItem => item.Datum)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.DienstProfiel.Beschrijving)
+					@Html.DisplayFor(modelItem => item.Beschrijving)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.DienstProfiel.Begintijd)
+					@Html.DisplayFor(modelItem => item.Begintijd)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.DienstProfiel.Eindtijd)
+					@Html.DisplayFor(modelItem => item.Eindtijd)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.DienstProfiel.MinimaleBezetting)
+					@Html.DisplayFor(modelItem => item.MinimaleBezetting)
 				</td>
 				<td>
 					<a asp-action="Details" asp-route-id="@item.DienstID">Details</a> |

@@ -1,24 +1,22 @@
 ﻿using System;
-using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.DAL.Entities;
 
-namespace mijnZorgRooster.Models.DTO
+namespace mijnZorgRooster.Models
 {
-	public class DienstProfielDto
+	public class DienstProfielDTO
 	{
-		public DienstProfielDto()
+		public DienstProfielDTO()
 		{
 		}
-		public DienstProfielDto(DienstProfiel dienstProfiel)
+		public DienstProfielDTO(DienstProfiel dienstProfiel)
 		{
 			DienstProfielID = dienstProfiel.DienstProfielID;
 			Beschrijving = dienstProfiel.Beschrijving;
-			VolgordeNr = dienstProfiel.VolgordeNr;
 			Begintijd = dienstProfiel.Begintijd;
 			Eindtijd = dienstProfiel.Eindtijd;
 			MinimaleBezetting = dienstProfiel.MinimaleBezetting;
 		}
 		public int DienstProfielID { get; set; }
-		public int VolgordeNr { get; set; }
 		public string Beschrijving { get; set; }
 		public TimeSpan Begintijd { get; set; }
 		public TimeSpan Eindtijd { get; set; }

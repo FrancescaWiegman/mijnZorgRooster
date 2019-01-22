@@ -1,4 +1,4 @@
-﻿@model IEnumerable<mijnZorgRooster.Models.DTO.RoosterBasisDto>
+﻿@model IEnumerable<mijnZorgRooster.Models.RoosterDTO>
 
 @{
 	ViewData["Title"] = "Index";
@@ -64,7 +64,6 @@
 			<td>
 				<a asp-action="Edit" asp-route-id="@item.RoosterID">Edit</a> |
 				<a asp-action="Details" asp-route-id="@item.RoosterID">Details</a> |
-				<a asp-action="../Dienst/Index" asp-route-id="@item.RoosterID">Diensten</a> |
 				<a asp-action="Delete" asp-route-id="@item.RoosterID">Delete</a>
 			</td>
 		</tr>

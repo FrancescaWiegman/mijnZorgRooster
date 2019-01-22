@@ -29,27 +29,27 @@ namespace mijnZorgRooster.Services
             return leeftijdInJaren;
         }
 
-        public int BerekenMaandenInDienst(int medewerkerID)
-        {
-            int year = DateTime.Now.Year;
-            DateTime lastDay = new DateTime(year, 12, 31);
-            var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
+        //public int BerekenMaandenInDienst(int medewerkerID)
+        //{
+        //    int year = DateTime.Now.Year;
+        //    DateTime lastDay = new DateTime(year, 12, 31);
+        //    var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
             
-            if(contract.Einddatum == DateTime.MinValue)
-            {
-                contract.Einddatum = lastDay;
-            }
+        //    if(contract.Einddatum == DateTime.MinValue)
+        //    {
+        //        contract.Einddatum = lastDay;
+        //    }
 
-            return contract.Einddatum.Month - contract.BeginDatum.Month;
-        }
+        //    return contract.Einddatum.Month - contract.BeginDatum.Month;
+        //}
 
-        public int BerekenParttimePercentage(int medewerkerID)
-        {
-            var medewerker = _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
-            var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
+        //public int BerekenParttimePercentage(int medewerkerID)
+        //{
+        //    var medewerker = _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);
+        //    var contract = _unitOfWork.MedewerkerRepository.GetContractVoorMedewerker(DateTime.Now, medewerkerID);
 
-            return contract.ContractUren / fulltime * 100;
-        }
+        //    return contract.ContractUren / fulltime * 100;
+        //}
         //public async Task<double> BerekenVakantieDagen(int medewerkerID)
         //{
         //    //TODO: medewerker wordt niet gebruikt.

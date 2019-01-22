@@ -5,44 +5,45 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.Models.DTO;
-using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.Models;
+using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.DAL;
 using mijnZorgRooster.Services;
+using mijnZorgRooster.DAL.Repositories;
 
 namespace mijnZorgRooster.Controllers
 {
 	public class DienstController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
+        private readonly IDienstRepository _dienstRepository;
 
-		public DienstController(IUnitOfWork unitOfWork)
+		public DienstController(IUnitOfWork unitOfWork, IDienstRepository dienstRepository)
 		{
 			_unitOfWork = unitOfWork;
+            _dienstRepository = dienstRepository;
 		}
 
 		// GET: Dienst
 		public async Task<IActionResult> Index()
 		{
-            List<DienstDto> diensten = await _unitOfWork.DienstRepository.GetDienstenDto();
-
-			return View(diensten);
+    		return View(await _dienstRepository.GetAsync());
 		}
 
         public async Task<IActionResult> Details(int? id)
         {
-            DienstDto dienst = null;
+            DienstDTO dienstDTO = null;
 
             if (id.HasValue)
             {
-                dienst = await _unitOfWork.DienstRepository.GetDienstDto(id.Value);
+                dienstDTO = await _dienstRepository.GetByIdAsync(id.Value);
             }
             else
             {
                 return NotFound();
             }
 
-            return View(dienst);
+            return View(dienstDTO);
         }
 
 	}
