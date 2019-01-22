@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace mijnZorgRooster.Models.Entities
+namespace mijnZorgRooster.DAL.Entities
 {
     public class Rooster : ITrackable
     {
@@ -13,8 +13,8 @@ namespace mijnZorgRooster.Models.Entities
 		public int Maand { get; set; }
 		public Boolean IsGevalideerd { get; set; }
 
-		public List<RoosterDienstProfiel> RoosterDienstProfielen { get; set; }
-		public List<Dienst> Diensten { get; set; }
+		public ICollection<RoosterDienstProfiel> RoosterDienstProfielen { get; set; }
+		public ICollection<Dienst> Diensten { get; set; }
         //TODO: Bij implementatie van de use case CRUD Teams, zou hier ook nog een property voor het Team moeten komen.
 
         public DateTime AanmaakDatum { get; set; }

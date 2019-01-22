@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace mijnZorgRooster.Models.Entities
+namespace mijnZorgRooster.DAL.Entities
 {
     public class Medewerker
     {

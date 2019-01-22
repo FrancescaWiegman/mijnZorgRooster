@@ -1,4 +1,5 @@
-﻿@model IEnumerable<mijnZorgRooster.Models.Entities.Contract>
+﻿@model IEnumerable<mijnZorgRooster.Models.ContractDTO
+>
 
 @{
     ViewData["Title"] = "Index";
@@ -21,12 +22,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.ContractUren)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VerlofDagenPerJaar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ParttimePercentage)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -41,12 +36,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ContractUren)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VerlofDagenPerJaar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ParttimePercentage)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ContractID">Edit</a> |

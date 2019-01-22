@@ -1,4 +1,4 @@
-﻿@model mijnZorgRooster.Models.DTO.DienstDto
+﻿@model mijnZorgRooster.Models.DienstDTO
 @{
     ViewData["Title"] = "Details";
 }
@@ -16,27 +16,27 @@
             @Html.DisplayFor(model => model.Datum)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DienstProfiel.Begintijd)
+            @Html.DisplayNameFor(model => model.Begintijd)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.DienstProfiel.Begintijd)
+            @Html.DisplayFor(model => model.Begintijd)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DienstProfiel.Eindtijd)</dt>
+            @Html.DisplayNameFor(model => model.Eindtijd)</dt>
         <dd>
-            @Html.DisplayFor(model => model.DienstProfiel.Eindtijd)
+            @Html.DisplayFor(model => model.Eindtijd)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DienstProfiel.Beschrijving)
+            @Html.DisplayNameFor(model => model.Beschrijving)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.DienstProfiel.Beschrijving)
+            @Html.DisplayFor(model => model.Beschrijving)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DienstProfiel.MinimaleBezetting)
+            @Html.DisplayNameFor(model => model.MinimaleBezetting)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.DienstProfiel.MinimaleBezetting)
+            @Html.DisplayFor(model => model.MinimaleBezetting)
         </dd>
     </dl>
 </div>

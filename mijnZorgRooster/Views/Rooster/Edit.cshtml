@@ -1,4 +1,4 @@
-﻿@model mijnZorgRooster.Models.DTO.RoosterMetDienstProfielenDto
+﻿@model mijnZorgRooster.Models.RoosterMetDienstProfielenDTO
 
 @{
 	ViewData["Title"] = "Edit";
@@ -30,9 +30,6 @@
 				<span asp-validation-for="IsGevalideerd" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				@if (!String.IsNullOrEmpty(@Model.EditViewErrorMessage)){
-				<p>@Model.EditViewErrorMessage</p>
-				}
 				<label asp-for="SelectedDienstProfielen" class="control-label"></label>
 				<select asp-for="SelectedDienstProfielen" asp-items="Model.DienstProfielOptions" class="form-control"></select>
 			</div>

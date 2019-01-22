@@ -1,55 +1,59 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.DAL;
-using mijnZorgRooster.Models.DTO;
-using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.Models;
+using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.Services;
 using System.Linq;
 using System.Threading.Tasks;
+using mijnZorgRooster.DAL.Repositories;
 
 namespace mijnZorgRooster.Controllers
 {
     public class ContractenController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IContractRepository _contractRepository;
         private readonly ICalculationsService _calculationService;
 
         public int MedewerkerID { get; private set; }
 
-        public ContractenController(ICalculationsService calculationService, IUnitOfWork unitOfWork)
+        public ContractenController(ICalculationsService calculationService, IUnitOfWork unitOfWork, IContractRepository contractRepository)
         {
             _calculationService = calculationService;
+            _contractRepository = contractRepository;
             _unitOfWork = unitOfWork; ;
         }
 
         // GET: Contracten
         public async Task<IActionResult> Index()
         {
-            return View(await _unitOfWork.ContractRepository.GetAsync());
+
+            return View(await _contractRepository.GetAsync());
         }
 
         // GET: Contracten/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            Contract contract = null;
+            ContractDTO contractDTO = null;
 
             if (id.HasValue)
             {
-                contract = await _unitOfWork.ContractRepository.GetByIdAsync(id.Value);
+                contractDTO = await _contractRepository.GetByIdAsync(id.Value);
             }
             else
-
-
             {
                 return NotFound();
             }
-            ContractDetailDto contractDetails = new ContractDetailDto()
+
+            contractDTO.ParttimePercentage = _calculationService.BerekenParttimePercentage(contractDTO.ContractUren);
+            
+            if (contractDTO.medewerker != null)
             {
-                BerekenParttimePercentage = _calculationService.BerekenParttimePercentage(contract.Medewerker.MedewerkerID)
+                contractDTO.VakantieDagen = _calculationService.BerekenVakantieDagen(contractDTO);
+            }
 
-            };
-
-            return View(contract);
+            return View(contractDTO);
         }
 
         // GET: Contracten/Create
@@ -65,7 +69,7 @@ namespace mijnZorgRooster.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.ContractRepository.Insert(contract);
+                _contractRepository.Insert(contract);
                 await _unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -80,12 +84,13 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            var contract = await _unitOfWork.ContractRepository.GetByIdAsync(id);
-            if (contract == null)
+            ContractDTO contractDTO = await _contractRepository.GetByIdAsync(id.Value);
+
+            if (contractDTO == null)
             {
                 return NotFound();
             }
-            return View(contract);
+            return View(contractDTO);
         }
 
         // POST: Contracten/Edit/5
@@ -102,7 +107,7 @@ namespace mijnZorgRooster.Controllers
             {
                 try
                 {
-                    _unitOfWork.ContractRepository.Update(contract);
+                    _contractRepository.Update(contract);
                     await _unitOfWork.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -124,10 +129,10 @@ namespace mijnZorgRooster.Controllers
         // GET: Contracten/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            Contract contract = null;
+            ContractDTO contractDTO = null;
             if (id.HasValue)
             {
-                contract = await _unitOfWork.ContractRepository.GetByIdAsync(id.Value);
+                contractDTO = await _contractRepository.GetByIdAsync(id.Value);
             }
 
             else
@@ -136,12 +141,12 @@ namespace mijnZorgRooster.Controllers
             }
 
            
-            if (contract == null)
+            if (contractDTO == null)
             {
                 return NotFound();
             }
 
-            return View(contract);
+            return View(contractDTO);
         }
 
         // POST: Contracten/Delete/5
@@ -149,15 +154,14 @@ namespace mijnZorgRooster.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contract = await _unitOfWork.ContractRepository.GetByIdAsync(id);
-            _unitOfWork.ContractRepository.Delete(contract);
+            _contractRepository.Delete(id);
             await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private async Task<bool> ContractExists(int id)
         {
-            var res = await _unitOfWork.ContractRepository.GetAsync();
+            var res = await _contractRepository.GetAsync();
             return res.Any(e => e.ContractID == id);
         }
     }

@@ -1,12 +1,12 @@
-using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.DAL.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace mijnZorgRooster.Models.DTO
+namespace mijnZorgRooster.Models
 {
-    public class MedewerkerBasisDto
+    public class MedewerkerDTO
     {
-        public MedewerkerBasisDto(Medewerker medewerker)
+        public MedewerkerDTO(Medewerker medewerker)
         {
             MedewerkerID = medewerker.MedewerkerID;
             Voornaam = medewerker.Voornaam;
@@ -52,5 +52,9 @@ namespace mijnZorgRooster.Models.DTO
 
         [StringLength(10), DataType(DataType.Date)]
         public DateTime Geboortedatum { get; set; }
+
+        public int LeeftijdInJaren { get; set; }
+
+        public string Naam { get { return string.Concat(Voornaam, " ", Tussenvoegsels, " ", Achternaam); } }
     }
 }

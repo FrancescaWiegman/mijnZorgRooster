@@ -1,4 +1,4 @@
-﻿@model mijnZorgRooster.Models.DTO.RoosterDetailDto
+﻿@model mijnZorgRooster.Models.RoosterDTO
 
 @{
 	ViewData["Title"] = "Details";
@@ -93,16 +93,16 @@
                     @item.Datum
                 </td>
                 <td>
-                    @item.DienstProfiel.Begintijd
+                    @item.Begintijd
                 </td>
                 <td>
-                    @item.DienstProfiel.Eindtijd
+                    @item.Eindtijd
                 </td>
                 <td>
-                    @item.DienstProfiel.Beschrijving
+                    @item.Beschrijving
                 </td>
                 <td>
-                    @item.DienstProfiel.MinimaleBezetting
+                    @item.MinimaleBezetting
                 </td>
             </tr>
             }

@@ -1,4 +1,5 @@
-﻿@model mijnZorgRooster.Models.Entities.Contract
+﻿@model mijnZorgRooster.Models.ContractDTO
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -27,16 +28,6 @@
                 <label asp-for="ContractUren" class="control-label"></label>
                 <input asp-for="ContractUren" class="form-control" />
                 <span asp-validation-for="ContractUren" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VerlofDagenPerJaar" class="control-label"></label>
-                <input asp-for="VerlofDagenPerJaar" class="form-control" />
-                <span asp-validation-for="VerlofDagenPerJaar" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ParttimePercentage" class="control-label"></label>
-                <input asp-for="ParttimePercentage" class="form-control" />
-                <span asp-validation-for="ParttimePercentage" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

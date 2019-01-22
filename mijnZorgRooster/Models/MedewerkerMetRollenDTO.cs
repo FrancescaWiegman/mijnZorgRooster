@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.DAL.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace mijnZorgRooster.Models.DTO
+namespace mijnZorgRooster.Models
 {
-    public class MedewerkerMetRollenDto : MedewerkerBasisDto
+    public class MedewerkerMetRollenDTO : MedewerkerDTO
     {
-        public MedewerkerMetRollenDto(Medewerker medewerker) : base(medewerker)
+        public MedewerkerMetRollenDTO(Medewerker medewerker) : base(medewerker)
         {
         }
 

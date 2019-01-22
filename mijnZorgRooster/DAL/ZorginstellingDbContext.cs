@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.Models;
-using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.DAL.Entities;
 
 namespace mijnZorgRooster.DAL
 {

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.DAL;
-using mijnZorgRooster.Models.DTO;
-using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.Models;
+using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using mijnZorgRooster.DAL.Repositories;
 
 namespace mijnZorgRooster.Controllers
 {
@@ -16,43 +16,39 @@ namespace mijnZorgRooster.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICalculationsService _calculationsService;
+        private readonly IMedewerkerRepository _medewerkerRepository;
             
-        public MedewerkersController(ICalculationsService calculationsService, IUnitOfWork unitOfWork)
+        public MedewerkersController(ICalculationsService calculationsService, IUnitOfWork unitOfWork, IMedewerkerRepository medewerkerRepository)
         {
             _calculationsService = calculationsService;
             _unitOfWork = unitOfWork;
+            _medewerkerRepository = medewerkerRepository;
         }
 
         // GET: Medewerkers
         public async Task<IActionResult> Index()
         {
-            var medewerkers = from medewerker in await _unitOfWork.MedewerkerRepository.GetAsync()
-                              select new MedewerkerBasisDto(medewerker);
-
-            return View(medewerkers);
+            return View(await _medewerkerRepository.GetAsync());
         }
 
         // GET: Medewerkers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            Medewerker medewerker = null;
+            MedewerkerDTO medewerkerDTO = null;
     
             if (id.HasValue)
             {
-                medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id.Value);
+                medewerkerDTO = await _medewerkerRepository.GetByIdAsync(id.Value);
             }
             else
             {
                 return NotFound();
             }
 
+            medewerkerDTO.LeeftijdInJaren = _calculationsService.BerekenLeeftijdInJaren(medewerkerDTO.Geboortedatum);
 
-            MedewerkerDetailDto medewerkerDetails = new MedewerkerDetailDto(medewerker)
-            {
-                LeeftijdInJaren = _calculationsService.BerekenLeeftijdInJaren(medewerker.Geboortedatum),
-            };
 
-            return View(medewerkerDetails);
+            return View(medewerkerDTO);
         }
 
         // GET: Medewerkers/Create
@@ -70,7 +66,7 @@ namespace mijnZorgRooster.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.MedewerkerRepository.Insert(medewerker);
+                _medewerkerRepository.Insert(medewerker);
                 await _unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -85,7 +81,7 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            MedewerkerMetRollenDto medewerkerDto = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollenMappedDto(id);
+            MedewerkerMetRollenDTO medewerkerDto = await _medewerkerRepository.GetMedewerkerMetRollenMappedDto(id);
 
             if (medewerkerDto == null)
             {
@@ -110,12 +106,12 @@ namespace mijnZorgRooster.Controllers
             {
                 try
                 {
-                    _unitOfWork.MedewerkerRepository.Update(medewerker);
+                    _medewerkerRepository.Update(medewerker);
 
-                    var oudMedewerker = await _unitOfWork.MedewerkerRepository.GetMedewerkerMetRollen(medewerker.MedewerkerID);
+                    var oudMedewerker = await _medewerkerRepository.GetMedewerkerMetRollen(medewerker.MedewerkerID);
                     var lijstMetRollenIds = oudMedewerker.MedewerkersRollen.Select(mr => mr.RolId).ToList();
                     if (!lijstMetRollenIds.SequenceEqual(SelectedRollen)) //check of de rollen van medewerker is veranderd
-                        _unitOfWork.MedewerkerRepository.UpdateMedewerkerRollen(oudMedewerker, SelectedRollen);
+                        _medewerkerRepository.UpdateMedewerkerRollen(oudMedewerker, SelectedRollen);
 
                     _unitOfWork.Save();
                 }
@@ -138,20 +134,18 @@ namespace mijnZorgRooster.Controllers
         // GET: Medewerkers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            Medewerker medewerker = null;
+            MedewerkerDTO medewerkerDTO = null;
 
             if (id.HasValue)
             {
-                medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id.Value);
+                medewerkerDTO = await _medewerkerRepository.GetByIdAsync(id.Value);
             }
             else
             {
                 return NotFound();
             }
 
-            MedewerkerBasisDto medewerkerDto = new MedewerkerBasisDto(medewerker);
-
-            return View(medewerkerDto);
+            return View(medewerkerDTO);
         }
 
         // POST: Medewerkers/Delete/5
@@ -159,15 +153,14 @@ namespace mijnZorgRooster.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var medewerker = await _unitOfWork.MedewerkerRepository.GetByIdAsync(id);
-            _unitOfWork.MedewerkerRepository.Delete(medewerker);
+            _medewerkerRepository.Delete(id);
             await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private async Task<bool> MedewerkerExists(int id)
         {
-            var res = await _unitOfWork.MedewerkerRepository.GetAsync();
+            var res = await _medewerkerRepository.GetAsync();
             return res.Any(m => m.MedewerkerID == id);
         }
     }
