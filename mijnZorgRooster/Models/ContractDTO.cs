@@ -21,6 +21,7 @@ namespace mijnZorgRooster.Models
         public DateTime BeginDatum { get; set; }
         public DateTime Einddatum { get; set; }
         public int ContractUren { get; set; }
+        public MedewerkerDTO medewerker { get; set; }
 
         public int ParttimePercentage { get; set; }
         public double VakantieDagen { get; set; }

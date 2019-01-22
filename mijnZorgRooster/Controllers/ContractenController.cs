@@ -28,6 +28,7 @@ namespace mijnZorgRooster.Controllers
         // GET: Contracten
         public async Task<IActionResult> Index()
         {
+
             return View(await _contractRepository.GetAsync());
         }
 
@@ -41,14 +42,16 @@ namespace mijnZorgRooster.Controllers
                 contractDTO = await _contractRepository.GetByIdAsync(id.Value);
             }
             else
-
-
             {
                 return NotFound();
             }
 
-            //TODO:
-            //contractDTO.ParttimePercentage = _calculationService.BerekenParttimePercentage(contract.Medewerker.MedewerkerID);
+            contractDTO.ParttimePercentage = _calculationService.BerekenParttimePercentage(contractDTO.ContractUren);
+            
+            if (contractDTO.medewerker != null)
+            {
+                contractDTO.VakantieDagen = _calculationService.BerekenVakantieDagen(contractDTO);
+            }
 
             return View(contractDTO);
         }

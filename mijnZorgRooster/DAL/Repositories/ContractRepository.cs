@@ -24,7 +24,20 @@ namespace mijnZorgRooster.DAL.Repositories
 
         public async Task<ContractDTO> GetByIdAsync(int id)
         {
-            return new ContractDTO(await _context.Contracten.Where(r => r.ContractID == id).SingleOrDefaultAsync());
+            Contract contract = await _context.Contracten
+                .Include(c => c.Medewerker)
+                .Where(r => r.ContractID == id)
+                .SingleOrDefaultAsync();
+
+            ContractDTO contractDTO = new ContractDTO(contract);
+
+            if (contract.Medewerker != null)
+            {
+                MedewerkerDTO medewerkerDTO = new MedewerkerDTO(contract.Medewerker);
+                contractDTO.medewerker = medewerkerDTO;
+            }
+
+            return contractDTO;
         }
 
         public void Insert(Contract entity)
