@@ -42,7 +42,7 @@ namespace mijnZorgRooster.Services
 
             return contract.Einddatum.Month - contract.BeginDatum.Month;
         }
-
+        
         public int BerekenParttimePercentage(int medewerkerID)
         {
             var medewerker = _unitOfWork.MedewerkerRepository.GetByIdAsync(medewerkerID);

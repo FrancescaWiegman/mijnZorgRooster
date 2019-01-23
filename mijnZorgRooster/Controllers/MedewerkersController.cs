@@ -66,7 +66,9 @@ namespace mijnZorgRooster.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("medewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer,Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
+        public async Task<IActionResult> Create([Bind
+            ("medewerkerID,Voornaam,Achternaam,Tussenvoegsels,Telefoonnummer,MobielNummer," +
+             "Emailadres,Adres,Postcode,Woonplaats,Geboortedatum")] Medewerker medewerker)
         {
             if (ModelState.IsValid)
             {

@@ -13,6 +13,7 @@ namespace mijnZorgRooster.DAL
         public IRoosterRepository RoosterRepository { get; private set; }
         public IGenericRepository<Rol> RolRepository { get; private set; }
         public IGenericRepository<Certificaat> CertificaatRepository { get; private set; }
+        public object IGenericRepository { get; }
         public IGenericRepository<Contract> ContractRepository { get; private set; }
 
         public UnitOfWork(ZorginstellingDbContext context)

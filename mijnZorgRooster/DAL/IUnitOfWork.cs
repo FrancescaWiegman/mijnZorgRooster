@@ -12,6 +12,8 @@ namespace mijnZorgRooster.DAL
         IGenericRepository<Rol> RolRepository { get; }
         IGenericRepository<Contract> ContractRepository { get; }
         IGenericRepository<Certificaat> CertificaatRepository { get; }
+        object IGenericRepository { get; }
+
         Task SaveAsync();
         void Save();
         void Dispose();
