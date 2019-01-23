@@ -1,65 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mijnZorgRooster.DAL;
-using mijnZorgRooster.Models.DTO;
-using mijnZorgRooster.Models.Entities;
+using mijnZorgRooster.Models;
+using mijnZorgRooster.DAL.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using mijnZorgRooster.DAL.Repositories;
 
 namespace mijnZorgRooster.Controllers
 {
     public class RollenController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRolRepository _rolRepository;
             
-        public RollenController(IUnitOfWork unitOfWork)
+        public RollenController(IUnitOfWork unitOfWork, IRolRepository rolRepository)
         {
             _unitOfWork = unitOfWork;
+            _rolRepository = rolRepository;
         }
 
         // GET: Rollen
         public async Task<IActionResult> Index()
         {
-            IList<Rol> rolList = await _unitOfWork.RolRepository.GetAsync();
-            List<RolDto> rolListDto = new List<RolDto>();
-            RolDto rolDto = new RolDto();
-
-            foreach (var rol in rolList)
-            {
-                rolDto = new RolDto
-                {
-                    RolID = rol.RolID,
-                    Naam = rol.Naam
-                };
-                rolListDto.Add(rolDto);
-            }
-
-            return View(rolListDto);
+            return View(await _rolRepository.GetAsync());
         }
 
         // GET: Rollen/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            Rol rol = null;
+            RolDTO rolDTO = null;
     
             if (id.HasValue)
             {
-                rol = await _unitOfWork.RolRepository.GetByIdAsync(id.Value);
+                rolDTO = await _rolRepository.GetByIdAsync(id.Value);
             }
             else
             {
                 return NotFound();
             }
 
-            RolDto rolDto = new RolDto
-            {
-                RolID = rol.RolID,
-                Naam = rol.Naam
-            };
-
-            return View(rolDto);
+            return View(rolDTO);
         }
 
         // GET: Rol/Create
@@ -69,24 +51,17 @@ namespace mijnZorgRooster.Controllers
         }
 
         // POST: Rol/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RolID,Naam")] RolDto rolDto)
+        public async Task<IActionResult> Create([Bind("RolID,Naam")] Rol rol)
         {
             if (ModelState.IsValid)
             {
-                Rol rol = new Rol
-                {
-                    Naam = rolDto.Naam
-                };
-
-                _unitOfWork.RolRepository.Insert(rol);
+                _rolRepository.Insert(rol);
                 await _unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(rolDto);
+            return View(rol);
         }
 
         //// GET: Rol/Edit/5
@@ -97,24 +72,17 @@ namespace mijnZorgRooster.Controllers
                 return NotFound();
             }
 
-            var rol = await _unitOfWork.RolRepository.GetByIdAsync(id);
-            if (rol == null)
+            RolDTO rolDTO = await _rolRepository.GetByIdAsync(id.Value);
+
+            if (rolDTO == null)
             {
                 return NotFound();
             }
 
-            RolDto rolDto = new RolDto
-            {
-                RolID = rol.RolID,
-                Naam = rol.Naam
-            };
-
-            return View(rolDto);
+            return View(rolDTO);
         }
 
         //// POST: Rol/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("RolID,Naam")] Rol rol)
@@ -128,12 +96,12 @@ namespace mijnZorgRooster.Controllers
             {
                 try
                 {
-                    _unitOfWork.RolRepository.Update(rol);
+                    _rolRepository.Update(rol);
                     await _unitOfWork.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await MedewerkerExists(rol.RolID))
+                    if (!await RolExists(rol.RolID))
                     {
                         return NotFound();
                     }
@@ -145,7 +113,7 @@ namespace mijnZorgRooster.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            RolDto rolDto = new RolDto
+            RolDTO rolDto = new RolDTO
             {
                 RolID = rol.RolID,
                 Naam = rol.Naam
@@ -157,28 +125,22 @@ namespace mijnZorgRooster.Controllers
         //// GET: Rol/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            Rol rol = null;
+            RolDTO rolDTO = null;
             if (id.HasValue)
             {
-                rol = await _unitOfWork.RolRepository.GetByIdAsync(id.Value);
+                rolDTO = await _rolRepository.GetByIdAsync(id.Value);
             }
             else
             {
                 return NotFound();
             }
 
-            if (rol == null)
+            if (rolDTO == null)
             {
                 return NotFound();
             }
 
-            RolDto rolDto = new RolDto
-            {
-                RolID = rol.RolID,
-                Naam = rol.Naam
-            };
-
-            return View(rolDto);
+            return View(rolDTO);
         }
 
         // POST: Rol/Delete/5
@@ -186,16 +148,15 @@ namespace mijnZorgRooster.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var rol = await _unitOfWork.RolRepository.GetByIdAsync(id);
-            _unitOfWork.RolRepository.Delete(rol);
+            _rolRepository.Delete(id);
             await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<bool> MedewerkerExists(int id)
+        private async Task<bool> RolExists(int id)
         {
-            var res = await _unitOfWork.MedewerkerRepository.GetAsync();
-            return res.Any(m => m.MedewerkerID == id);
+            var res = await _rolRepository.GetAsync();
+            return res.Any(m => m.RolID == id);
         }
     }
 }

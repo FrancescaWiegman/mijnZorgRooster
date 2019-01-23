@@ -184,7 +184,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Certificaat", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Certificaat", b =>
                 {
                     b.Property<int>("CertificaatID")
                         .ValueGeneratedOnAdd()
@@ -203,7 +203,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Certificaat");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Contract", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Contract", b =>
                 {
                     b.Property<int>("ContractID")
                         .ValueGeneratedOnAdd()
@@ -217,10 +217,6 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<int?>("MedewerkerID");
 
-                    b.Property<int>("ParttimePercentage");
-
-                    b.Property<int>("VerlofDagenPerJaar");
-
                     b.HasKey("ContractID");
 
                     b.HasIndex("MedewerkerID");
@@ -228,7 +224,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Contract");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Dienst", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Dienst", b =>
                 {
                     b.Property<int>("DienstID")
                         .ValueGeneratedOnAdd()
@@ -249,7 +245,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Dienst");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.DienstProfiel", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.DienstProfiel", b =>
                 {
                     b.Property<int>("DienstProfielID")
                         .ValueGeneratedOnAdd()
@@ -270,7 +266,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("DienstProfiel");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Medewerker", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Medewerker", b =>
                 {
                     b.Property<int>("MedewerkerID")
                         .ValueGeneratedOnAdd()
@@ -292,7 +288,8 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<string>("Postcode");
 
-                    b.Property<string>("Telefoonnummer");
+                    b.Property<string>("Telefoonnummer")
+                        .HasMaxLength(12);
 
                     b.Property<string>("Tussenvoegsels");
 
@@ -307,7 +304,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Medewerker");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerDienst", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.MedewerkerDienst", b =>
                 {
                     b.Property<int>("MedewerkerId");
 
@@ -320,7 +317,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("MedewerkerDiensten");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerRol", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.MedewerkerRol", b =>
                 {
                     b.Property<int>("MedewerkerId");
 
@@ -333,7 +330,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("MedewerkersRollen");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rol", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Rol", b =>
                 {
                     b.Property<int>("RolID")
                         .ValueGeneratedOnAdd()
@@ -346,7 +343,7 @@ namespace mijnZorgRooster.Migrations
                     b.ToTable("Rol");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Rooster", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Rooster", b =>
                 {
                     b.Property<int>("RoosterID")
                         .ValueGeneratedOnAdd()
@@ -358,29 +355,16 @@ namespace mijnZorgRooster.Migrations
 
                     b.Property<int>("Jaar");
 
-                    b.Property<DateTime>("LaatsteWijzigingsDatum");
-
                     b.Property<int>("Maand");
+
+                    b.Property<DateTime>("WijzigingsDatum");
 
                     b.HasKey("RoosterID");
 
                     b.ToTable("Rooster");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.RoosterDienst", b =>
-                {
-                    b.Property<int>("RoosterId");
-
-                    b.Property<int>("DienstId");
-
-                    b.HasKey("RoosterId", "DienstId");
-
-                    b.HasIndex("DienstId");
-
-                    b.ToTable("RoosterDiensten");
-                });
-
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.RoosterDienstProfiel", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.RoosterDienstProfiel", b =>
                 {
                     b.Property<int>("RoosterId");
 
@@ -438,86 +422,74 @@ namespace mijnZorgRooster.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Certificaat", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Certificaat", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Medewerker", "Medewerker")
                         .WithMany("Certificaten")
                         .HasForeignKey("MedewerkerID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Contract", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Contract", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Medewerker", "Medewerker")
                         .WithMany("Contracten")
                         .HasForeignKey("MedewerkerID");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Dienst", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Dienst", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.DienstProfiel", "DienstProfiel")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.DienstProfiel", "DienstProfiel")
                         .WithMany()
                         .HasForeignKey("DienstProfielID");
 
-                    b.HasOne("mijnZorgRooster.Models.Entities.Rooster")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Rooster", "Rooster")
                         .WithMany("Diensten")
-                        .HasForeignKey("RoosterID");
+                        .HasForeignKey("RoosterID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.Medewerker", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.Medewerker", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Dienst")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Dienst")
                         .WithMany("Medewerkers")
                         .HasForeignKey("DienstID");
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerDienst", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.MedewerkerDienst", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Dienst", "Dienst")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Dienst", "Dienst")
                         .WithMany()
                         .HasForeignKey("DienstId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Medewerker", "Medewerker")
                         .WithMany()
                         .HasForeignKey("MedewerkerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.MedewerkerRol", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.MedewerkerRol", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Medewerker", "Medewerker")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Medewerker", "Medewerker")
                         .WithMany("MedewerkersRollen")
                         .HasForeignKey("MedewerkerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("mijnZorgRooster.Models.Entities.Rol", "Rol")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Rol", "Rol")
                         .WithMany("MedewerkersRollen")
                         .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.RoosterDienst", b =>
+            modelBuilder.Entity("mijnZorgRooster.DAL.Entities.RoosterDienstProfiel", b =>
                 {
-                    b.HasOne("mijnZorgRooster.Models.Entities.Dienst", "Dienst")
-                        .WithMany()
-                        .HasForeignKey("DienstId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("mijnZorgRooster.Models.Entities.Rooster", "Rooster")
-                        .WithMany()
-                        .HasForeignKey("RoosterId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("mijnZorgRooster.Models.Entities.RoosterDienstProfiel", b =>
-                {
-                    b.HasOne("mijnZorgRooster.Models.Entities.DienstProfiel", "DienstProfiel")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.DienstProfiel", "DienstProfiel")
                         .WithMany()
                         .HasForeignKey("DienstProfielId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("mijnZorgRooster.Models.Entities.Rooster", "Rooster")
+                    b.HasOne("mijnZorgRooster.DAL.Entities.Rooster", "Rooster")
                         .WithMany("RoosterDienstProfielen")
                         .HasForeignKey("RoosterId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using mijnZorgRooster.DAL;
+using mijnZorgRooster.DAL.Entities;
+using mijnZorgRooster.DAL.Repositories;
+using mijnZorgRooster.Models;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using mijnZorgRooster.Models.DTO;
-using mijnZorgRooster.Models.Entities;
-using mijnZorgRooster.DAL;
-using mijnZorgRooster.Services;
-
 
 namespace mijnZorgRooster.Controllers
 {
@@ -17,43 +13,35 @@ namespace mijnZorgRooster.Controllers
     {
 
 		private readonly IUnitOfWork _unitOfWork;
+        private readonly IDienstProfielRepository _dienstProfielRepository;
 
-		public DienstProfielController(IUnitOfWork unitOfWork)
+		public DienstProfielController(IUnitOfWork unitOfWork, IDienstProfielRepository dienstProfielRepository)
 		{
 			_unitOfWork = unitOfWork;
+            _dienstProfielRepository = dienstProfielRepository;
 		}
 
 		// GET: DienstProfiel
 		public async Task<IActionResult> Index()
         {
-			IList<DienstProfiel> dienstProfielList = await _unitOfWork.DienstProfielRepository.GetAsync();
-			List<DienstProfielDto> dienstProfielenDtoList = new List<DienstProfielDto>();
-			DienstProfielDto dienstProfielDto = new DienstProfielDto();
-
-			foreach (var dp in dienstProfielList)
-			{
-				dienstProfielDto = new DienstProfielDto(dp);
-				dienstProfielenDtoList.Add(dienstProfielDto);
-			}
-			return View(dienstProfielenDtoList);
+			return View(await _dienstProfielRepository.GetAsync());
 		}
 
 		// GET: DienstProfiel/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
-			DienstProfiel dienstProfiel = null;
+			DienstProfielDTO dienstProfielDTO = null;
 
 			if (id.HasValue)
 			{
-				dienstProfiel = await _unitOfWork.DienstProfielRepository.GetByIdAsync(id.Value);
+                dienstProfielDTO = await _dienstProfielRepository.GetByIdAsync(id.Value);
 			}
 			else
 			{
 				return NotFound();
 			}
 
-			var dienstProfielDto = new DienstProfielDto(dienstProfiel);
-			return View(dienstProfielDto);
+			return View(dienstProfielDTO);
 		}
 
 		// GET: DienstProfiel/Create
@@ -65,11 +53,11 @@ namespace mijnZorgRooster.Controllers
 		// POST: DienstProfiel/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("DienstProfielID,Beschrijving,VolgordeNr,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
+		public async Task<IActionResult> Create([Bind("DienstProfielID,Beschrijving,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
 		{
 			if (ModelState.IsValid)
 			{
-				_unitOfWork.DienstProfielRepository.Insert(dienstProfiel);
+				_dienstProfielRepository.Insert(dienstProfiel);
 				await _unitOfWork.SaveAsync();
 				return RedirectToAction(nameof(Index));
 			}
@@ -84,20 +72,19 @@ namespace mijnZorgRooster.Controllers
 				return NotFound();
 			}
 
-			var dienstProfiel = await _unitOfWork.DienstProfielRepository.GetByIdAsync(id);
-			if (dienstProfiel == null)
+            DienstProfielDTO dienstProfielDTO = await _dienstProfielRepository.GetByIdAsync(id.Value);
+			if (dienstProfielDTO == null)
 			{
 				return NotFound();
 			}
 
-			var dienstProfielDto = new DienstProfielDto(dienstProfiel);
-			return View(dienstProfielDto);
+			return View(dienstProfielDTO);
 		}
 
 		// POST: DienstProfiel/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("DienstProfielID,Beschrijving,VolgordeNr,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
+		public async Task<IActionResult> Edit(int id, [Bind("DienstProfielID,Beschrijving,Begintijd,Eindtijd,MinimaleBezetting")] DienstProfiel dienstProfiel)
 		{
 			if (id != dienstProfiel.DienstProfielID)
 			{
@@ -108,7 +95,7 @@ namespace mijnZorgRooster.Controllers
 			{
 				try
 				{
-					_unitOfWork.DienstProfielRepository.Update(dienstProfiel);
+					_dienstProfielRepository.Update(dienstProfiel);
 					await _unitOfWork.SaveAsync();
 				}
 				catch (DbUpdateConcurrencyException)
@@ -130,22 +117,23 @@ namespace mijnZorgRooster.Controllers
 		// GET: DienstProfiel/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
-			DienstProfiel dienstProfiel = null;
+			DienstProfielDTO dienstProfielDTO = null;
+
 			if (id.HasValue)
 			{
-				dienstProfiel = await _unitOfWork.DienstProfielRepository.GetByIdAsync(id.Value);
+                dienstProfielDTO = await _dienstProfielRepository.GetByIdAsync(id.Value);
 			}
 			else
 			{
 				return NotFound();
 			}
 
-			if (dienstProfiel == null)
+			if (dienstProfielDTO == null)
 			{
 				return NotFound();
 			}
-			var dienstProfielDto = new DienstProfielDto(dienstProfiel);
-			return View(dienstProfielDto);
+
+			return View(dienstProfielDTO);
 		}
 
 		// POST: DienstProfiel/Delete/5
@@ -153,15 +141,14 @@ namespace mijnZorgRooster.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			var dienstProfiel = await _unitOfWork.DienstProfielRepository.GetByIdAsync(id);
-			_unitOfWork.DienstProfielRepository.Delete(dienstProfiel);
+			_dienstProfielRepository.Delete(id);
 			await _unitOfWork.SaveAsync();
 			return RedirectToAction(nameof(Index));
 		}
 
 		private async Task<bool> DienstProfielExists(int id)
 		{
-			var res = await _unitOfWork.DienstProfielRepository.GetAsync();
+			var res = await _dienstProfielRepository.GetAsync();
 			return res.Any(d => d.DienstProfielID == id);
 		}
 	}

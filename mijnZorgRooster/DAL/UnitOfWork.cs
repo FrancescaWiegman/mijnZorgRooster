@@ -1,5 +1,4 @@
-﻿using mijnZorgRooster.Models.Entities;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace mijnZorgRooster.DAL
@@ -7,27 +6,11 @@ namespace mijnZorgRooster.DAL
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ZorginstellingDbContext _context;
-        public IMedewerkerRepository MedewerkerRepository { get; private set; }
-        public IGenericRepository<DienstProfiel> DienstProfielRepository { get; private set; }
-        public IDienstRepository DienstRepository { get; private set; }
-        public IRoosterRepository RoosterRepository { get; private set; }
-        public IGenericRepository<Rol> RolRepository { get; private set; }
-        public IGenericRepository<Certificaat> CertificaatRepository { get; private set; }
-        public object IGenericRepository { get; }
-        public IGenericRepository<Contract> ContractRepository { get; private set; }
 
         public UnitOfWork(ZorginstellingDbContext context)
         {
             _context = context;
-            MedewerkerRepository = new MedewerkerRepository(context);
-            DienstProfielRepository = new GenericRepository<DienstProfiel>(context);
-            DienstRepository = new DienstRepository(context);
-            RoosterRepository = new RoosterRepository(context);
-            RolRepository = new GenericRepository<Rol>(context);
-            CertificaatRepository = new GenericRepository<Certificaat>(context);
-            ContractRepository = new GenericRepository<Contract>(context);
         }
-
 
         public void Save()
         {
