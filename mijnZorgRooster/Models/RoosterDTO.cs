@@ -24,7 +24,7 @@ namespace mijnZorgRooster.Models
         [Display(Name = "Wijzigingsdatum")]
         public DateTime WijzigingsDatum { get; set; }
         [Display(Name = "Gevalideerd?")]
-        public Boolean IsGevalideerd { get; set; }
+        public bool IsGevalideerd { get; set; }
         public IEnumerable<DienstDTO> Diensten { get; set; }
         public IEnumerable<RoosterDienstProfiel> RoosterDienstProfielen { get; set; }
 

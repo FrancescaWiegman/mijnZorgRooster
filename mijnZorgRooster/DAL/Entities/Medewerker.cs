@@ -11,30 +11,30 @@ namespace mijnZorgRooster.DAL.Entities
         public int MedewerkerID { get; set; }
 
         //[Required, StringLength(40)]
-        public String Voornaam { get; set; }
+        public string Voornaam { get; set; }
 
         //[Required, StringLength(40)]
-        public String Achternaam { get; set; }
+        public string Achternaam { get; set; }
 
-        public String Tussenvoegsels { get; set; }
+        public string Tussenvoegsels { get; set; }
 
         [StringLength(12)]
-        public String Telefoonnummer { get; set; }
+        public string Telefoonnummer { get; set; }
 
         //[Required, StringLength(12)]
-        public String MobielNummer { get; set; }
+        public string MobielNummer { get; set; }
 
         [Required, StringLength(40)]
-        public String Emailadres { get; set; }
+        public string Emailadres { get; set; }
 
         //[Required, StringLength(100)]
-        public String Adres { get; set; }
+        public string Adres { get; set; }
 
         //[Required, StringLength(6)]
-        public String Postcode { get; set; }
+        public string Postcode { get; set; }
 
         //[Required, StringLength(50)]
-        public String Woonplaats { get; set; }
+        public string Woonplaats { get; set; }
 
         //[Required, StringLength(10)]
         public DateTime Geboortedatum { get; set; }

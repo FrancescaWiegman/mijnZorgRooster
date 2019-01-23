@@ -5,9 +5,6 @@ namespace mijnZorgRooster.Models
 {
 	public class DienstProfielDTO
 	{
-		public DienstProfielDTO()
-		{
-		}
 		public DienstProfielDTO(DienstProfiel dienstProfiel)
 		{
 			DienstProfielID = dienstProfiel.DienstProfielID;

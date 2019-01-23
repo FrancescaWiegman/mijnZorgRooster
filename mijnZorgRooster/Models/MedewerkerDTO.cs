@@ -24,31 +24,31 @@ namespace mijnZorgRooster.Models
         public int MedewerkerID { get; set; }
 
         [StringLength(40)]
-        public String Voornaam { get; set; }
+        public string Voornaam { get; set; }
 
         [StringLength(40)]
-        public String Achternaam { get; set; }
+        public string Achternaam { get; set; }
 
-        [Display(Name = "Tussenvoegsels(s)")]
-        public String Tussenvoegsels { get; set; }
+        [Display(Name = "Tussenvoegsel(s)")]
+        public string Tussenvoegsels { get; set; }
 
         [StringLength(12)]
-        public String Telefoonnummer { get; set; }
+        public string Telefoonnummer { get; set; }
 
         [StringLength(12), Display(Name = "Mobiel Telefoonnummer")]
-        public String MobielNummer { get; set; }
+        public string MobielNummer { get; set; }
 
         [StringLength(40), Display(Name = "E-mailadres")]
-        public String Emailadres { get; set; }
+        public string Emailadres { get; set; }
 
         [StringLength(100)]
-        public String Adres { get; set; }
+        public string Adres { get; set; }
 
         [StringLength(6)]
-        public String Postcode { get; set; }
+        public string Postcode { get; set; }
 
         [StringLength(50)]
-        public String Woonplaats { get; set; }
+        public string Woonplaats { get; set; }
 
         [StringLength(10), DataType(DataType.Date)]
         public DateTime Geboortedatum { get; set; }

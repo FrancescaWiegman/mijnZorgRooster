@@ -11,7 +11,7 @@ namespace mijnZorgRooster.DAL.Entities
 		public int RoosterID { get; set; }
         public int Jaar { get; set; }
 		public int Maand { get; set; }
-		public Boolean IsGevalideerd { get; set; }
+		public bool IsGevalideerd { get; set; }
 
 		public ICollection<RoosterDienstProfiel> RoosterDienstProfielen { get; set; }
 		public ICollection<Dienst> Diensten { get; set; }
