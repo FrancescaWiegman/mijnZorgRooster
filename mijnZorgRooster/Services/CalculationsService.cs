@@ -14,7 +14,6 @@ namespace mijnZorgRooster.Services
         public CalculationsService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-         
         }
 
         public int BerekenLeeftijdInJaren(DateTime geboortedatum)
@@ -39,13 +38,15 @@ namespace mijnZorgRooster.Services
                 contract.Einddatum = lastDay;
             }
 
-            return contract.Einddatum.Month - contract.BeginDatum.Month;
+			int maandenApart = 12 * (contract.BeginDatum.Year - contract.Einddatum.Year) + contract.BeginDatum.Month - contract.Einddatum.Month;
+			return Math.Abs(maandenApart);
         }
 
         public int BerekenParttimePercentage(int contractUren)
         {
-            return contractUren / fulltime * 100;
-        }
+			var uitslag = (double)contractUren / (double)fulltime * 100; // TODO: Dit casten is niet zo mooi, maar wel nodig. Misschien nog wat beters zoeken
+			return (int)uitslag;
+		}
 
         public double BerekenVakantieDagen(ContractDTO contract)
         {
@@ -54,7 +55,6 @@ namespace mijnZorgRooster.Services
 
             return vakantieDagenFulltime;
         }
-
 
     }
 }
