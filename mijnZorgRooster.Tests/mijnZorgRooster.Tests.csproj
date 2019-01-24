@@ -28,9 +28,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="DAL\" />
-  </ItemGroup>
-
 </Project>

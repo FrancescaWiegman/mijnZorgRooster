@@ -6,6 +6,10 @@ namespace mijnZorgRooster.Models
 {
     public class MedewerkerDTO
     {
+        public MedewerkerDTO()
+        {
+        }
+
         public MedewerkerDTO(Medewerker medewerker)
         {
             MedewerkerID = medewerker.MedewerkerID;
