@@ -34,7 +34,7 @@ namespace mijnZorgRooster.DAL.Repositories
             if (contract.Medewerker != null)
             {
                 MedewerkerDTO medewerkerDTO = new MedewerkerDTO(contract.Medewerker);
-                contractDTO.medewerker = medewerkerDTO;
+                contractDTO.Medewerker = medewerkerDTO;
             }
 
             return contractDTO;

@@ -48,7 +48,7 @@ namespace mijnZorgRooster.Controllers
 
             contractDTO.ParttimePercentage = _calculationService.BerekenParttimePercentage(contractDTO.ContractUren);
             
-            if (contractDTO.medewerker != null)
+            if (contractDTO.Medewerker != null)
             {
                 contractDTO.VakantieDagen = _calculationService.BerekenVakantieDagen(contractDTO);
             }
