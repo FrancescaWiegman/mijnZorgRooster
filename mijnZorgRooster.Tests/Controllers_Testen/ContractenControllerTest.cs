@@ -35,7 +35,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         public async Task IndexTest()
         {
             _contractRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetContracts()));
-
             var controller = new ContractenController(_calculationsService, _unitOfWork.Object, _contractRepository.Object);
 
             //Act 
@@ -60,7 +59,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             contract.medewerker = medewerkerDTO;
 
             _contractRepository.Setup(repo => repo.GetByIdAsync(contractID)).Returns(Task.FromResult(contract));
-
             var controller = new ContractenController(_calculationsService, _unitOfWork.Object, _contractRepository.Object);
 
             //Act
@@ -144,8 +142,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                     BeginDatum = DateTime.Parse("25-1-2016"),
                     Einddatum = DateTime.Parse("28-03-2019"),
                     ContractUren = 25,
-
-
                 },
                 new ContractDTO()
                 {
@@ -153,7 +149,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                     BeginDatum = DateTime.Parse("25-1-2016"),
                     Einddatum = DateTime.Parse("28-03-2019"),
                     ContractUren = 25,
-
                 },
                 new ContractDTO()
                 {
@@ -161,7 +156,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                     BeginDatum = DateTime.Parse("25-1-2016"),
                     Einddatum = DateTime.Parse("28-03-2019"),
                     ContractUren = 25,
-
                 },
                 new ContractDTO()
                 {
@@ -169,7 +163,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                     BeginDatum = DateTime.Parse("25-1-2016"),
                     Einddatum = DateTime.Parse("28-03-2019"),
                     ContractUren = 25,
-
                 }
             };
             return contracten;
