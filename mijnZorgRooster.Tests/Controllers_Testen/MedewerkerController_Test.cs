@@ -10,7 +10,7 @@ using mijnZorgRooster.Controllers;
 using mijnZorgRooster.DAL;
 using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.DAL.Repositories;
-
+using mijnZorgRooster.Models;
 using mijnZorgRooster.Services;
 using Moq;
 using Xunit;
@@ -30,6 +30,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             var mockRepo = new Mock<ICalculationsService>();
             var mockRepo1 = new Mock<IUnitOfWork>();
             var mockRepo2 = new Mock<IMedewerkerRepository>();
+
             var controller = new MedewerkersController(mockRepo.Object, mockRepo1.Object, mockRepo2.Object);
 
             //Act
@@ -37,22 +38,32 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             //Assert
             Assert.True(true);
         }
+
         [Fact]
         public async Task DetailTest()
         {
             //Arange
-            int MedewerkerID = 1;
+            int medewerkerID = 1;
             var mockRepo = new Mock<ICalculationsService>();
+
             var mockRepo1 = new Mock<IUnitOfWork>();
             var mockRepo2 = new Mock<IMedewerkerRepository>();
-            var medewerker = (GetMedewerkers().FirstOrDefault(m => m.MedewerkerID == MedewerkerID));
-            
+            var medewerker = (GetMedewerkers().FirstOrDefault(m => m.MedewerkerID == medewerkerID));
+            mockRepo.Setup(repo => repo.BerekenLeeftijdInJaren(medewerker.Geboortedatum)).Returns(39);
+
             var controller = new MedewerkersController(mockRepo.Object, mockRepo1.Object, mockRepo2.Object);
 
             //Act
-        }
-        [Fact]
+            var result = controller.Details(1);
 
+            //Assert
+
+            Assert.Equal(1, medewerker.MedewerkerID);
+            Assert.Equal("Francesca", medewerker.Voornaam);
+            Assert.Equal(DateTime.Parse("23-06-1979"), medewerker.Geboortedatum);
+        }
+
+        [Fact]
         public async Task DetailTestNotFound()
         {
             //Arange
@@ -82,8 +93,28 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(result);
+
         }
-        
+
+        [Fact]
+        public async Task CreateFilledInInvalidTest()
+        {
+            //Arange
+            int MedewerkerID = 1;
+            var mockRepo = new Mock<IUnitOfWork>();
+            var mockRepo1 = new Mock<IMedewerkerRepository>();
+            var mockRepo2 = new Mock<ICalculationsService>();
+            var medewerker = (GetMedewerkers().FirstOrDefault(m => m.MedewerkerID == MedewerkerID));
+            mockRepo1.Setup(repo => repo.Insert(medewerker));
+            var controller = new MedewerkersController(mockRepo2.Object, mockRepo.Object, mockRepo1.Object);
+            controller.ModelState.AddModelError("Achternaam", "Required");
+
+            //Act
+            var result = await controller.Create(null);
+
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+        }
 
         private List<Medewerker> GetMedewerkers()
         {
@@ -115,57 +146,40 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 
             return medewerkers;
         }
-        //private Medewerker MyGetMedewerkerMetRollen()
-        //{
-        //    Medewerker m = GetMedewerkers().ElementAt(0);
-        //    List<MedewerkerRol> lmr = new List<MedewerkerRol>();
-        //    lmr.Add(new MedewerkerRol()
-        //    {
-        //        RolId = 1,
-        //        Rol = new Rol()
-        //        {
-        //            Naam = "Beheerder",
-        //            RolID = 1
-        //        },
-        //        MedewerkerId = m.MedewerkerID,
-        //        Medewerker = m
-
-        //    });
-
-        //    m.MedewerkersRollen = lmr;
-
-        //    return m;
-
-        //}
-        //private List<int> GetRollen()
-        //{
-        //    var rollen = new List<int>();
-        //    rollen.Add(1);
-        //    rollen.Add(2);
-        //    return rollen;
-        //}
     }
 }
-//[Fact]
-//public async Task EditTestModelStateNotValid()
-//{
-//    //Arange
-//    int MedewerkerID = 1;
-//    var mockRepo = new Mock<ICalculationsService>();
-//    var mockRepo1 = new Mock<IUnitOfWork>();
-//    var mockRepo2 = new Mock<IMedewerkerRepository>();
-//    var controller = new MedewerkersController(mockRepo.Object, mockRepo1.Object, mockRepo2.Object);
-//    var medewerker = (GetMedewerkers().FirstOrDefault(m => m.MedewerkerID == MedewerkerID));
-//    var medewerkerRol = GetRollen();
-//    mockRepo1.Setup(repo => repo.MedewerkerRepository.Update(medewerker));
-//    mockRepo.Setup(repo => repo.MedewerkerRepository.GetMedewerkerMetRollen(MedewerkerID)).ReturnsAsync(MyGetMedewerkerMetRollen());
-//    var mockRepo2 = new Mock<ICalculationsService>();
-//    var controller = new MedewerkersController(mockRepo2.Object, mockRepo.Object);
+//        private Medewerker MyGetMedewerkerMetRollen()
+//        {
+//            Medewerker m = GetMedewerkers().ElementAt(0);
+//            List<MedewerkerRol> lmr = new List<MedewerkerRol>();
+//            lmr.Add(new MedewerkerRol()
+//            {
+//                RolId = 1,
+//                Rol = new Rol()
+//                {
+//                    Naam = "Beheerder",
+//                    RolID = 1
+//                },
+//                MedewerkerId = m.MedewerkerID,
+//                Medewerker = m
 
-//    //Act
-//    var result = await controller.Create(medewerker);
-//    //Assert
-//    var viewResult = Assert.IsType<RedirectToActionResult>(result);
+//            });
+
+//            m.MedewerkersRollen = lmr;
+
+//            return m;
+
+//        }
+//        private List<int> GetRollen()
+//        {
+//            var rollen = new List<int>();
+//            rollen.Add(1);
+//            rollen.Add(2);
+//            return rollen;
+//        }
+//    }
+//}
+
 //}
 //Assert
 //    var viewResult = Assert.IsType<ViewResult>(result);
@@ -202,35 +216,8 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 //    Assert.Equal(39, model.LeeftijdInJaren);
 
 //}
-//[Fact]
-//public async Task DetailTestNotFound()
-//{
-//    //Arange
-//    var mockRepo = new Mock<IUnitOfWork>();
-//    var mockRepo2 = new Mock<ICalculationsService>();
-//    var controller = new MedewerkersController(mockRepo2.Object, mockRepo.Object);
 
-//    //Act
-//    var result = await controller.Details(null);
 
-//    //Assert
-//    var contentResult = Assert.IsType<NotFoundResult>(result);
-
-//}
-//[Fact]
-//public async Task CreateTest()
-//{
-//    //Arange
-//    var mockRepo = new Mock<IUnitOfWork>();
-//    var mockRepo2 = new Mock<ICalculationsService>();
-//    var controller = new MedewerkersController(mockRepo2.Object, mockRepo.Object);
-
-//    //Act
-//    var result = controller.Create();
-
-//    //Assert
-//    var viewResult = Assert.IsType<ViewResult>(result);
-//}
 //[Fact]
 //public async Task CreateFilledInTest()
 //{
@@ -253,24 +240,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 
 ////TODO: Deze werkt wss nog niet omdat er nog geen validatie uitgevoerd wordt op ModelIsValid
 
-//[Fact]
-//public async Task CreateFilledInInvalidTest()
-//{
-//    //Arange
-//    int MedewerkerID = 1;
-//    var mockRepo = new Mock<IUnitOfWork>();
-//    var medewerker = (GetMedewerkers().FirstOrDefault(m => m.MedewerkerID == MedewerkerID));
-//    mockRepo.Setup(repo => repo.MedewerkerRepository.Insert(medewerker));
 
-//    var mockRepo2 = new Mock<ICalculationsService>();
-//    var controller = new MedewerkersController(mockRepo2.Object, mockRepo.Object);
-//    controller.ModelState.AddModelError("Achternaam", "Required");
-
-//    //Act
-//    var result = await controller.Create(null);
-
-//    //Assert
-//    var viewResult = Assert.IsType<ViewResult>(result);
 
 //}
 //[Fact]

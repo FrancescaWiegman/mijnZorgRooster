@@ -11,6 +11,7 @@ using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.DAL.Repositories;
 using mijnZorgRooster.Models;
 using mijnZorgRooster.Services;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Moq;
 using Xunit;
 
@@ -57,23 +58,24 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         
         }
         [Fact]
-        public void DetailsTest()
+        public async Task DetailsTest()
         {
             //Arrange
             var ContractID = 1;
             var mockRepo = new Mock<ICalculationsService>();
             var mockRepo2 = new Mock<IContractRepository>();
-            var mockRepo3 = new Mock<ContractRepository>();
-            var contracten = (GetContracts().FirstOrDefault(m => m.ContractID ==  ContractID));
-            //mockRepo3.Setup(repo => ContractRepository.ReferenceEquals(ContractRepository(ContractID), ContractID));
+            //var mockRepo3 = new Mock<ContractRepository>();
+            var contracten = (GetContracts().FirstOrDefault(m => m.ContractID == ContractID));
+            var medewerkers = GetMedewerkers();
+            var medewerkerDTO = new MedewerkerDTO(medewerkers[1]);
+            contracten.medewerker = medewerkerDTO;
+            //mockRepo2.Setup(repo => repo.)
             var mockRepo1 = new Mock<IUnitOfWork>();
 
             var controller = new ContractenController(mockRepo.Object, mockRepo1.Object, mockRepo2.Object);
 
-           
-
-          //Act
-           //var result = await controller.Details(ContractID);
+            //Act
+            var result = controller.Details(ContractID);
 
             //Assert
             //var viewResult = Assert.IsType<ViewResult>(result);
@@ -116,6 +118,37 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             var viewResult = Assert.IsType<ViewResult>(result);
         }
 
+     
+        private List<Medewerker> GetMedewerkers()
+        {
+            var medewerkers = new List<Medewerker>();
+            medewerkers.Add(new Medewerker()
+            {
+                MedewerkerID = 1,
+                Voornaam = "Francesca",
+                Achternaam = "Wiegman",
+                Adres = "Hunenborg 6",
+                Postcode = "7556MR",
+                Woonplaats = "Hengelo",
+                Emailadres = "francescawiegman@ziggo.nl",
+                Telefoonnummer = "0652526090",
+                Geboortedatum = DateTime.Parse("23-06-1979")
+            });
+
+            medewerkers.Add(new Medewerker()
+            {
+                MedewerkerID = 2,
+                Voornaam = "Sylvester",
+                Achternaam = "Dooren",
+                Tussenvoegsels = "van",
+                Adres = "Hunenborg 6",
+                Postcode = "7556MR",
+                Woonplaats = "Hengelo",
+                Geboortedatum = DateTime.Parse("27-12-2002")
+            });
+
+            return medewerkers;
+        }
         private List<ContractDTO> GetContracts()
         {
             var contracten = new List<ContractDTO>();
@@ -125,6 +158,8 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                 BeginDatum = DateTime.Parse("25-1-2016"),
                 Einddatum = DateTime.Parse("28-03-2019"),
                 ContractUren = 25,
+               // medewerker = 
+                
 
             });
             contracten.Add(new ContractDTO()
