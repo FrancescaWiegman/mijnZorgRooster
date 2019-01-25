@@ -7,14 +7,8 @@ namespace mijnZorgRooster.Services
 {
     public class CalculationsService : ICalculationsService
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly double vakantieUren = 237.4;
         const int fulltime = 36;
-
-        public CalculationsService(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
 
         public int BerekenLeeftijdInJaren(DateTime geboortedatum)
         {
