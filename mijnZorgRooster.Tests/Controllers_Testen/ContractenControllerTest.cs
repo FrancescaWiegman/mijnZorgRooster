@@ -28,22 +28,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         public async Task IndexTest()
         {
             //Arrange
-            var data = new List<ContractDTO>()
-            {
-                new ContractDTO {ContractID = 1, BeginDatum = DateTime.Parse("25-1-2016"),
-                    Einddatum = DateTime.Parse("28-03-2019"), ContractUren = 25,
-                    medewerker = null, ParttimePercentage= 20, VakantieDagen= 25},
-                new ContractDTO{ContractID = 2, BeginDatum = DateTime.Parse("25-1-2016"),
-                    Einddatum = DateTime.Parse("28-03-2019"), ContractUren = 25,
-                    medewerker = null, ParttimePercentage= 20, VakantieDagen= 25},
-                new ContractDTO {ContractID =3, BeginDatum = DateTime.Parse("25-1-2016"),
-                    Einddatum = DateTime.Parse("28-03-2019"), ContractUren = 25,
-                    medewerker = null, ParttimePercentage= 20, VakantieDagen= 25},
-                new ContractDTO{ContractID = 4, BeginDatum = DateTime.Parse("25-1-2016"),
-                    Einddatum = DateTime.Parse("28-03-2019"), ContractUren = 25,
-                    medewerker = null, ParttimePercentage= 20, VakantieDagen= 25}
-            };
-
+           
             var mockRepo = new Mock<ICalculationsService>();
             var mockRepo2 = new Mock<IContractRepository>();
             var mockRepo1 = new Mock<IUnitOfWork>();
@@ -54,6 +39,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             var result = await controller.Index();
 
             //Assert
+            
             Assert.True(true);
         
         }
@@ -82,7 +68,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             //var model = Assert.IsType<ContractDTO>(
             //        viewResult.ViewData.Model);
 
-            //Assert.Equal(1, model.ContractID);
+            Assert.Equal(1, contracten.ContractID);
         }
 
         [Fact]

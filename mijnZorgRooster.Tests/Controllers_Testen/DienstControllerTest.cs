@@ -64,8 +64,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             //Assert
             var contentResult = Assert.IsType<NotFoundResult>(result);
         }
-
-
+        
         private List<DienstProfiel> GetDienstProfielen()
         {
             var dienstProfielen = new List<DienstProfiel>();
