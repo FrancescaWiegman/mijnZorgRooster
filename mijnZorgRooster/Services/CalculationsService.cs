@@ -28,18 +28,26 @@ namespace mijnZorgRooster.Services
             return leeftijdInJaren;
         }
 
-        private int BerekenMaandenInDienst(ContractDTO contract)
+        public int BerekenMaandenInDienst(ContractDTO contract)
         {
             int year = DateTime.Now.Year;
-            DateTime lastDay = new DateTime(year, 12, 31);
+            DateTime lastDay = new DateTime(DateTime.Now.Year, 12, 31);
+            DateTime firstDay = new DateTime(DateTime.Now.Year, 1,1);
 
             if (contract.Einddatum == DateTime.MinValue)
             {
                 contract.Einddatum = lastDay;
             }
 
-			int maandenApart = 12 * (contract.BeginDatum.Year - contract.Einddatum.Year) + contract.BeginDatum.Month - contract.Einddatum.Month;
-			return Math.Abs(maandenApart);
+            if (contract.BeginDatum < DateTime.Now)
+            {
+                contract.BeginDatum = firstDay;
+            }
+
+			//int maandenApart = 12 * (contract.BeginDatum.Year - contract.Einddatum.Year) + contract.BeginDatum.Month - contract.Einddatum.Month;
+			//return Math.Abs(maandenApart);
+            int maandenInDienst = contract.Einddatum.Month - contract.BeginDatum.Month + 1;
+            return maandenInDienst;
         }
 
         public int BerekenParttimePercentage(int contractUren)
@@ -51,7 +59,13 @@ namespace mijnZorgRooster.Services
         public double BerekenVakantieDagen(ContractDTO contract)
         {
             int maandenInDienst = BerekenMaandenInDienst(contract);
-            var vakantieDagenFulltime = (maandenInDienst / 12 * vakantieUren) / 8;
+            double x =(maandenInDienst *100);
+            double y = (x / 1200);
+
+            double vakantieUrenFulltime = y;
+            double vakantieUrenFulltimeDitJaar = y * vakantieUren;
+            double vakantieDagenFulltime = vakantieUrenFulltimeDitJaar / 8;
+            
 
             return vakantieDagenFulltime;
         }
