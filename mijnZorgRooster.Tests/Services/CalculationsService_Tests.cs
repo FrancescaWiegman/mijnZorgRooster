@@ -13,7 +13,7 @@ namespace mijnZorgRooster.Tests
 
         public CalculationsService_Tests()
         {
-            _calculationsService = new Services.CalculationsService(null);
+            _calculationsService = new Services.CalculationsService();
         }
 
         [Fact]
