@@ -170,13 +170,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 //            return m;
 
 //        }
-//        private List<int> GetRollen()
-//        {
-//            var rollen = new List<int>();
-//            rollen.Add(1);
-//            rollen.Add(2);
-//            return rollen;
-//        }
+//        
 //    }
 //}
 
