@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using mijnZorgRooster.Controllers;
 using mijnZorgRooster.DAL;
 using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.DAL.Repositories;
+using mijnZorgRooster.Models;
 using Moq;
 using Xunit;
 
@@ -14,59 +16,73 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 {
     public class DienstProfielControllerTest
     {
+        private Mock<IUnitOfWork> _unitOfWork;
+        private Mock<IDienstProfielRepository> _dienstProfielRepository;
+
+        public DienstProfielControllerTest()
+        {
+            _unitOfWork = new Mock<IUnitOfWork>();
+            _dienstProfielRepository = new Mock<IDienstProfielRepository>();
+        }
+
         [Fact]
-        public async Task IndexTest()
+        public async Task Index_ReturnsAViewResult_WithAListOfDienstProfielDTOs()
         {
             //Arrange
-            var mockRepo = new Mock<IUnitOfWork>();
-            var mockRepo1 = new Mock<IDienstProfielRepository>();
-            var controller = new DienstProfielController(mockRepo.Object, mockRepo1.Object);
+            _dienstProfielRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetDienstProfielen()));
+            var controller = new DienstProfielController(_unitOfWork.Object, _dienstProfielRepository.Object);
 
             //Act
             var result = await controller.Index();
+
             //Assert
-            Assert.True(true);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IEnumerable<DienstProfielDTO>>(
+                viewResult.ViewData.Model);
+            Assert.Equal(2, model.Count());
         }
 
         [Fact]
-        public async Task DetailTest()
+        public async Task Detail_ReturnsAViewResult_WithADienstProfielDTO()
         {
             //Arange
             int dienstProfielID = 1;
-            var mockRepo = new Mock<IUnitOfWork>();
-            var mockRepo1 = new Mock<IDienstProfielRepository>();
-            //var dienstprofielen = (GetDienstProfielen().FirstOrDefault(m => m.DienstProfielenID == dienstProfielID));
-            var controller = new DienstProfielController(mockRepo.Object, mockRepo1.Object);
+            DienstProfielDTO dienstProfiel = (GetDienstProfielen().FirstOrDefault(m => m.DienstProfielID == dienstProfielID));
+            _dienstProfielRepository.Setup(repo => repo.GetByIdAsync(dienstProfielID)).Returns(Task.FromResult(dienstProfiel));
+            var controller = new DienstProfielController(_unitOfWork.Object, _dienstProfielRepository.Object);
 
             //Act
-            //var result = controller.Details(1);
+            var result = await controller.Details(dienstProfielID);
 
-            ////Assert
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<DienstProfielDTO>(
+                    viewResult.ViewData.Model);
 
-            //Assert.Equal(1, dienstprofielen.DienstProfielID);
-            //Assert.Equal("Beschrijving Dienstprofiel", dienstprofielen.Beschrijving);
-            //Assert.Equal(TimeSpan.Parse("07.00"), dienstprofielen.Begintijd);
-            //Assert.Equal(TimeSpan.Parse("14.00"),dienstprofielen.Eindtijd);
+            Assert.Equal(1, model.DienstProfielID);
+            Assert.Equal("Beschrijving Dienstprofiel", model.Beschrijving);
+            Assert.Equal(TimeSpan.Parse("07:00"), model.Begintijd);
+            Assert.Equal(TimeSpan.Parse("14:00"), model.Eindtijd);
         }
 
-        private List<DienstProfiel> GetDienstProfielen()
+        private List<DienstProfielDTO> GetDienstProfielen()
         {
-            var dienstProfielen = new List<DienstProfiel>();
-            dienstProfielen.Add(new DienstProfiel()
+            List<DienstProfielDTO> dienstProfielen = new List<DienstProfielDTO>();
+            dienstProfielen.Add(new DienstProfielDTO()
             {
                 DienstProfielID = 1,
                 Beschrijving = "Beschrijving Dienstprofiel",
-                Begintijd = TimeSpan.Parse("07.00"),
-                Eindtijd = TimeSpan.Parse("14.00"),
+                Begintijd = TimeSpan.Parse("07:00"),
+                Eindtijd = TimeSpan.Parse("14:00"),
                 MinimaleBezetting = 5
 
             });
-            dienstProfielen.Add(new DienstProfiel()
+            dienstProfielen.Add(new DienstProfielDTO()
             {
                 DienstProfielID = 2,
                 Beschrijving = "Beschrijving Dienstprofiel",
-                Begintijd = TimeSpan.Parse("07.00"),
-                Eindtijd = TimeSpan.Parse("14.00"),
+                Begintijd = TimeSpan.Parse("07:00"),
+                Eindtijd = TimeSpan.Parse("14:00"),
                 MinimaleBezetting = 5
 
             });

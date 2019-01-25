@@ -19,23 +19,23 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
     public class ContractenControllerTest
     {
 
-        private Mock<IUnitOfWork> _mockUnitOfWork;
+        private Mock<IUnitOfWork> _unitOfWork;
+        private Mock<IContractRepository> _contractRepository;
         private ICalculationsService _calculationsService;
 
 
         public ContractenControllerTest()
         {
             _calculationsService = new CalculationsService();
-            _mockUnitOfWork = new Mock<IUnitOfWork>();
+            _unitOfWork = new Mock<IUnitOfWork>();
+            _contractRepository = new Mock<IContractRepository>();
         }
 
         [Fact]
-        public async Task IndexTest()
+        public async Task Index_ReturnsAViewResult_WithAListOfContractDTOs()
         {
-            var mockRepository = new Mock<IContractRepository>();
-            mockRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetContracts()));
-
-            var controller = new ContractenController(_calculationsService, _mockUnitOfWork.Object, mockRepository.Object);
+            _contractRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetContracts()));
+            var controller = new ContractenController(_calculationsService, _unitOfWork.Object, _contractRepository.Object);
 
             //Act 
             var result = await controller.Index();
@@ -48,20 +48,18 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task DetailsTest()
+        public async Task Detail_ReturnsAViewResult_WithAContractDTO()
         {
             //Arrange
             var contractID = 1;
-            var mockRepository = new Mock<IContractRepository>();
 
             ContractDTO contract = (GetContracts().FirstOrDefault(m => m.ContractID == contractID));
             var medewerkers = GetMedewerkers();
             var medewerkerDTO = new MedewerkerDTO(medewerkers[1]);
             contract.medewerker = medewerkerDTO;
 
-            mockRepository.Setup(repo => repo.GetByIdAsync(contractID)).Returns(Task.FromResult(contract));
-
-            var controller = new ContractenController(_calculationsService, _mockUnitOfWork.Object, mockRepository.Object);
+            _contractRepository.Setup(repo => repo.GetByIdAsync(contractID)).Returns(Task.FromResult(contract));
+            var controller = new ContractenController(_calculationsService, _unitOfWork.Object, _contractRepository.Object);
 
             //Act
             var result = await controller.Details(contractID);
@@ -78,8 +76,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         public async Task DetailTestNotFound()
         {
             //Arange
-            var mockRepository = new Mock<IContractRepository>();
-            var controller = new ContractenController(_calculationsService, _mockUnitOfWork.Object, mockRepository.Object);
+            var controller = new ContractenController(_calculationsService, _unitOfWork.Object, _contractRepository.Object);
 
             //Act
             var result = await controller.Details(null);
@@ -92,8 +89,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         public void CreateTest()
         {
             //Arange
-            var mockRepository = new Mock<IContractRepository>();
-            var controller = new ContractenController(_calculationsService, _mockUnitOfWork.Object, mockRepository.Object);
+            var controller = new ContractenController(_calculationsService, _unitOfWork.Object, _contractRepository.Object);
 
             //Act
             var result = controller.Create();
@@ -146,8 +142,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                     BeginDatum = DateTime.Parse("25-1-2016"),
                     Einddatum = DateTime.Parse("28-03-2019"),
                     ContractUren = 25,
-
-
                 },
                 new ContractDTO()
                 {
@@ -155,7 +149,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                     BeginDatum = DateTime.Parse("25-1-2016"),
                     Einddatum = DateTime.Parse("28-03-2019"),
                     ContractUren = 25,
-
                 },
                 new ContractDTO()
                 {
@@ -163,7 +156,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                     BeginDatum = DateTime.Parse("25-1-2016"),
                     Einddatum = DateTime.Parse("28-03-2019"),
                     ContractUren = 25,
-
                 },
                 new ContractDTO()
                 {
@@ -171,7 +163,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
                     BeginDatum = DateTime.Parse("25-1-2016"),
                     Einddatum = DateTime.Parse("28-03-2019"),
                     ContractUren = 25,
-
                 }
             };
             return contracten;

@@ -16,47 +16,58 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 {
     public class DienstControllerTest
     {
+        private Mock<IUnitOfWork> _unitOfWork;
+        private Mock<IDienstRepository> _dienstRepository;
+
+        public DienstControllerTest()
+        {
+            _unitOfWork = new Mock<IUnitOfWork>();
+            _dienstRepository = new Mock<IDienstRepository>();
+        }
+
         [Fact]
-        public async Task IndexTest()
+        public async Task Index_ReturnsAViewResult_WithAListOfDienstDTOs()
         {
             //Arrange
-            var mockRepo = new Mock<IUnitOfWork>();
-            var mockRepo1 = new Mock<IDienstRepository>();
-            var controller = new DienstController(mockRepo.Object, mockRepo1.Object);
+            _dienstRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetDiensten()));
+            var controller = new DienstController(_unitOfWork.Object, _dienstRepository.Object);
 
             //Act
             var result = await controller.Index();
+
             //Assert
-            Assert.True(true);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IEnumerable<DienstDTO>>(
+                viewResult.ViewData.Model);
+            Assert.Equal(3, model.Count());
         }
 
         [Fact]
-        public async Task DetailTest()
+        public async Task Detail_ReturnsAViewResult_WithADienstDTO()
         {
             //Arrange
             int dienstID = 1;
-            var mockRepo = new Mock<IUnitOfWork>();
-            var mockRepo1 = new Mock<IDienstRepository>();
-            var diensten = (GetDiensten().FirstOrDefault(c => c.DienstID == dienstID));
-            var controller = new DienstController(mockRepo.Object, mockRepo1.Object);
+            DienstDTO dienst = (GetDiensten().FirstOrDefault(c => c.DienstID == dienstID));
+
+            _dienstRepository.Setup(repo => repo.GetByIdAsync(dienstID)).Returns(Task.FromResult(dienst));
+            var controller = new DienstController(_unitOfWork.Object, _dienstRepository.Object);
 
             //Act
-            var result = controller.Details(1);
+            var result = await controller.Details(dienstID);
 
             //Assert
-            Assert.Equal(1, diensten.DienstID);
-            Assert.Equal(DateTime.Parse("01-01-2019"), diensten.Datum);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<DienstDTO>(
+                    viewResult.ViewData.Model);
+
+            Assert.Equal(1, model.DienstID);
         }
 
         [Fact]
-        public async Task DetailsNotFound()
+        public async Task Details_ReturnsANotFound()
         {
             //Arrange
-            int dienstID = 1;
-            var mockRepo = new Mock<IUnitOfWork>();
-            var mockRepo1 = new Mock<IDienstRepository>();
-            var diensten = (GetDiensten().FirstOrDefault(c => c.DienstID == dienstID));
-            var controller = new DienstController(mockRepo.Object, mockRepo1.Object);
+            var controller = new DienstController(_unitOfWork.Object, _dienstRepository.Object);
 
             //Act
             var result = await controller.Details(null);
@@ -64,39 +75,42 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             //Assert
             var contentResult = Assert.IsType<NotFoundResult>(result);
         }
-        
-        private List<DienstProfiel> GetDienstProfielen()
-        {
-            var dienstProfielen = new List<DienstProfiel>();
-            dienstProfielen.Add(new DienstProfiel()
-            {
-                DienstProfielID = 1,
-                Beschrijving = "Beschrijving Dienstprofiel",
-                Begintijd = TimeSpan.Parse("07.00"),
-                Eindtijd = TimeSpan.Parse("14.00"),
-                MinimaleBezetting = 5
-                
-            });
-            dienstProfielen.Add(new DienstProfiel()
-            {
-                DienstProfielID = 2,
-                Beschrijving = "Beschrijving Dienstprofiel",
-                Begintijd = TimeSpan.Parse("07.00"),
-                Eindtijd = TimeSpan.Parse("14.00"),
-                MinimaleBezetting = 5
 
-            });
-            return dienstProfielen;
-
-        }
-        private List<Dienst> GetDiensten()
+        private List<DienstDTO> GetDiensten()
         {
-            var diensten = new List<Dienst>();
-            diensten.Add(new Dienst()
+            List<DienstDTO> diensten = new List<DienstDTO>
+            {
+                new DienstDTO()
                 {
                     DienstID = 1,
-                    Datum = DateTime.Parse("01-01-2019")
-            });
+                    Datum = DateTime.Parse("01-01-2019"),
+                    DienstProfielID = 1,
+                    Beschrijving = "Beschrijving Dienstprofiel",
+                    Begintijd = TimeSpan.Parse("07:00"),
+                    Eindtijd = TimeSpan.Parse("14:00"),
+                    MinimaleBezetting = 5
+                },
+                new DienstDTO()
+                {
+                    DienstID = 2,
+                    Datum = DateTime.Parse("02-01-2019"),
+                    DienstProfielID = 1,
+                    Beschrijving = "Beschrijving Dienstprofiel",
+                    Begintijd = TimeSpan.Parse("07:00"),
+                    Eindtijd = TimeSpan.Parse("14:00"),
+                    MinimaleBezetting = 5
+                },
+                new DienstDTO()
+                {
+                    DienstID = 3,
+                    Datum = DateTime.Parse("03-01-2019"),
+                    DienstProfielID = 1,
+                    Beschrijving = "Beschrijving Dienstprofiel",
+                    Begintijd = TimeSpan.Parse("07:00"),
+                    Eindtijd = TimeSpan.Parse("14:00"),
+                    MinimaleBezetting = 5
+                }
+            };
             return diensten;
         }
     }
