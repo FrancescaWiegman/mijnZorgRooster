@@ -26,7 +26,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task IndexTest()
+        public async Task Index_ReturnsAViewResult_WithAListOfDienstProfielDTOs()
         {
             //Arrange
             _dienstProfielRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetDienstProfielen()));
@@ -43,7 +43,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task DetailTest()
+        public async Task Detail_ReturnsAViewResult_WithADienstProfielDTO()
         {
             //Arange
             int dienstProfielID = 1;

@@ -32,7 +32,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task IndexTest()
+        public async Task Index_ReturnsAViewResult_WithAListOfContractDTOs()
         {
             _contractRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetContracts()));
             var controller = new ContractenController(_calculationsService, _unitOfWork.Object, _contractRepository.Object);
@@ -48,7 +48,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task DetailsTest()
+        public async Task Detail_ReturnsAViewResult_WithAContractDTO()
         {
             //Arrange
             var contractID = 1;

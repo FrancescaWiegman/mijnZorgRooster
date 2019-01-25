@@ -25,7 +25,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task IndexTest()
+        public async Task Index_ReturnsAViewResult_WithAListOfRolDTOs()
         {
             //Arrange
             _rolRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetRollen()));
@@ -42,7 +42,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task DetailTest()
+        public async Task Detail_ReturnsAViewResult_WithARolDTO()
         {
             //Arrange
             var rolID = 2;

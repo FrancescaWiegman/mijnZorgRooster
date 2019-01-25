@@ -26,7 +26,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task IndexTest()
+        public async Task Index_ReturnsAViewResult_WithAListOfDienstDTOs()
         {
             //Arrange
             _dienstRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetDiensten()));
@@ -43,7 +43,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task DetailTest()
+        public async Task Detail_ReturnsAViewResult_WithADienstDTO()
         {
             //Arrange
             int dienstID = 1;
@@ -64,7 +64,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task DetailsNotFound()
+        public async Task Details_ReturnsANotFound()
         {
             //Arrange
             var controller = new DienstController(_unitOfWork.Object, _dienstRepository.Object);

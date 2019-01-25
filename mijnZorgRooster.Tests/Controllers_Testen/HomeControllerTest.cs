@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using mijnZorgRooster.Controllers;
 using Xunit;
 
@@ -10,7 +11,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
     public class HomeControllerTest
     {
         [Fact]
-        public async Task IndexTest()
+        public void Index_ReturnsAViewResult()
         {
             //Arange
             
@@ -18,12 +19,13 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 
             //Act
             var result = controller.Index();
+
             //Assert
-            Assert.True(true);
+            Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
-        public async Task AboutTest()
+        public void About_ReturnsAViewResult()
         {
             //Arange
             var controller = new HomeController();
@@ -31,29 +33,33 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             //Act
             var result = controller.About();
             //Assert
-            Assert.True(true);
+            Assert.IsType<ViewResult>(result);
         }
+
         [Fact]
-        public async Task ContactTest()
+        public void Contact_ReturnsAViewResult()
         {
             //Arange
             var controller = new HomeController();
 
             //Act
             var result = controller.Contact();
+
             //Assert
-            Assert.True(true);
+            Assert.IsType<ViewResult>(result);
         }
+
         [Fact]
-        public async Task PrivacyTest()
+        public void Privacy_ReturnsAViewResult()
         {
             //Arange
             var controller = new HomeController();
 
             //Act
             var result = controller.Privacy();
+
             //Assert
-            Assert.True(true);
+            Assert.IsType<ViewResult>(result);
         }
       
     }

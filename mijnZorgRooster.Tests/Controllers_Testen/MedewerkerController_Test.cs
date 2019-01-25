@@ -34,7 +34,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task IndexTest()
+        public async Task Index_ReturnsAViewResult_WithAListOfMedewerkerDTOs()
         {
             //Arange
             _medewerkerRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetMedewerkers()));
@@ -51,7 +51,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task DetailTest()
+        public async Task Detail_ReturnsAViewResult_WithAMedewerkerDTO()
         {
             //Arange
             int medewerkerID = 1;
@@ -74,7 +74,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task DetailTestNotFound()
+        public async Task Detail_ReturnsANotFound()
         {
             //Arange
             var controller = new MedewerkersController(_calculationsService, _unitOfWork.Object, _medewerkerRepository.Object);
@@ -87,7 +87,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public void CreateTest()
+        public void Create_ReturnsAViewResult()
         {
             //Arange
             var controller = new MedewerkersController(_calculationsService, _unitOfWork.Object, _medewerkerRepository.Object);
