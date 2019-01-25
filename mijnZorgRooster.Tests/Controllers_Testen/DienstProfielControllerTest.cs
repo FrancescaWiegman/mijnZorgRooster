@@ -35,7 +35,7 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             int dienstProfielID = 1;
             var mockRepo = new Mock<IUnitOfWork>();
             var mockRepo1 = new Mock<IDienstProfielRepository>();
-            //var dienstprofielen = (GetDienstProfielen().FirstOrDefault(m => m.DienstProfielID == dienstProfielID));
+            //var dienstprofielen = (GetDienstProfielen().FirstOrDefault(m => m.DienstProfielenID == dienstProfielID));
             var controller = new DienstProfielController(mockRepo.Object, mockRepo1.Object);
 
             //Act
@@ -43,10 +43,10 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 
             ////Assert
 
-            //Assert.Equal(1, dienstprofiel.DienstProfielID);
-            //Assert.Equal("Beschrijving Dienstprofiel", dienstprofiel.Beschrijving);
-            //Assert.Equal(TimeSpan.Parse("07.00"), dienstprofiel.Begintijd);
-            //Assert.Equal(TimeSpan.Parse("14.00"),dienstprofiel.Eindtijd);
+            //Assert.Equal(1, dienstprofielen.DienstProfielID);
+            //Assert.Equal("Beschrijving Dienstprofiel", dienstprofielen.Beschrijving);
+            //Assert.Equal(TimeSpan.Parse("07.00"), dienstprofielen.Begintijd);
+            //Assert.Equal(TimeSpan.Parse("14.00"),dienstprofielen.Eindtijd);
         }
 
         private List<DienstProfiel> GetDienstProfielen()

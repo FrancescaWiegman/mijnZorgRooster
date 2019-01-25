@@ -45,7 +45,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             var model = Assert.IsAssignableFrom<IEnumerable<ContractDTO>>(
                 viewResult.ViewData.Model);
             Assert.Equal(4, model.Count());
-
         }
 
         [Fact]

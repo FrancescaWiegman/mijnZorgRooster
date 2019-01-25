@@ -55,15 +55,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             //Assert
             Assert.True(true);
         }
-        //[Fact]
-        //public async Task ErrorTest()
-        //{
-        //    var controller = new HomeController();
-
-        //    //Act
-        //    var result = controller.Error();
-        //    //Assert
-        //    Assert.True(true);
-        //}
+      
     }
 }
