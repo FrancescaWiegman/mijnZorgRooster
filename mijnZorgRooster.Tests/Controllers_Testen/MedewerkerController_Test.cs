@@ -21,29 +21,28 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
 {
 
     public class MedewerkerController_Test
-
     {
-        private Mock<IUnitOfWork> _mockUnitOfWork;
+        private Mock<IUnitOfWork> _unitOfWork;
+        private Mock<IMedewerkerRepository> _medewerkerRepository;
         private ICalculationsService _calculationsService;
 
         public MedewerkerController_Test()
         {
-               
+            _unitOfWork = new Mock<IUnitOfWork>();
+            _medewerkerRepository = new Mock<IMedewerkerRepository>();
+            _calculationsService = new CalculationsService();
         }
 
         [Fact]
         public async Task IndexTest()
         {
             //Arange
-            //var mockRepo = new Mock<ICalculationsService>();
-            //var mockRepo1 = new Mock<IUnitOfWork>();
-            var mockRepo2 = new Mock<IMedewerkerRepository>();
-            mockRepo2.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetMedewerkers()));
-
-            var controller = new MedewerkersController(_calculationsService, _mockUnitOfWork.Object, mockRepo2.Object);
+            _medewerkerRepository.Setup(repo => repo.GetAsync()).Returns(Task.FromResult(GetMedewerkers()));
+            var controller = new MedewerkersController(_calculationsService, _unitOfWork.Object, _medewerkerRepository.Object);
 
             //Act
             var result = await controller.Index();
+
             //Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<IEnumerable<MedewerkerDTO>>(
@@ -56,33 +55,29 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         {
             //Arange
             int medewerkerID = 1;
-            var mockRepo = new Mock<ICalculationsService>();
-
-            var mockRepo1 = new Mock<IUnitOfWork>();
-            var mockRepo2 = new Mock<IMedewerkerRepository>();
             var medewerker = (GetMedewerkers().FirstOrDefault(m => m.MedewerkerID == medewerkerID));
-            mockRepo.Setup(repo => repo.BerekenLeeftijdInJaren(medewerker.Geboortedatum)).Returns(39);
+            _medewerkerRepository.Setup(repo => repo.GetByIdAsync(medewerkerID)).Returns(Task.FromResult(medewerker));
 
-            var controller = new MedewerkersController(mockRepo.Object, mockRepo1.Object, mockRepo2.Object);
+            var controller = new MedewerkersController(_calculationsService, _unitOfWork.Object, _medewerkerRepository.Object);
 
             //Act
             var result = await controller.Details(1);
 
             //Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<MedewerkerDTO>(
+                    viewResult.ViewData.Model);
 
-            Assert.Equal(1, medewerker.MedewerkerID);
-            Assert.Equal("Francesca", medewerker.Voornaam);
-            Assert.Equal(DateTime.Parse("23-06-1979"), medewerker.Geboortedatum);
+            Assert.Equal(1, model.MedewerkerID);
+            Assert.Equal("Francesca", model.Voornaam);
+            Assert.Equal(DateTime.Parse("23-06-1979"), model.Geboortedatum);
         }
 
         [Fact]
         public async Task DetailTestNotFound()
         {
             //Arange
-            var mockRepo = new Mock<ICalculationsService>();
-            var mockRepo1 = new Mock<IUnitOfWork>();
-            var mockRepo2 = new Mock<IMedewerkerRepository>();
-            var controller = new MedewerkersController(mockRepo.Object, mockRepo1.Object, mockRepo2.Object);
+            var controller = new MedewerkersController(_calculationsService, _unitOfWork.Object, _medewerkerRepository.Object);
 
             //Act
             var result = await controller.Details(null);
@@ -92,13 +87,10 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
         }
 
         [Fact]
-        public async Task CreateTest()
+        public void CreateTest()
         {
             //Arange
-            var mockRepo = new Mock<ICalculationsService>();
-            var mockRepo1 = new Mock<IUnitOfWork>();
-            var mockRepo2 = new Mock<IMedewerkerRepository>();
-            var controller = new MedewerkersController(mockRepo.Object, mockRepo1.Object, mockRepo2.Object);
+            var controller = new MedewerkersController(_calculationsService, _unitOfWork.Object, _medewerkerRepository.Object);
 
             //Act
             var result = controller.Create();
@@ -107,28 +99,6 @@ namespace mijnZorgRooster.Tests.Controllers_Testen
             var viewResult = Assert.IsType<ViewResult>(result);
 
         }
-
-        [Fact]
-        public async Task CreateFilledInInvalidTest()
-        {
-            //Arange
-            int MedewerkerID = 1;
-            var mockRepo = new Mock<IUnitOfWork>();
-            var mockRepo1 = new Mock<IMedewerkerRepository>();
-            var mockRepo2 = new Mock<ICalculationsService>();
-            var medewerker = (GetMedewerkers().FirstOrDefault(m => m.MedewerkerID == MedewerkerID));
-            //mockRepo1.Setup(repo => repo.Insert(Medewerker);
-            var controller = new MedewerkersController(mockRepo2.Object, mockRepo.Object, mockRepo1.Object);
-            controller.ModelState.AddModelError("Achternaam", "Required");
-
-            //Act
-            var result = await controller.Create(null);
-
-            //Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-        }
-
-       
 
         private List<MedewerkerDTO> GetMedewerkers()
         {
