@@ -5,15 +5,15 @@ using System.Collections.Generic;
 using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.Models;
 
-namespace mijnZorgRooster.Tests
+namespace mijnZorgRooster.Tests.Services
 {
-    public class CalculationsService_Tests
+    public class CalculationsServiceTests
     {
-        private readonly Services.CalculationsService _calculationsService;
+        private readonly CalculationsService _calculationsService;
 
-        public CalculationsService_Tests()
+        public CalculationsServiceTests()
         {
-            _calculationsService = new Services.CalculationsService();
+            _calculationsService = new CalculationsService();
         }
 
         [Fact]

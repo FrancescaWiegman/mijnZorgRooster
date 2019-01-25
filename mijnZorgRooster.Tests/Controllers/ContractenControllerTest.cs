@@ -14,7 +14,7 @@ using Xunit;
 
 
 
-namespace mijnZorgRooster.Tests.Controllers_Testen
+namespace mijnZorgRooster.Tests.Controllers
 {
     public class ContractenControllerTest
     {

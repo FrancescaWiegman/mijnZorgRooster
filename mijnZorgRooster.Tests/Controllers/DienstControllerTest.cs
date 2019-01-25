@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using mijnZorgRooster.Controllers;
 using mijnZorgRooster.DAL;
 using mijnZorgRooster.DAL.Repositories;
-using mijnZorgRooster.Controllers;
-using Moq;
-using Xunit;
-using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.Models;
+using Moq;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Xunit;
 
-namespace mijnZorgRooster.Tests.Controllers_Testen
+namespace mijnZorgRooster.Tests.Controllers
 {
     public class DienstControllerTest
     {

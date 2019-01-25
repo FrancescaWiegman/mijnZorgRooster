@@ -1,32 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using mijnZorgRooster.Controllers;
 using mijnZorgRooster.DAL;
-using mijnZorgRooster.DAL.Entities;
 using mijnZorgRooster.DAL.Repositories;
 using mijnZorgRooster.Models;
 using mijnZorgRooster.Services;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 
 
-namespace mijnZorgRooster.Tests.Controllers_Testen
+namespace mijnZorgRooster.Tests.Controllers
 {
 
-    public class MedewerkerController_Test
+    public class MedewerkerControllerTest
     {
         private Mock<IUnitOfWork> _unitOfWork;
         private Mock<IMedewerkerRepository> _medewerkerRepository;
         private ICalculationsService _calculationsService;
 
-        public MedewerkerController_Test()
+        public MedewerkerControllerTest()
         {
             _unitOfWork = new Mock<IUnitOfWork>();
             _medewerkerRepository = new Mock<IMedewerkerRepository>();

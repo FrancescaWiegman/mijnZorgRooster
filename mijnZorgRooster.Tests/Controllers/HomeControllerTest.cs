@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using mijnZorgRooster.Controllers;
 using Xunit;
 
-namespace mijnZorgRooster.Tests.Controllers_Testen
+namespace mijnZorgRooster.Tests.Controllers
 {
     public class HomeControllerTest
     {
